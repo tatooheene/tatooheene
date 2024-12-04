@@ -16,44 +16,44 @@ friction_period <- function(
     # Filter the data for the specified years
 
   if(year != "all"){
-    friction_period <- df_fp |>
+    friction_period_out <- df_fp |>
       dplyr::filter(Year %in% year)}
 
   # Select the specified columns or all columns if none specified
 
   if(period == "weeks" & type == "5_year_avg"){
-    friction_period <- df_fp |>
+    friction_period_out <- df_fp |>
       dplyr::select(`Friction period weeks average over 5 years`) |>
       dplyr::pull(`Friction period weeks average over 5 years`)
 
-    attr(friction_period, "label") <- NULL
-    attr(friction_period, "unit") <- NULL
+    attr(friction_period_out, "label") <- NULL
+    attr(friction_period_out, "unit") <- NULL
 
   }else if(period == "weeks" & type != "5_year_avg"){
-    friction_period <- df_fp |>
+    friction_period_out <- df_fp |>
       dplyr::select(`Friction period in weeks`) |>
       dplyr::pull(`Friction period in weeks`)
 
-    attr(friction_period, "label") <- NULL
-    attr(friction_period, "unit") <- NULL
+    attr(friction_period_out, "label") <- NULL
+    attr(friction_period_out, "unit") <- NULL
 
 
   }else if(period == "days" & type == "5_year_avg"){
-    friction_period <- df_fp |>
+    friction_period_out <- df_fp |>
       dplyr::select(`Friction period days average over 5 years`) |>
       dplyr::pull(`Friction period days average over 5 years`)
 
-    attr(friction_period, "label") <- NULL
-    attr(friction_period, "unit") <- NULL
+    attr(friction_period_out, "label") <- NULL
+    attr(friction_period_out, "unit") <- NULL
 
   }else if(period == "days" & type != "5_year_avg"){
-    friction_period <- df_fp |>
+    friction_period_out <- df_fp |>
       dplyr::select(`Friction period in days`) |>
       dplyr::pull(`Friction period in days`)
 
-    attr(friction_period, "label") <- NULL
-    attr(friction_period, "unit") <- NULL
+    attr(friction_period_out, "label") <- NULL
+    attr(friction_period_out, "unit") <- NULL
   }
 
-  return(friction_period)
+  friction_period_out
 }
