@@ -19,7 +19,7 @@ You can install the development version of tatooheene from
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("fthielen/tatooheene")
+remotes::install_github("tatooheene/tatooheene")
 ```
 
 ## About the data
