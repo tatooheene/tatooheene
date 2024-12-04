@@ -1,4 +1,4 @@
-#' A function to calculate the discounted value of a future costs or effects
+#' A function to calculate the discounted value of future costs or effects
 #'
 #' This function calculates the discounted value of a future costs or effects based on a discount rate and time period.
 #'
