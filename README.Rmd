@@ -1,0 +1,37 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "75%",
+  warning = FALSE,
+  message = FALSE,
+  fig.retina = 2,
+  fig.align = 'center'
+)
+```
+
+# tatooheene
+
+This is the [T]{.underline}echnology [A]{.underline}ppraisal [Too]{.underline}lbox for [H]{.underline}ealth [E]{.underline}conomic [E]{.underline}valuations in the [Ne]{.underline}therlands.
+
+The goal of this package is to make health economic evaluation models in R easier and clearer. It provides several datasets and functions that are needed when building models based on the Dutch Guideline for Health Economic Evaluations in The Netherlands.
+
+## Installation
+
+You can install the development version of tatooheene from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("remotes")
+remotes::install_github("fthielen/tatooheene")
+```
+
+## About the data
+
+The package contains several datasets that are used in the Dutch Guideline for Health Economic Evaluations in The Netherlands. Data were taken from [CBS](www.cbs.nl)
