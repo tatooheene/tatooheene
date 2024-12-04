@@ -13,10 +13,7 @@ friction_period <- function(
     period = "all",
     type = "5_year_avg"){
 
-  # Input validation with assertthat
-  assertthat::assert_that(is.numeric(v_replace_val), msg = "`v_replace_val` must be numeric")
-
-  # Filter the data for the specified years
+    # Filter the data for the specified years
 
   if(year != "all"){
     friction_period <- df_fp |>
