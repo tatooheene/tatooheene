@@ -1,10 +1,12 @@
 #' A function to download the friction period over one or multiple years
-#' @param year The year of which the friction period should be downloaded, multiple years are possible. The default is the whole DataFrame
+#' @param year The year of which the friction period should be downloaded, multiple years are possible. The default is the whole data frame
 #' @param period The friction period that should be included (days/weeks),  default is including the whole dataframe
 #' @param type If period is chosen, a decision can be made between the 5 year average and 1 year friction period in days/weeks. The default is the 5 year average
 #' @keywords Generic, CBS
+#' @examples
+#' # Example usage of the depreciation_interest function
+#' friction_period(year = 2019, period = "weeks", type = "5_year_avg")
 #' @export friction_period
-
 
 friction_period <- function(
     year = "all",
@@ -16,16 +18,14 @@ friction_period <- function(
 
   # Filter the data for the specified years
 
-  friction_period <- readRDS("data/df_fp_2023.rds")
-
   if(year != "all"){
-    friction_period <- friction_period |>
+    friction_period <- df_fp |>
       dplyr::filter(Year %in% year)}
 
   # Select the specified columns or all columns if none specified
 
   if(period == "weeks" & type == "5_year_avg"){
-    friction_period <- friction_period |>
+    friction_period <- df_fp |>
       dplyr::select(`Friction period weeks average over 5 years`) |>
       dplyr::pull(`Friction period weeks average over 5 years`)
 
@@ -33,7 +33,7 @@ friction_period <- function(
     attr(friction_period, "unit") <- NULL
 
   }else if(period == "weeks" & type != "5_year_avg"){
-    friction_period <- friction_period |>
+    friction_period <- df_fp |>
       dplyr::select(`Friction period in weeks`) |>
       dplyr::pull(`Friction period in weeks`)
 
@@ -42,7 +42,7 @@ friction_period <- function(
 
 
   }else if(period == "days" & type == "5_year_avg"){
-    friction_period <- friction_period |>
+    friction_period <- df_fp |>
       dplyr::select(`Friction period days average over 5 years`) |>
       dplyr::pull(`Friction period days average over 5 years`)
 
@@ -50,7 +50,7 @@ friction_period <- function(
     attr(friction_period, "unit") <- NULL
 
   }else if(period == "days" & type != "5_year_avg"){
-    friction_period <- friction_period |>
+    friction_period <- df_fp |>
       dplyr::select(`Friction period in days`) |>
       dplyr::pull(`Friction period in days`)
 

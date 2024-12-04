@@ -1,4 +1,5 @@
-#' A function to calculate the costs of medical equipment based on Section 3.3 of the Dutch EE guideline; k = annual depreciation and interest expense [jaarlijkse afschrijvings- en rentekosten]
+#' A function to calculate the costs of medical equipment
+#' A function to calculate the costs of medical equipment based on Section 3.3 of the Dutch EE guideline; k = annual depreciation and interest expense jaarlijkse afschrijvings- en rentekosten
 #' @param v_replace_val V: vervangingswaarde; replacement value
 #' @param r_salvage_val R: restwaarde; salvage value
 #' @param n_amortisation_period N: afschrijvingstermijn,; amortization period

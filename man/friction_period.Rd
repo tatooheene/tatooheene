@@ -7,7 +7,7 @@
 friction_period(year = "all", period = "all", type = "5_year_avg")
 }
 \arguments{
-\item{year}{The year of which the friction period should be downloaded, multiple years are possible. The default is the whole DataFrame}
+\item{year}{The year of which the friction period should be downloaded, multiple years are possible. The default is the whole data frame}
 
 \item{period}{The friction period that should be included (days/weeks),  default is including the whole dataframe}
 
@@ -15,6 +15,10 @@ friction_period(year = "all", period = "all", type = "5_year_avg")
 }
 \description{
 A function to download the friction period over one or multiple years
+}
+\examples{
+# Example usage of the depreciation_interest function
+friction_period(year = 2019, period = "weeks", type = "5_year_avg")
 }
 \keyword{CBS}
 \keyword{Generic,}
