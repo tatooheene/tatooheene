@@ -2,8 +2,7 @@
 % Please edit documentation in R/depreciation_interest.R
 \name{depreciation_interest}
 \alias{depreciation_interest}
-\title{A function to calculate the costs of medical equipment
-A function to calculate the costs of medical equipment based on Section 3.3 of the Dutch EE guideline; k = annual depreciation and interest expense jaarlijkse afschrijvings- en rentekosten}
+\title{A function to calculate the costs of medical equipment}
 \usage{
 depreciation_interest(
   v_replace_val,
@@ -25,7 +24,6 @@ depreciation_interest(
 \item{output}{Default of output is a data frame with both the annuity factor and yearly deprecation and interest costs, but the values can be selected independently}
 }
 \description{
-A function to calculate the costs of medical equipment
 A function to calculate the costs of medical equipment based on Section 3.3 of the Dutch EE guideline; k = annual depreciation and interest expense jaarlijkse afschrijvings- en rentekosten
 }
 \examples{

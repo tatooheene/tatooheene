@@ -1,5 +1,7 @@
 #' A function to create a discount vector for a given time period
+#'
 #' This function calculates a discount vector for a given time period based on a discount rate.
+#'
 #' @param discount_rate The discount rate to use for the calculation. Default is 0.03. The guideline stipulates 0.03 for costs and 0.015 for effects.
 #' @param start_time The start time for the discount vector. Default is 0.
 #' @param end_time The end time for the discount vector.

@@ -2,8 +2,7 @@
 % Please edit documentation in R/discount_vector.R
 \name{discount_vector}
 \alias{discount_vector}
-\title{A function to create a discount vector for a given time period
-This function calculates a discount vector for a given time period based on a discount rate.}
+\title{A function to create a discount vector for a given time period}
 \usage{
 discount_vector(
   discount_rate = 0.03,
@@ -28,7 +27,6 @@ discount_vector(
 A numeric vector of discounted values for each time period.
 }
 \description{
-A function to create a discount vector for a given time period
 This function calculates a discount vector for a given time period based on a discount rate.
 }
 \examples{

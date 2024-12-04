@@ -1,5 +1,7 @@
-#' A fucntion to calculate the discounted value of a future costs or effects
+#' A function to calculate the discounted value of a future costs or effects
+#'
 #' This function calculates the discounted value of a future costs or effects based on a discount rate and time period.
+#'
 #' @param current_value The current value.
 #' @param discount_rate The discount rate to use for the calculation. Default is 0.03. The guideline stipulates 0.03 for costs and 0.015 for effects.
 #' @param time The time at which the future value occurs.

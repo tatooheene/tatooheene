@@ -2,8 +2,7 @@
 % Please edit documentation in R/discount_value.R
 \name{discount_value}
 \alias{discount_value}
-\title{A fucntion to calculate the discounted value of a future costs or effects
-This function calculates the discounted value of a future costs or effects based on a discount rate and time period.}
+\title{A function to calculate the discounted value of a future costs or effects}
 \usage{
 discount_value(
   current_value,
@@ -28,7 +27,6 @@ discount_value(
 A numeric value of the discounted future value.
 }
 \description{
-A fucntion to calculate the discounted value of a future costs or effects
 This function calculates the discounted value of a future costs or effects based on a discount rate and time period.
 }
 \examples{
