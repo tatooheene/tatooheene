@@ -12,8 +12,8 @@ update_year <- as.numeric(format(Sys.Date(), "%Y")) - 1
 load("data/df_rp_prod.rda")
 
 # Update file with new reference year if needed
-df_rp_prod <- df_rp_prod %>%
-  mutate(!!sym(as.character(update_year)) := `2022` * factor_rp)
+df_rp_prod <- df_rp_prod |>
+  dplyr::mutate(!!sym(as.character(update_year)) := `2022` * factor_rp)
 
 # Save the dataset
 usethis::use_data(df_rp_prod, overwrite = TRUE)

@@ -12,8 +12,8 @@ update_year <- as.numeric(format(Sys.Date(), "%Y")) - 1
 load("data/df_rp_medical.rda")
 
 # Update file with new reference year if needed
-df_rp_medical <- df_rp_medical %>%
-  mutate(!!sym(as.character(update_year)) := `2022` * factor_rp)
+df_rp_medical <- df_rp_medical |>
+  dplyr::mutate(!!sym(as.character(update_year)) := `2022` * factor_rp)
 
 # Save the dataset
 usethis::use_data(df_rp_medical, overwrite = TRUE)

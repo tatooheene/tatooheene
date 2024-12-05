@@ -28,7 +28,7 @@ This function downloads the Patient & Family Reference prices of the Dutch Costi
 }
 \examples{
 Example usage of the nl_pat_fam_prices function
-nl_pat_fam_prices(year = 2019, category = "Transportation", unit = "Car, cost per kilometer")
+nl_pat_fam_prices(year = 2022, category = "Transportation", currency = "INT$", unit = "Car, cost per kilometer")
 }
 \keyword{&}
 \keyword{Costing}

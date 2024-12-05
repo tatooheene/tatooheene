@@ -23,7 +23,7 @@ This function downloads the Medical Reference prices of the Dutch Costing Manual
 }
 \examples{
 Example usage of the nl_med_prices function
-nl_med_prices(year = 2019, category = "Nursing", unit = "Nursing day excluding personnel costs, hospital")
+nl_med_prices(year = 2023, category = "Nursing", unit = "Nursing day excluding personnel costs, hospital")
 }
 \keyword{Costing}
 \keyword{Dutch}
