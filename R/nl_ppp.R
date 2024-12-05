@@ -12,21 +12,18 @@
 nl_ppp <- function(
     year = "all"){
 
-  # Filter the data for the specified years
-  update_year <- as.numeric(format(Sys.Date(), "%Y")) - 1
-  new_filepath_ppp <- paste0("data/df_ppp_", update_year, ".rds")
-
-  df_ppp <- readRDS(new_filepath_ppp)
+  # Read in the dataset
+  df <- tatooheene::df_ppp
 
   # Select the specified years, or all years if not specified
   if(year != "all"){
-    ppp <- df_ppp |>
+    ppp <- df |>
       dplyr::filter(Year %in% year) |>
       dplyr::pull(PPP)
 
     print(ppp)
   }else{
 
-    return(df_ppp)
+    return(df)
   }
 }
