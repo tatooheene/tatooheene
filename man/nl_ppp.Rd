@@ -2,7 +2,7 @@
 % Please edit documentation in R/nl_ppp.R
 \name{nl_ppp}
 \alias{nl_ppp}
-\title{A function to obtain the Dutch PPP factor values}
+\title{A function to obtain the Dutch PPP factor values in International Dollar (INT$)}
 \usage{
 nl_ppp(year = "all")
 }
@@ -13,7 +13,7 @@ nl_ppp(year = "all")
 A dataframe or value with the PPP factor values for the specified years.
 }
 \description{
-This function downloads the Purchasing Power Parity (PPP) factor values for the Netherlands from the OECD website per year.
+This function downloads the Purchasing Power Parity (PPP) factor values for the Netherlands from the OECD website per year in International Dollar (Int$).
 }
 \examples{
 Example usage of the nl_ppp function
