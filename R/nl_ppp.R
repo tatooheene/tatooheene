@@ -6,6 +6,7 @@
 #' @keywords Generic, Costing Manual, Purchasing Power Parity (PPP)
 #' @return A dataframe or value with the PPP factor values for the specified years.
 #' @examples
+#' Example usage of the nl_ppp function
 #' nl_ppp(year = 2019)
 #' @export nl_ppp
 
