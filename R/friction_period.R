@@ -17,13 +17,15 @@ friction_period <- function(
 
   df <- tatooheene::df_fp
 
-  if(year != "all"){
+  if (year == "all" & period == "all" & type == "5_year_avg") {
+    friction_period_out <- df
+
+  } else if(year != "all"){
     friction_period_out <- df |>
       dplyr::filter(Year %in% year)}else if(
         # Select the specified columns or all columns if none specified
         period == "weeks" & type == "5_year_avg"){
         friction_period_out <- df |>
-          dplyr::select(`Friction period weeks average over 5 years`) |>
           dplyr::pull(`Friction period weeks average over 5 years`)
 
         attr(friction_period_out, "label") <- NULL
@@ -31,7 +33,6 @@ friction_period <- function(
 
       }else if(period == "weeks" & type != "5_year_avg"){
         friction_period_out <- df |>
-          dplyr::select(`Friction period in weeks`) |>
           dplyr::pull(`Friction period in weeks`)
 
         attr(friction_period_out, "label") <- NULL
@@ -40,7 +41,6 @@ friction_period <- function(
 
       }else if(period == "days" & type == "5_year_avg"){
         friction_period_out <- df |>
-          dplyr::select(`Friction period days average over 5 years`) |>
           dplyr::pull(`Friction period days average over 5 years`)
 
         attr(friction_period_out, "label") <- NULL
@@ -48,7 +48,6 @@ friction_period <- function(
 
       }else if(period == "days" & type != "5_year_avg"){
         friction_period_out <- df |>
-          dplyr::select(`Friction period in days`) |>
           dplyr::pull(`Friction period in days`)
 
         attr(friction_period_out, "label") <- NULL
