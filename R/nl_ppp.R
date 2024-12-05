@@ -1,6 +1,6 @@
-#' A function to obtain the Dutch PPP factor values
+#' A function to obtain the Dutch PPP factor values in International Dollar (INT$)
 #'
-#' This function downloads the Purchasing Power Parity (PPP) factor values for the Netherlands from the OECD website per year.
+#' This function downloads the Purchasing Power Parity (PPP) factor values for the Netherlands from the OECD website per year in International Dollar (Int$).
 #'
 #' @param year The year of which the PPP factor should be downloaded, multiple years are possible, default is the whole dataset.
 #' @keywords Generic, Costing Manual, Purchasing Power Parity (PPP)
