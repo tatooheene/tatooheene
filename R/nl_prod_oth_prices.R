@@ -15,13 +15,25 @@
 nl_prod_oth_prices <- function(
     year = "all",
     category = "all",
-    currency = "EUR",
+    currency = c("EUR", "INT$"),
     unit = "all"){
 
   # Read in the dataset
   df <- tatooheene::df_rp_prod
 
-  if(year != "all"){
+  # Input validation
+  year <- match.arg(year, c("all",
+                            suppressWarnings(na.omit(as.numeric(colnames(df))
+                                                 ))))
+  possible_cat <- c("all", unique(df$Category))
+  category <- match.arg(category, possible_cat)
+
+  possible_unit <- c("all", unique(df$Unit))
+  unit <- match.arg(unit, possible_unit)
+
+  currency <- match.arg(currency)
+
+  f(year != "all"){
     df <-  df_other |>
       dplyr::select("Category", "Unit", dplyr::all_of(c(as.character(year))))
   }

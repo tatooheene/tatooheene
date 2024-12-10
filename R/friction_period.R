@@ -38,7 +38,6 @@ friction_period <- function(
         attr(friction_period_out, "label") <- NULL
         attr(friction_period_out, "unit") <- NULL
 
-
       }else if(period == "days" & type == "5_year_avg"){
         friction_period_out <- df |>
           dplyr::pull(`Friction period days average over 5 years`)

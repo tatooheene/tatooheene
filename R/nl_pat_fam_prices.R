@@ -16,8 +16,11 @@
 nl_pat_fam_prices <- function(
     year = "all",
     category = "all",
-    currency = "EUR",
+    currency = c("EUR", "INT$"),
     unit = "all"){
+
+  # match.arg() for the output parameter to ensure it is one of the valid choices
+  currency <- match.arg(currency)
 
   # Read dataframe
   df <- tatooheene::df_rp_patient
