@@ -28,10 +28,10 @@ nl_prod_oth_prices <- function(
   possible_cat <- c("all", unique(df$Category))
   category <- match.arg(category, possible_cat)
 
+  currency <- match.arg(currency)
+
   possible_unit <- c("all", unique(df$Unit))
   unit <- match.arg(unit, possible_unit)
-
-  currency <- match.arg(currency)
 
   f(year != "all"){
     df <-  df_other |>

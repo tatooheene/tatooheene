@@ -19,11 +19,22 @@ nl_pat_fam_prices <- function(
     currency = c("EUR", "INT$"),
     unit = "all"){
 
-  # match.arg() for the output parameter to ensure it is one of the valid choices
-  currency <- match.arg(currency)
-
   # Read dataframe
   df <- tatooheene::df_rp_patient
+
+  # Input validation
+  # Input validation
+  year <- match.arg(year, c("all",
+                            suppressWarnings(na.omit(as.numeric(colnames(df))
+                            ))))
+
+  possible_cat <- c("all", unique(df$Category))
+  category <- match.arg(category, possible_cat)
+
+  currency <- match.arg(currency)
+
+  possible_unit <- c("all", unique(df$Unit))
+  unit <- match.arg(unit, possible_unit)
 
   if(year != "all"){
     df <-  df |>
