@@ -25,6 +25,19 @@ nl_med_prices <- function(
   # read in the dataset
   df <- tatooheene::df_rp_medical
 
+  # Input validation
+  year <- match.arg(year, c("all",
+                            suppressWarnings(na.omit(as.numeric(colnames(df))
+                            ))))
+
+  possible_cat <- c("all", unique(df$Category))
+  category <- match.arg(category, possible_cat)
+
+  possible_unit <- c("all", unique(df$Unit))
+  unit <- match.arg(unit, possible_unit)
+
+  currency <- match.arg(currency)
+
   # If specified, select the specified years, or all years if not specified
   if(year != "all"){
     df <-  df |>
