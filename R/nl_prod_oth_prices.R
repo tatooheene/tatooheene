@@ -33,7 +33,7 @@ nl_prod_oth_prices <- function(
   possible_unit <- c("all", unique(df$Unit))
   unit <- match.arg(unit, possible_unit)
 
-  f(year != "all"){
+  if(year != "all"){
     df <-  df_other |>
       dplyr::select("Category", "Unit", dplyr::all_of(c(as.character(year))))
   }

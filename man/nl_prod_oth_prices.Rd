@@ -7,7 +7,7 @@
 nl_prod_oth_prices(
   year = "all",
   category = "all",
-  currency = "EUR",
+  currency = c("EUR", "INT$"),
   unit = "all"
 )
 }
