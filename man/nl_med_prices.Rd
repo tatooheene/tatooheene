@@ -4,7 +4,12 @@
 \alias{nl_med_prices}
 \title{A function to download the Medical Reference prices of the Dutch Costing Manual for one or multiple years}
 \usage{
-nl_med_prices(year = "all", category = "all", currency = "EUR", unit = "all")
+nl_med_prices(
+  year = "all",
+  category = "all",
+  currency = c("EUR", "INT$"),
+  unit = "all"
+)
 }
 \arguments{
 \item{year}{The year of which the reference price should be downloaded, multiple years are possible, default is the whole dataset}

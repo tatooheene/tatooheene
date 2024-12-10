@@ -7,7 +7,7 @@
 nl_pat_fam_prices(
   year = "all",
   category = "all",
-  currency = "EUR",
+  currency = c("EUR", "INT$"),
   unit = "all"
 )
 }

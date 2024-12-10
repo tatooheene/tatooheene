@@ -8,8 +8,7 @@
 #' @return A pretty price with the currency
 #' @examples
 #' p_price(1000, currency = "EUR")
-#' @export p_price
-#' @importFrom base formatC
+#' @export pretty_price
 
 pretty_price <- function(x, digi = 2, currency = "EUR", ...){
 
