@@ -27,8 +27,21 @@ discount_value(
 A numeric value of the discounted future value.
 }
 \description{
-This function calculates the discounted value of a future costs or effects based on a discount rate and time period.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+This function calculates the discounted value of a future costs or effects based on the in paragraph 2.6.1.2 of the Dutch EE guideline mentioned discount rate and time period
 }
 \examples{
+# Example usage of the discount_value function
+# Calculate the discounted value of 100 after 5 years with a discount rate of 0.03 in which the first year is not discounted
 discount_value(current_value = 100, discount_rate = 0.03, time = 5, time_unit = "years", discount_year_one = FALSE)
+
+# Calculate the discounted value of 100 after 60 months with a discount rate of 0.03 in which the first year is not discounted
+discount_value(current_value = 100, discount_rate = 0.03, time = 60, time_unit = "months", discount_year_one = FALSE)
+
+# Calculate the discounted value of 100 after 365 days with a discount rate of 0.06 in which the first year is discounted
+discount_value(current_value = 100, discount_rate = 0.06, time = 365, time_unit = "days", discount_year_one = TRUE)
+
 }
+\keyword{Costs,}
+\keyword{Discounting,}
+\keyword{Effects}

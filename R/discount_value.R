@@ -1,6 +1,8 @@
 #' A function to calculate the discounted value of future costs or effects
 #'
-#' This function calculates the discounted value of a future costs or effects based on a discount rate and time period.
+#'@description
+#'`r lifecycle::badge("experimental")`
+#' This function calculates the discounted value of a future costs or effects based on the in paragraph 2.6.1.2 of the Dutch EE guideline mentioned discount rate and time period
 #'
 #' @param current_value The current value.
 #' @param discount_rate The discount rate to use for the calculation. Default is 0.03. The guideline stipulates 0.03 for costs and 0.015 for effects.
@@ -8,8 +10,18 @@
 #' @param time_unit The unit of time to use for the calculation. Default is "years", but "months", "weeks", and "days" are also valid options.
 #' @param discount_year_one Logical value indicating whether to discount the first year as well. Default is FALSE.
 #' @return A numeric value of the discounted future value.
+#' @keywords Discounting, Costs, Effects
 #' @examples
+#' # Example usage of the discount_value function
+#' # Calculate the discounted value of 100 after 5 years with a discount rate of 0.03 in which the first year is not discounted
 #' discount_value(current_value = 100, discount_rate = 0.03, time = 5, time_unit = "years", discount_year_one = FALSE)
+#'
+#' # Calculate the discounted value of 100 after 60 months with a discount rate of 0.03 in which the first year is not discounted
+#' discount_value(current_value = 100, discount_rate = 0.03, time = 60, time_unit = "months", discount_year_one = FALSE)
+#'
+#' # Calculate the discounted value of 100 after 365 days with a discount rate of 0.06 in which the first year is discounted
+#' discount_value(current_value = 100, discount_rate = 0.06, time = 365, time_unit = "days", discount_year_one = TRUE)
+#'
 #' @export discount_value
 
 discount_value <- function(
