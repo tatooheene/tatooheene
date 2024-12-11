@@ -1,6 +1,8 @@
 #' A function to create a discount vector for a given time period
 #'
-#' This function calculates a discount vector for a given time period based on a discount rate.
+#'@description
+#' `r lifecycle::badge("experimental")`
+#' This function calculates a discount vector for a given time period based on the in paragraph 2.6.1.2 of the Dutch EE guideline mentioned discount rate and time period
 #'
 #' @param discount_rate The discount rate to use for the calculation. Default is 0.03. The guideline stipulates 0.03 for costs and 0.015 for effects.
 #' @param start_time The start time for the discount vector. Default is 0.
@@ -8,8 +10,18 @@
 #' @param time_unit The unit of time to use for the calculation. Default is "years", but "months", "weeks", and "days" are also valid options.
 #' @param discount_year_one Logical value indicating whether to discount the first year as well. Default is FALSE.
 #' @return A numeric vector of discounted values for each time period.
+#' @keywords Discounting, Costs, Effects
 #' @examples
+#' # Example usage of the discount_vector function
+#' # Calculate the discount vector for 5 years with a discount rate of 0.015, and a start time of 0 in which the first year is not discounted
 #' discount_vector(discount_rate = 0.015, start_time = 0, end_time = 5, time_unit = "years", discount_year_one = FALSE)
+#'
+#' # Calculate the discount vector for 60 months with a discount rate of 0.03, and a start time of 2 in which the first year is not discounted
+#' discount_vector(discount_rate = 0.03, start_time = 2, end_time = 60, time_unit = "months", discount_year_one = FALSE)
+#'
+#' # Calculate the discount vector for 365 days with a discount rate of 0.06, and a start time of 0 in which the first year is discounted
+#' discount_vector(discount_rate = 0.06, start_time = 0, end_time = 365, time_unit = "days", discount_year_one = TRUE)
+#'
 #' @export discount_vector
 
 discount_vector <- function(
