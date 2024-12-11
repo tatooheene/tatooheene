@@ -19,7 +19,7 @@ depreciation_interest(
 
 \item{n_amortisation_period}{N: afschrijvingstermijn,; amortization period}
 
-\item{i_interest_rt}{i: rentepercentage; interest rate}
+\item{i_interest_rt}{i: renteperceof ntage; interest rate}
 
 \item{output}{Default of output is a data frame with both the annuity factor and yearly deprecation and interest costs, but the values can be selected independently}
 }

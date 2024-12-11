@@ -4,23 +4,40 @@
 \alias{nl_price_index}
 \title{A function to calculate the Consumer Price Index (CPI) for a given year range.}
 \usage{
-nl_price_index(start_year = 2013, end_year = 2023, output = "table")
+nl_price_index(
+  start_year = 2013,
+  end_year = 2023,
+  output = c("table", "factor")
+)
 }
 \arguments{
-\item{start_year}{start year for CPI output table}
+\item{start_year}{start year for CPI output table or factor}
 
-\item{end_year}{End year for CPI output table}
+\item{end_year}{End year for CPI output table or factor}
 
 \item{output}{Which output we would like to see. "factor": is the factor from start to end year, "table" is the table of all CPIs from start to end year}
 }
 \value{
-dataframe with CPI data (CPI, percentage and multiplication factor) from start year to end year
+Dataframe or factor with CPI data from start year to end year
 }
 \description{
-This function provides the Consumer Price Index (CPI) for a given year range both in a factor or dataframe
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+This function provides the Consumer Price Index (CPI) for a given year range both in a factor or dataframe based on CBS data and further described in 2.6.1.1 of the Dutche EE guideline
 }
 \examples{
-example usage of the nl_price_index function
-nl_price_index(2015, 2019, output = "table")
+# Example usage of the nl_price_index function
+# Get the CPI factor from 2013 to 2023
+nl_price_index(start_year = 2013, end_year = 2023, output = "factor")
+
+# Get the CPI table from 2013 to 2023
+nl_price_index(start_year = 2013, end_year = 2023, output = "table")
 
 }
+\keyword{CBS,}
+\keyword{CPI,}
+\keyword{Consumer}
+\keyword{Dutch}
+\keyword{EE}
+\keyword{Index,}
+\keyword{Price}
+\keyword{guideline}
