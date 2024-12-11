@@ -9,7 +9,7 @@
 #' @return A dataframe or value with the Medical Reference price(s) of the Dutch Costing Manual for the specified years
 #' @examples
 #' Example usage of the nl_med_prices function
-#' nl_med_prices(year = 2023, category = "Nursing", unit = "Nursing day excluding personnel costs, hospital")
+#' nl_med_prices(year = "2023", category = "Nursing", unit = "Nursing day excluding personnel costs, hospital")
 #' @keywords Generic, Costing Manual, Dutch Reference Prices, Medical Prices
 #' @export nl_med_prices
 

@@ -8,7 +8,7 @@
 #' @return A dataframe or value with the Productivity and/other societal Reference price(s) of the Dutch Costing Manual
 #' @examples
 #' Example usage of the nl_prod_oth_prices function:
-#' nl_prod_oth_prices(year = 2023, category = "Productivity loss - Paid work", currency = "INT$")
+#' nl_prod_oth_prices(year = "2023", category = "Productivity loss - Paid work", currency = "INT$")
 #' @keywords Generic, Costing Manual, Dutch Reference Prices, Patient & Family Prices, Productivity Prices, Other Societal Prices
 #' @export nl_prod_oth_prices
 

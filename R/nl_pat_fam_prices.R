@@ -9,7 +9,7 @@
 #' @return A dataframe or value with the Patient & Family Reference price(s) of the Dutch Costing Manual for the specified years
 #' @examples
 #' Example usage of the nl_pat_fam_prices function
-#' nl_pat_fam_prices(year = 2022, category = "Transportation", currency = "INT$", unit = "Car, cost per kilometer")
+#' nl_pat_fam_prices(year = "2022", category = "Transportation", currency = "INT$", unit = "Car, cost per kilometer")
 #' @keywords Generic, Costing Manual, Dutch Reference Prices, Patient & Family Prices
 #' @export nl_pat_fam_prices
 
