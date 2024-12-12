@@ -3,22 +3,31 @@
 #' @description
 #' `r lifecycle::badge("experimental")`
 #' This function downloads the Productivity and other societal Reference prices of the Dutch Costing Manual for one or multiple years. The prices are available in Euro (EUR) or International Dollar (INT$).
+#'
 #' @param year The year of which the reference price should be downloaded, multiple years are possible, default is the whole dataset
 #' @param category The category of prices that should be included (one or more categories), default is including all categories
-#' @param currency The currency in which the reference price should be included (EUR or INT$), default is EUR
 #' @param unit The reference price that should be included (one or multiple reference prices),  default is including the whole dataframe
+#' @param currency The currency in which the reference price should be included (EUR or INT$), default is EUR
 #' @return A dataframe or value with the Productivity and/other societal Reference price(s) of the Dutch Costing Manual
 #' @examples
 #' Example usage of the nl_prod_oth_prices function:
-#' nl_prod_oth_prices(year = "2023", category = "Productivity loss - Paid work", currency = "INT$")
+#' Calculate the Productivity and other societal Reference prices of the Dutch Costing Manual for the year 2023 with the category Productivity loss - Paid work in EUR
+#' nl_prod_oth_prices(year = "2023", category = "Productivity loss - Paid work")
+#'
+#' Calculate the Productivity and other societal Reference prices of the Dutch Costing Manual for the year 2022 and 2023 with the category Productivity loss - Paid work in EUR
+#' nl_prod_oth_prices(year = "all", category = "Productivity loss - Paid work")
+#'
+#' Calculate the Productivity and other societal Reference prices of the Dutch Costing Manual for the year 2022 with the category Productivity loss - Paid work in INT$
+#' nl_prod_oth_prices(year = "2022", category = "Productivity loss - Paid work", currency = "INT$")
+#'
 #' @keywords Generic, Costing Manual, Dutch Reference Prices, Patient & Family Prices, Productivity Prices, Other Societal Prices
 #' @export nl_prod_oth_prices
 
 nl_prod_oth_prices <- function(
     year = "all",
     category = "all",
-    currency = c("EUR", "INT$"),
-    unit = "all"){
+    unit = "all",
+    currency = c("EUR", "INT$")){
 
   # Read in the dataset
   df <- tatooheene::df_rp_prod
@@ -35,14 +44,10 @@ nl_prod_oth_prices <- function(
   possible_unit <- c("all", unique(df$Unit))
   unit <- match.arg(unit, possible_unit)
 
-  if(year != "all"){
-    df <-  df_other |>
-      dplyr::select("Category", "Unit", dplyr::all_of(c(as.character(year))))
-  }
 
   #If currency is INT$, change output
   if(currency == "INT$"){
-    df_ppp <- f_factor_EurDutch_to_IntDollar()
+    df_ppp <- tatooheene::nl_ppp()
     df_ppp <- df_ppp |>
       dplyr::filter(as.numeric(Year) >= 2022) |>
       tidyr::pivot_wider(names_from = "Year", values_from = "PPP")
@@ -51,7 +56,7 @@ nl_prod_oth_prices <- function(
 
     common_years <- intersect(colnames(df), colnames(df_ppp))
 
-    df[, common_years] <- sweep(df[, common_years], 2, as.numeric(df_ppp[, common_years]), `*`)
+    df[, common_years] <- sweep(df[, common_years], 2, as.numeric(df_ppp[, common_years]), `/`)
   }
 
   # If specifiec, filter based on category
@@ -63,6 +68,11 @@ nl_prod_oth_prices <- function(
   if(unit != "all"){
     df <- df |>
       dplyr::filter(Unit %in% unit)
+  }
+
+  if(year != "all"){
+    df <-  df |>
+      dplyr::select("Category", "Unit", dplyr::all_of(c(as.character(year))))
   }
 
   return(df)

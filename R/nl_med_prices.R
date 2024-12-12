@@ -10,15 +10,23 @@
 #' @return A dataframe or value with the Medical Reference price(s) of the Dutch Costing Manual for the specified years
 #' @examples
 #' Example usage of the nl_med_prices function
+#' Calculate the Medical Reference prices of the Dutch Costing Manual for the year 2023 with the category Nursing and the unit Nursing day excluding personnel costs, hospital in EURO
 #' nl_med_prices(year = "2023", category = "Nursing", unit = "Nursing day excluding personnel costs, hospital")
+#'
+#' Calculate the Medical Reference prices of the Dutch Costing Manual for the year 2022 and 2023 with the category Nursing and the unit Nursing day excluding personnel costs, hospital in EURO
+#' nl_med_prices(year = "all", category = "Nursing", unit = "Nursing day excluding personnel costs, hospital")
+#'
+#' Calculate the Medical Reference prices of the Dutch Costing Manual for the year 2022 with the category Nursing and the unit Nursing day excluding personnel costs, hospital in INT$
+#' nl_med_prices(year = "2022", category = "Nursing", unit = "Nursing day excluding personnel costs, hospital", currency = "INT$")
+#'
 #' @keywords Generic, Costing Manual, Dutch Reference Prices, Medical Prices
 #' @export nl_med_prices
 
 nl_med_prices <- function(
     year = "all",
     category = "all",
-    currency = c("EUR", "INT$"),
-    unit = "all"){
+    unit = "all",
+    currency = c("EUR", "INT$")){
 
   # match.arg() for the output parameter to ensure it is one of the valid choices
   currency <- match.arg(currency)
@@ -39,12 +47,6 @@ nl_med_prices <- function(
 
   currency <- match.arg(currency)
 
-  # If specified, select the specified years, or all years if not specified
-  if(year != "all"){
-    df <-  df |>
-      dplyr::select("Category", "Unit", dplyr::all_of(c(as.character(year))))
-  }
-
   #If currency is INT$, change output
   if(currency == "INT$"){
     df_ppp <- tatooheene::nl_ppp()
@@ -56,7 +58,7 @@ nl_med_prices <- function(
 
     common_years <- intersect(colnames(df), colnames(df_ppp))
 
-    df[, common_years] <- sweep(df[, common_years], 2, as.numeric(df_ppp[, common_years]), `*`)
+    df[, common_years] <- sweep(df[, common_years], 2, as.numeric(df_ppp[, common_years]), `/`)
   }
 
 
@@ -70,6 +72,12 @@ nl_med_prices <- function(
   if(unit != "all"){
     df <- df |>
       dplyr::filter(Unit %in% unit)
+  }
+
+  # If specified, select the specified years, or all years if not specified
+  if(year != "all"){
+    df <-  df |>
+      dplyr::select("Category", "Unit", dplyr::all_of(c(as.character(year))))
   }
 
   return(df)
