@@ -1,17 +1,14 @@
-#' Job vacancy data from CBS
+#' Medical unit cost data from the Costing manual: Methods and Reference Prices for Economic Evaluations in Healthcare
 #'
-#' A subset data frame of job vacancies; SBI 2008; by economic activity and company size from CBS. Identifier: 80472NED
+#' A subset data frame of medical unit cost data; chapter 4 of the Dutch Costing Manual
 #'
-#' @format ## `df_fp`
-#' A data frame with 27 rows and 7 columns:
+#' @format ## `df_rp_medical`
+#' A data frame with 116 rows and 4 columns:
 #' \describe{
-#'   \item{Year}{Year}
-#'   \item{Filled vacancies}{Vervulde vacatures}
-#'   \item{Open vacancies}{Openstaande vacatures}
-#'   \item{Friction period in days}{Calculation of the friction period in days}
-#'   \item{Friction period in weeks}{Calculation of the friction period in weeks}
-#'   \item{Friction period days average over 5 years}{Calculation of the 5 year average friction period in days}
-#'   \item{Friction period weeks average over 5 years}{Calculation of the 5 year average friction period in weeks}
+#'   \item{Category}{Category of the medical unit cost}
+#'   \item{Unit}{Medical unit cost}
+#'   \item{2022}{Year 2022 medical unit cost}
+#'   \item{2023}{Year 2023 medical unit cost}
 #' }
-#' @source <https://www.cbs.nl/nl-nl/cijfers>
-"df_fp"
+#' @source <Hakkaart - van Roijen, L., Peeters, S., Kanters, T., van Baal, P., Brouwer, W., Drost, R., Evers, S. M. A. A., van Exel, J., Reckers-Droog, V., Tannaoui, N.-E., Thielen, F., & Wijnen, B. (2024). Kostenhandleiding voor economische evaluaties in de gezondheidszorg: Methodologie en Referentieprijzen. (Herziene versie 2024 ed.).>
+"df_rp_medical"
