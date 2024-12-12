@@ -1,4 +1,7 @@
 #' A function to download the friction period over one or multiple years
+#'
+#' @description
+#' `r lifecycle::badge("experimental")`
 #' @param year The year of which the friction period should be downloaded, multiple years are possible. The default is the whole data frame
 #' @param period The friction period that should be included (days/weeks),  default is including the whole dataframe
 #' @param type If period is chosen, a decision can be made between the 5 year average and 1 year friction period in days/weeks. The default is the 5 year average

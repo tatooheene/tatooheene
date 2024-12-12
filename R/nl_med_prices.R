@@ -1,5 +1,6 @@
 #' A function to download the Medical Reference prices of the Dutch Costing Manual for one or multiple years
-#'
+#' @description
+#' `r lifecycle::badge("experimental")`
 #' This function downloads the Medical Reference prices of the Dutch Costing Manual for one or multiple years. The prices are available in Euro (EUR) or International Dollar (INT$).
 #'
 #' @param year The year of which the reference price should be downloaded, multiple years are possible, default is the whole dataset

@@ -1,5 +1,7 @@
 #' A function to obtain the Dutch PPP factor values in International Dollar (INT$)
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
 #' This function downloads the Purchasing Power Parity (PPP) factor values for the Netherlands from the OECD website per year in International Dollar (Int$).
 #'
 #' @param year The year of which the PPP factor should be downloaded, multiple years are possible, default is the whole dataset.
