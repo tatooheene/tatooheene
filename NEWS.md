@@ -1,3 +1,3 @@
-# tatooheene (development version)
+# tatooheene 0.1.0
 
 * Initial CRAN submission.
