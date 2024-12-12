@@ -7,8 +7,8 @@
 nl_prod_oth_prices(
   year = "all",
   category = "all",
-  currency = c("EUR", "INT$"),
-  unit = "all"
+  unit = "all",
+  currency = c("EUR", "INT$")
 )
 }
 \arguments{
@@ -16,9 +16,9 @@ nl_prod_oth_prices(
 
 \item{category}{The category of prices that should be included (one or more categories), default is including all categories}
 
-\item{currency}{The currency in which the reference price should be included (EUR or INT$), default is EUR}
-
 \item{unit}{The reference price that should be included (one or multiple reference prices),  default is including the whole dataframe}
+
+\item{currency}{The currency in which the reference price should be included (EUR or INT$), default is EUR}
 }
 \value{
 A dataframe or value with the Productivity and/other societal Reference price(s) of the Dutch Costing Manual
@@ -29,7 +29,15 @@ This function downloads the Productivity and other societal Reference prices of 
 }
 \examples{
 Example usage of the nl_prod_oth_prices function:
-nl_prod_oth_prices(year = "2023", category = "Productivity loss - Paid work", currency = "INT$")
+Calculate the Productivity and other societal Reference prices of the Dutch Costing Manual for the year 2023 with the category Productivity loss - Paid work in EUR
+nl_prod_oth_prices(year = "2023", category = "Productivity loss - Paid work")
+
+Calculate the Productivity and other societal Reference prices of the Dutch Costing Manual for the year 2022 and 2023 with the category Productivity loss - Paid work in EUR
+nl_prod_oth_prices(year = "all", category = "Productivity loss - Paid work")
+
+Calculate the Productivity and other societal Reference prices of the Dutch Costing Manual for the year 2022 with the category Productivity loss - Paid work in INT$
+nl_prod_oth_prices(year = "2022", category = "Productivity loss - Paid work", currency = "INT$")
+
 }
 \keyword{&}
 \keyword{Costing}

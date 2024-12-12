@@ -9,14 +9,14 @@
 
 A data frame with 11 rows and 8 columns:
 \describe{
-\item{Year from}{Year starting from}
-\item{Year to}{Year ending}
-\item{Percentage}{Percentage change}
-\item{Factor}{Factor for multiplication}
-\item{Friction period in days}{Calculation of the friction period in days}
-\item{Friction period in weeks}{Calculation of the friction period in weeks}
-\item{Friction period days average over 5 years}{Calculation of the 5 year average friction period in days}
-\item{Friction period weeks average over 5 years}{Calculation of the 5 year average friction period in weeks}
+\item{Year from}{Year from in case of two consecutive years }
+\item{Year to}{Year ending in case of two consecutive years}
+\item{Percentage}{Percentage change in case of two consecutive years}
+\item{Factor}{Factor for multiplication in case of two consecutive years}
+\item{Year from'}{Year starting from, in the case of a range, the year up to the maximum year}
+\item{Year to'}{Year ending in case of a range, the year up to the maximum year}
+\item{Percentage'}{Percentage for multiplication in case of a range, the year up to the maximum year}
+\item{Factor'}{Factor for multiplication in case of a range, the year up to the maximum year}
 }
 }
 }

@@ -7,8 +7,8 @@
 nl_med_prices(
   year = "all",
   category = "all",
-  currency = c("EUR", "INT$"),
-  unit = "all"
+  unit = "all",
+  currency = c("EUR", "INT$")
 )
 }
 \arguments{
@@ -16,9 +16,9 @@ nl_med_prices(
 
 \item{category}{The category of prices that should be included (one or more categories), default is including all categories}
 
-\item{currency}{The currency of the output of the prices. A decision can be made between EUR and INT$, the default is EUR.}
-
 \item{unit}{The reference price that should be included (one or multiple reference prices),  default is including the whole dataframe}
+
+\item{currency}{The currency of the output of the prices. A decision can be made between EUR and INT$, the default is EUR.}
 }
 \value{
 A dataframe or value with the Medical Reference price(s) of the Dutch Costing Manual for the specified years
@@ -29,7 +29,15 @@ This function downloads the Medical Reference prices of the Dutch Costing Manual
 }
 \examples{
 Example usage of the nl_med_prices function
+Calculate the Medical Reference prices of the Dutch Costing Manual for the year 2023 with the category Nursing and the unit Nursing day excluding personnel costs, hospital in EURO
 nl_med_prices(year = "2023", category = "Nursing", unit = "Nursing day excluding personnel costs, hospital")
+
+Calculate the Medical Reference prices of the Dutch Costing Manual for the year 2022 and 2023 with the category Nursing and the unit Nursing day excluding personnel costs, hospital in EURO
+nl_med_prices(year = "all", category = "Nursing", unit = "Nursing day excluding personnel costs, hospital")
+
+Calculate the Medical Reference prices of the Dutch Costing Manual for the year 2022 with the category Nursing and the unit Nursing day excluding personnel costs, hospital in INT$
+nl_med_prices(year = "2022", category = "Nursing", unit = "Nursing day excluding personnel costs, hospital", currency = "INT$")
+
 }
 \keyword{Costing}
 \keyword{Dutch}
