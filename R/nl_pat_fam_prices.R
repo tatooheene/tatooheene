@@ -9,14 +9,14 @@
 #' @param currency The currency of the output of the prices. A decision can be made between EUR and INT$, the default is EUR.
 #' @return A dataframe or value with the Patient & Family Reference price(s) of the Dutch Costing Manual for the specified years
 #' @examples
-#' Example usage of the nl_pat_fam_prices function
-#' Calculate the Patient & Family Reference prices of the Dutch Costing Manual for the year 2023 with the category Transportation and the unit Car, cost per kilometer in EURO
+#' # Example usage of the nl_pat_fam_prices function
+#' # Calculate the Patient & Family Reference prices of the Dutch Costing Manual for the year 2023 with the category Transportation and the unit Car, cost per kilometer in EURO
 #' nl_pat_fam_prices(year = "2022", category = "Transportation", currency = "INT$", unit = "Car, cost per kilometer")
 #'
-#' Calculate the Patient & Family Reference prices of the Dutch Costing Manual for the year 2022 and 2023 with the category Transportation and the unit Car, cost per kilometer in EURO
+#' # Calculate the Patient & Family Reference prices of the Dutch Costing Manual for the year 2022 and 2023 with the category Transportation and the unit Car, cost per kilometer in EURO
 #' nl_pat_fam_prices(year = "all", category = "Transportation", unit = "Car, cost per kilometer")
 #'
-#' Calculate the Patient & Family Reference prices of the Dutch Costing Manual for the year 2022 with the category Transportation and the unit Car, cost per kilometer in INT$
+#' # Calculate the Patient & Family Reference prices of the Dutch Costing Manual for the year 2022 with the category Transportation and the unit Car, cost per kilometer in INT$
 #' nl_pat_fam_prices(year = "2022", category = "Transportation", unit = "Car, cost per kilometer", currency = "INT$")
 #'
 #' @keywords Generic, Costing Manual, Dutch Reference Prices, Patient & Family Prices
