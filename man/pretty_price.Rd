@@ -19,6 +19,7 @@ pretty_price(x, digi = 2, currency = "EUR", ...)
 A pretty price with the currency
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 This function writes pretty prices in \code{bookdown} reports. The function uses the \code{formatC()} function to format the number and adds the currency to the end of the number.
 }
 \examples{

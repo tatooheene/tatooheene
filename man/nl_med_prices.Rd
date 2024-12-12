@@ -24,11 +24,12 @@ nl_med_prices(
 A dataframe or value with the Medical Reference price(s) of the Dutch Costing Manual for the specified years
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 This function downloads the Medical Reference prices of the Dutch Costing Manual for one or multiple years. The prices are available in Euro (EUR) or International Dollar (INT$).
 }
 \examples{
 Example usage of the nl_med_prices function
-nl_med_prices(year = 2023, category = "Nursing", unit = "Nursing day excluding personnel costs, hospital")
+nl_med_prices(year = "2023", category = "Nursing", unit = "Nursing day excluding personnel costs, hospital")
 }
 \keyword{Costing}
 \keyword{Dutch}
