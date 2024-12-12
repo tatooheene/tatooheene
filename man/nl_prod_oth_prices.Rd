@@ -24,11 +24,12 @@ nl_prod_oth_prices(
 A dataframe or value with the Productivity and/other societal Reference price(s) of the Dutch Costing Manual
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 This function downloads the Productivity and other societal Reference prices of the Dutch Costing Manual for one or multiple years. The prices are available in Euro (EUR) or International Dollar (INT$).
 }
 \examples{
 Example usage of the nl_prod_oth_prices function:
-nl_prod_oth_prices(year = 2023, category = "Productivity loss - Paid work", currency = "INT$")
+nl_prod_oth_prices(year = "2023", category = "Productivity loss - Paid work", currency = "INT$")
 }
 \keyword{&}
 \keyword{Costing}

@@ -14,7 +14,7 @@ friction_period(year = "all", period = "all", type = "5_year_avg")
 \item{type}{If period is chosen, a decision can be made between the 5 year average and 1 year friction period in days/weeks. The default is the 5 year average}
 }
 \description{
-A function to download the friction period over one or multiple years
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 }
 \examples{
 # Example usage of the depreciation_interest function
