@@ -17,7 +17,7 @@ A dataframe or value with the PPP factor values for the specified years.
 This function downloads the Purchasing Power Parity (PPP) factor values for the Netherlands from the OECD website per year in International Dollar (Int$).
 }
 \examples{
-Example usage of the nl_ppp function
+# Example usage of the nl_ppp function
 nl_ppp(year = 2019)
 }
 \keyword{(PPP)}

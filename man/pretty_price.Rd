@@ -23,5 +23,6 @@ A pretty price with the currency
 This function writes pretty prices in \code{bookdown} reports. The function uses the \code{formatC()} function to format the number and adds the currency to the end of the number.
 }
 \examples{
+# Example usage of the pretty_price function
 p_price(1000, currency = "EUR")
 }

@@ -28,14 +28,14 @@ A dataframe or value with the Medical Reference price(s) of the Dutch Costing Ma
 This function downloads the Medical Reference prices of the Dutch Costing Manual for one or multiple years. The prices are available in Euro (EUR) or International Dollar (INT$).
 }
 \examples{
-Example usage of the nl_med_prices function
-Calculate the Medical Reference prices of the Dutch Costing Manual for the year 2023 with the category Nursing and the unit Nursing day excluding personnel costs, hospital in EURO
+# Example usage of the nl_med_prices function
+# Calculate the Medical Reference prices of the Dutch Costing Manual for the year 2023 with the category Nursing and the unit Nursing day excluding personnel costs, hospital in EURO
 nl_med_prices(year = "2023", category = "Nursing", unit = "Nursing day excluding personnel costs, hospital")
 
-Calculate the Medical Reference prices of the Dutch Costing Manual for the year 2022 and 2023 with the category Nursing and the unit Nursing day excluding personnel costs, hospital in EURO
+# Calculate the Medical Reference prices of the Dutch Costing Manual for the year 2022 and 2023 with the category Nursing and the unit Nursing day excluding personnel costs, hospital in EURO
 nl_med_prices(year = "all", category = "Nursing", unit = "Nursing day excluding personnel costs, hospital")
 
-Calculate the Medical Reference prices of the Dutch Costing Manual for the year 2022 with the category Nursing and the unit Nursing day excluding personnel costs, hospital in INT$
+# Calculate the Medical Reference prices of the Dutch Costing Manual for the year 2022 with the category Nursing and the unit Nursing day excluding personnel costs, hospital in INT$
 nl_med_prices(year = "2022", category = "Nursing", unit = "Nursing day excluding personnel costs, hospital", currency = "INT$")
 
 }
