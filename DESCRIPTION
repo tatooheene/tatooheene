@@ -1,6 +1,6 @@
 Package: tatooheene
 Title: Technology Appraisal Toolbox for Health Economic Evaluations in the Netherlands
-Version: 0.3.0
+Version: 0.4.0
 Authors@R: 
     person("Frederick", "Thielen", , "thielen@eshpm.eur.nl", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0002-0312-5891"))
