@@ -24,5 +24,5 @@ This function writes pretty prices in \code{bookdown} reports. The function uses
 }
 \examples{
 # Example usage of the pretty_price function
-p_price(1000, currency = "EUR")
+pretty_price(1000, currency = "EUR")
 }
