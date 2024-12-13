@@ -10,7 +10,7 @@
 #' @return A pretty price with the currency
 #' @examples
 #' # Example usage of the pretty_price function
-#' p_price(1000, currency = "EUR")
+#' pretty_price(1000, currency = "EUR")
 #' @export pretty_price
 
 pretty_price <- function(x, digi = 2, currency = "EUR", ...){
