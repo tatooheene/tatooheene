@@ -21,4 +21,4 @@ friction_period(year = "all", period = "all", type = "5_year_avg")
 friction_period(year = 2019, period = "weeks", type = "5_year_avg")
 }
 \keyword{CBS}
-\keyword{Generic,}
+\keyword{Generic}

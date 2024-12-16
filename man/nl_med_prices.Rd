@@ -25,7 +25,7 @@ A dataframe or value with the Medical Reference price(s) of the Dutch Costing Ma
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-This function downloads the Medical Reference prices of the Dutch Costing Manual for one or multiple years. The prices are available in Euro (EUR) or International Dollar (INT$).
+A function downloads the Medical Reference prices of the Dutch Costing Manual for one or multiple years. The prices are available in Euro (EUR) or International Dollar (INT$).
 }
 \examples{
 # Example usage of the nl_med_prices function
@@ -41,9 +41,7 @@ nl_med_prices(year = "2022", category = "Nursing" , currency = "INT$")
 }
 \keyword{Costing}
 \keyword{Dutch}
-\keyword{Generic,}
-\keyword{Manual,}
+\keyword{Generic}
+\keyword{Manual}
 \keyword{Medical}
 \keyword{Prices}
-\keyword{Prices,}
-\keyword{Reference}

@@ -42,6 +42,6 @@ discount_vector(discount_rate = 0.03, start_time = 2, end_time = 60, time_unit =
 discount_vector(discount_rate = 0.06, end_time = 365, time_unit = "days", discount_year_one = TRUE)
 
 }
-\keyword{Costs,}
-\keyword{Discounting,}
+\keyword{Costs}
+\keyword{Discounting}
 \keyword{Effects}

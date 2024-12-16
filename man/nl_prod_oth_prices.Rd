@@ -39,16 +39,11 @@ nl_prod_oth_prices(year = "all", category = "Productivity loss - Paid work")
 nl_prod_oth_prices(year = "2022", category = "Productivity loss - Paid work", currency = "INT$")
 
 }
-\keyword{&}
 \keyword{Costing}
 \keyword{Dutch}
 \keyword{Family}
-\keyword{Generic,}
-\keyword{Manual,}
-\keyword{Other}
+\keyword{Generic}
 \keyword{Patient}
 \keyword{Prices}
-\keyword{Prices,}
 \keyword{Productivity}
-\keyword{Reference}
 \keyword{Societal}
