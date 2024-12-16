@@ -9,4 +9,5 @@ utils::globalVariables(c("Year",
                          "df_cpi_combined",
                          "Year to",
                          "Percentage",
-                         "cumulative"))
+                         "cumulative",
+                         "Friction period days average over 5 years"))

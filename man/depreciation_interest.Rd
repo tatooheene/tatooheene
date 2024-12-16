@@ -36,7 +36,7 @@ depreciation_interest(v_replace_val = 50000, r_salvage_val = 5000)
 depreciation_interest(v_replace_val = 50000, r_salvage_val = 5000, output = "annuity factor")
 
 # Get only the annual depreciation and interest cost
-depreciation_interest(v_replace_val = 50000, r_salvage_val = 5000, i_interest_rt = 0.03, output = "annual cost")
+depreciation_interest(v_replace_val = 50000, r_salvage_val = 5000, output = "annual cost")
 
 }
 \keyword{Generic,}

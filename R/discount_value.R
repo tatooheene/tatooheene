@@ -13,13 +13,13 @@
 #' @keywords Discounting, Costs, Effects
 #' @examples
 #' # Example usage of the discount_value function
-#' # Calculate the discounted value of 100 after 5 years with a discount rate of 0.03, the first year is not discounted
+#' # Calculate the discounted value of 100 after 5 years, the first year is not discounted
 #' discount_value(current_value = 100, discount_rate = 0.03, time = 5, time_unit = "years")
 #'
-#' # Calculate the discounted value of 100 after 60 months with a discount rate of 0.03, the first year is not discounted
+#' # Calculate the discounted value of 100 after 60 months, the first year is not discounted
 #' discount_value(current_value = 100, discount_rate = 0.03, time = 60, time_unit = "months")
 #'
-#' # Calculate the discounted value of 100 after 365 days with a discount rate of, the first year is discounted
+#' # Calculate the discounted value of 100 after 365 days, the first year is discounted
 #' discount_value(current_value = 100, time = 365, time_unit = "days", discount_year_one = TRUE)
 #'
 #' @export discount_value
