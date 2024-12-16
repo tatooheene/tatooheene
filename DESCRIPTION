@@ -1,6 +1,6 @@
 Package: tatooheene
 Title: Technology Appraisal Toolbox for Health Economic Evaluations in the Netherlands
-Version: 0.5.0
+Version: 0.6.0
 Authors@R: 
     person("Frederick", "Thielen", , "thielen@eshpm.eur.nl", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0002-0312-5891"))
@@ -17,7 +17,8 @@ LazyData: true
 Imports:
     dplyr (>= 1.1.4),
     assertthat (>= 0.2.1),
-    tidyr (>= 1.3.0)
+    tidyr (>= 1.3.0),
+    stats
 Suggests:
     cbsodataR,
     lubridate,
