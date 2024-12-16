@@ -11,13 +11,13 @@
 #' @return A dataframe or value with the Productivity and/other societal Reference price(s) of the Dutch Costing Manual
 #' @examples
 #' # Example usage of the nl_prod_oth_prices function:
-#' # Calculate the Productivity and other societal Reference prices of the Dutch Costing Manual for the year 2023 with the category Productivity loss - Paid work in EUR
+#' # Calculate for 2023 with the category Productivity loss - Paid work in EUR
 #' nl_prod_oth_prices(year = "2023", category = "Productivity loss - Paid work")
 #'
-#' # Calculate the Productivity and other societal Reference prices of the Dutch Costing Manual for the year 2022 and 2023 with the category Productivity loss - Paid work in EUR
+#' # Calculate for 2022 and 2023 with the category Productivity loss - Paid work in EUR
 #' nl_prod_oth_prices(year = "all", category = "Productivity loss - Paid work")
 #'
-#' # Calculate the Productivity and other societal Reference prices of the Dutch Costing Manual for the year 2022 with the category Productivity loss - Paid work in INT$
+#' # Calculate for 2022 with the category Productivity loss - Paid work in INT$
 #' nl_prod_oth_prices(year = "2022", category = "Productivity loss - Paid work", currency = "INT$")
 #'
 #' @keywords Generic, Costing Manual, Dutch Reference Prices, Patient & Family Prices, Productivity Prices, Other Societal Prices

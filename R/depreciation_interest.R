@@ -13,13 +13,13 @@
 #' @examples
 #' # Example usage of the depreciation_interest function
 #' # Calculate both annuity factor and yearly depreciation and interest costs as a data frame
-#' depreciation_interest(v_replace_val = 50000, r_salvage_val = 5000, n_amortisation_period = 10, i_interest_rt = 0.03, output = "data frame")
+#' depreciation_interest(v_replace_val = 50000, r_salvage_val = 5000)
 #'
 #' # Get only the annuity factor
-#' depreciation_interest(v_replace_val = 50000, r_salvage_val = 5000, n_amortisation_period = 10, i_interest_rt = 0.03, output = "annuity factor")
+#' depreciation_interest(v_replace_val = 50000, r_salvage_val = 5000, output = "annuity factor")
 #'
 #' # Get only the annual depreciation and interest cost
-#' depreciation_interest(v_replace_val = 50000, r_salvage_val = 5000, n_amortisation_period = 10, i_interest_rt = 0.03, output = "annual cost")
+#' depreciation_interest(v_replace_val = 50000, r_salvage_val = 5000, i_interest_rt = 0.03, output = "annual cost")
 #'
 #' @export depreciation_interest
 

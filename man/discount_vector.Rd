@@ -32,14 +32,14 @@ This function calculates a discount vector for a given time period based on the 
 }
 \examples{
 # Example usage of the discount_vector function
-# Calculate the discount vector for 5 years with a discount rate of 0.015, and a start time of 0 in which the first year is not discounted
-discount_vector(discount_rate = 0.015, start_time = 0, end_time = 5, time_unit = "years", discount_year_one = FALSE)
+# Calculate the discount vector for 5 years with a discount rate of 0.015, first year is not discounted
+discount_vector(discount_rate = 0.015, end_time = 5, time_unit = "years")
 
-# Calculate the discount vector for 60 months with a discount rate of 0.03, and a start time of 2 in which the first year is not discounted
-discount_vector(discount_rate = 0.03, start_time = 2, end_time = 60, time_unit = "months", discount_year_one = FALSE)
+# Calculate the discount vector for 60 months, a discount rate of 0.03, a start time of 2, the first year is not discounted
+discount_vector(discount_rate = 0.03, start_time = 2, end_time = 60, time_unit = "months")
 
-# Calculate the discount vector for 365 days with a discount rate of 0.06, and a start time of 0 in which the first year is discounted
-discount_vector(discount_rate = 0.06, start_time = 0, end_time = 365, time_unit = "days", discount_year_one = TRUE)
+# Calculate the discount vector for 365 days with a discount rate of 0.06, the first year is discounted
+discount_vector(discount_rate = 0.06, end_time = 365, time_unit = "days", discount_year_one = TRUE)
 
 }
 \keyword{Costs,}
