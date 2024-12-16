@@ -33,11 +33,11 @@ nl_price_index(start_year = 2013, end_year = 2023, output = "factor")
 nl_price_index(start_year = 2013, end_year = 2023, output = "table")
 
 }
-\keyword{CBS,}
-\keyword{CPI,}
+\keyword{CBS}
+\keyword{CPI}
 \keyword{Consumer}
 \keyword{Dutch}
 \keyword{EE}
-\keyword{Index,}
+\keyword{Index}
 \keyword{Price}
 \keyword{guideline}
