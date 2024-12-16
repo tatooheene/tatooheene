@@ -33,7 +33,7 @@ This function downloads the Medical Reference prices of the Dutch Costing Manual
 nl_med_prices(year = "2023", category = "Nursing")
 
 # Calculate for year 2022 and 2023 the category Nursing
-nl_med_prices(year = "all", category = "Nursing", unit = "Nursing day excluding personnel costs, hospital")
+nl_med_prices(year = "all", category = "Nursing")
 
 # Calculate for year 2022 with the category Nursing in INT$
 nl_med_prices(year = "2022", category = "Nursing" , currency = "INT$")
