@@ -24,7 +24,7 @@ nl_ppp <- function(
       dplyr::filter(Year %in% year) |>
       dplyr::pull(PPP)
 
-    print(ppp)
+    return(ppp)
   }else{
 
     return(df)

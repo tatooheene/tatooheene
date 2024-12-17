@@ -9,6 +9,7 @@
 #' @param n_amortisation_period N: afschrijvingstermijn,; amortization period
 #' @param i_interest_rt i: renteperceof ntage; interest rate
 #' @param output Default of output is a data frame with both the annuity factor and yearly deprecation and interest costs, but the values can be selected independently
+#' @return A data frame with the annuity factor, yearly depreciation and interest costs, or the values independently.
 #' @keywords Generic, costs equipment
 #' @examples
 #' # Example usage of the depreciation_interest function

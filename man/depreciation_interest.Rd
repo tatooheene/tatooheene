@@ -23,6 +23,9 @@ depreciation_interest(
 
 \item{output}{Default of output is a data frame with both the annuity factor and yearly deprecation and interest costs, but the values can be selected independently}
 }
+\value{
+A data frame with the annuity factor, yearly depreciation and interest costs, or the values independently.
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 A function to calculate the costs of medical equipment based on Section 3.3 of the Dutch EE guideline; k = annual depreciation and interest expense jaarlijkse afschrijvings- en rentekosten

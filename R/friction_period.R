@@ -6,6 +6,7 @@
 #' @param period The friction period that should be included (days/weeks),  default is including the whole dataframe
 #' @param type If period is chosen, a decision can be made between the 5 year average and 1 year friction period in days/weeks. The default is the 5 year average
 #' @keywords Generic, CBS
+#' @return A data frame with friction periods for all years or a selection of years and variables.
 #' @examples
 #' # Example usage of the depreciation_interest function
 #' friction_period(year = 2019, period = "weeks", type = "5_year_avg")
