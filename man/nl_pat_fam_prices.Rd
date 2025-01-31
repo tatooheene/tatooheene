@@ -39,10 +39,13 @@ nl_pat_fam_prices(year = "all", unit = "Car, cost per kilometer")
 nl_pat_fam_prices(year = "2022", category = "Transportation", currency = "INT$")
 
 }
-
+\keyword{&}
 \keyword{Costing}
 \keyword{Dutch}
 \keyword{Family}
-\keyword{Generic}
+\keyword{Generic,}
+\keyword{Manual,}
 \keyword{Patient}
 \keyword{Prices}
+\keyword{Prices,}
+\keyword{Reference}

@@ -24,4 +24,4 @@ A data frame with friction periods for all years or a selection of years and var
 friction_period(year = 2019, period = "weeks", type = "5_year_avg")
 }
 \keyword{CBS}
-\keyword{Generic}
+\keyword{Generic,}

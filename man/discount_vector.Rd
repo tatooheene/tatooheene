@@ -28,7 +28,7 @@ A numeric vector of discounted values for each time period.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-A function to calculate a discount vector for a given time period based on the in paragraph 2.6.1.2 of the Dutch EE guideline mentioned discount rate and time period
+This function calculates a discount vector for a given time period based on the in paragraph 2.6.1.2 of the Dutch EE guideline mentioned discount rate and time period
 }
 \examples{
 # Example usage of the discount_vector function
@@ -42,6 +42,6 @@ discount_vector(discount_rate = 0.03, start_time = 2, end_time = 60, time_unit =
 discount_vector(discount_rate = 0.06, end_time = 365, time_unit = "days", discount_year_one = TRUE)
 
 }
-\keyword{Costs}
-\keyword{Discounting}
+\keyword{Costs,}
+\keyword{Discounting,}
 \keyword{Effects}
