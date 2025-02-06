@@ -25,7 +25,7 @@ nl_price_index <- function(start_year = 2013,
 
 
   # Read in the dataset
-  df <- df_cpi_combined
+  df <- tatooheene::df_cpi_combined
 
   # Input validation with assertthat
   assertthat::assert_that(is.numeric(start_year), msg = "`start_year` must be numeric")
