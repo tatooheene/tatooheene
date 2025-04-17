@@ -20,10 +20,10 @@ This function downloads the Purchasing Power Parity (PPP) factor values for the 
 # Example usage of the nl_ppp function
 nl_ppp(year = 2019)
 }
-\keyword{PPP}
+\keyword{(PPP)}
 \keyword{Costing}
-\keyword{Generic}
-\keyword{Manual}
+\keyword{Generic,}
+\keyword{Manual,}
 \keyword{Parity}
 \keyword{Power}
 \keyword{Purchasing}
