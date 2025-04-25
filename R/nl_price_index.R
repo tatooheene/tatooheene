@@ -27,6 +27,9 @@ nl_price_index <- function(start_year = 2013,
   # Read in the dataset
   df <- df_cpi_combined
 
+  # Output
+  output <- match.arg(output)
+
   # Input validation with assertthat
   assertthat::assert_that(is.numeric(start_year), msg = "`start_year` must be numeric")
   assertthat::assert_that(is.numeric(end_year), msg = "`end_year` must be numeric")
