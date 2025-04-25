@@ -5,43 +5,34 @@
 \title{A function to calculate the discounted value of future costs or effects}
 \usage{
 discount_value(
-  current_value,
-  discount_rate = 0.03,
-  time,
-  time_unit = c("years", "months", "weeks", "days"),
+  value,
+  year,
+  discount_rate = c("costs", "effects"),
   discount_year_one = FALSE
 )
 }
 \arguments{
-\item{current_value}{The current value.}
+\item{value}{The value to be discounted.}
 
-\item{discount_rate}{The discount rate to use for the calculation. Default is 0.03. The guideline stipulates 0.03 for costs and 0.015 for effects.}
-
-\item{time}{The time at which the future value occurs.}
-
-\item{time_unit}{The unit of time to use for the calculation. Default is "years", but "months", "weeks", and "days" are also valid options.}
+\item{discount_rate}{Either "costs", "effects", or a numeric rate. Default is "costs".}
 
 \item{discount_year_one}{Logical value indicating whether to discount the first year as well. Default is FALSE.}
+
+\item{time}{The time at which the future value occurs.}
 }
 \value{
-A numeric value of the discounted future value.
+A numeric value of the discounted value.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-A function to calculate the discounted value of a future costs or effects based on the in paragraph 2.6.1.2 of the Dutch EE guideline mentioned discount rate and time period
+This function calculates the discounted value of a future costs or effects based on the in paragraph 2.6.1.2 of the Dutch EE guideline mentioned discount rate and time period
 }
 \examples{
 # Example usage of the discount_value function
-# Calculate the discounted value of 100 after 5 years, the first year is not discounted
-discount_value(current_value = 100, discount_rate = 0.03, time = 5, time_unit = "years")
-
-# Calculate the discounted value of 100 after 60 months, the first year is not discounted
-discount_value(current_value = 100, discount_rate = 0.03, time = 60, time_unit = "months")
-
-# Calculate the discounted value of 100 after 365 days, the first year is discounted
-discount_value(current_value = 100, time = 365, time_unit = "days", discount_year_one = TRUE)
+# Calculate the discounted value of 100 after 3 years, the first year is not discounted
+discount_value(value = 100, discount_rate = 0.03, year = 3)
 
 }
-\keyword{Costs}
-\keyword{Discounting}
+\keyword{Costs,}
+\keyword{Discounting,}
 \keyword{Effects}
