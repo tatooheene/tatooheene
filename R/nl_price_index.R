@@ -45,9 +45,9 @@ nl_price_index <- function(start_year = 2013,
   # If the output is a factor:
   if(output == "factor"){
     factor <- df |>
-      dplyr::filter(`Year to` >= (start_year+1) & `Year to` <= end_year) |>
-      dplyr:: summarise(cumulative = prod(Percentage)) |>
-      dplyr::pull(cumulative)
+      dplyr::filter(`Year from'` == start_year,
+                    `Year to'` == end_year) |>
+      dplyr::pull(`Factor'`)
 
       return(factor)
 
