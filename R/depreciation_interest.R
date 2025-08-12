@@ -7,7 +7,7 @@
 #' @param v_replace_val V: vervangingswaarde; replacement value
 #' @param r_salvage_val R: restwaarde; salvage value
 #' @param n_amortisation_period N: afschrijvingstermijn,; amortization period
-#' @param i_interest_rt i: renteperceof ntage; interest rate
+#' @param i_interest_rt i: rentepercentage; interest rate
 #' @param output Default of output is a data frame with both the annuity factor and yearly deprecation and interest costs, but the values can be selected independently
 #' @return A data frame with the annuity factor, yearly depreciation and interest costs, or the values independently.
 #' @keywords Generic, costs equipment
