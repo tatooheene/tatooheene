@@ -27,13 +27,13 @@ Functions are designed to slot into R-based cost(-effectiveness) workflows and a
 
 # Installation
 
-```{r setup}
+```{r setup, eval = FALSE}
 # CRAN
 install.packages("tatooheene")
 ```
 
 # Loading
-```{r load}
+```{r load, eval = FALSE}
 # Load the package
 library(tatooheene)
 
@@ -47,7 +47,7 @@ library(tidyverse)
 
 Suppose your costing study reported 2019 EUR costs. Bring them to 2024 EUR using CPI indices.
 
-```{r}
+```{r, eval = FALSE}
 # Look up CPI indices with function nl_price_index()
 idx19_23 <- nl_price_index(
   start_year = 2019,
@@ -81,7 +81,7 @@ v_5yr_mean_friction <- friction_period(
   )
 ```
 
-Based on this, we now know that the friction period in 2023 is `r v_5yr_mean_friciton` days. We can now calculate the productivity costs for sick leave spells.
+Based on this, we now know that the friction period in 2023 is `r v_5yr_mean_friction` days. We can now calculate the productivity costs for sick leave spells.
 
 ```{r}
 # Example sick-leave spells (days) and reference prices (EUR/day)

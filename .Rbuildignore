@@ -8,4 +8,6 @@
 ^\.git$
 ^vignettes/*\.html$
 ^vignettes/*\.pdf$
-^*\.Rproj\.user$
+^doc$
+^Meta$
+^dev$

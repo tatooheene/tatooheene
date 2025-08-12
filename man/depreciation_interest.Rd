@@ -36,8 +36,8 @@ depreciation_interest(
 Compute the annuity factor and the annual depreciation-and-interest charge for medical equipment, following Section 7.3 of the Dutch costing manual; k = annual depreciation and interest expense jaarlijkse afschrijvings- en rentekosten
 
 Let V be replacement value, R the salvage value, N the amortisation period (years), and i the interest rate (per year). The annuity factor is:
-$\deqn{a = \frac{1 - (1 + i)^{-N}}{i},}$
-with the limiting case \eqn{a = N} when $\eqn{i = 0}$.
+\deqn{a = \frac{1 - (1 + i)^{-N}}{i},}
+with the limiting case \eqn{a = N} when \eqn{i = 0}.
 
 The annual charge k is:
 \deqn{k = \frac{V - R / (1 + i)^{N}}{a}.}

@@ -2,26 +2,46 @@
 % Please edit documentation in R/friction_period.R
 \name{friction_period}
 \alias{friction_period}
-\title{A function to download the friction period over one or multiple years}
+\title{Friction period lookup (days/weeks; 1-year or 5-year average)}
 \usage{
-friction_period(year = "all", period = "all", type = "5_year_avg")
+friction_period(
+  year = NULL,
+  units = "weeks",
+  avg = "5yr",
+  output = c("tibble", "value"),
+  data = tatooheene::df_fp
+)
 }
 \arguments{
-\item{year}{The year of which the friction period should be downloaded, multiple years are possible. The default is the whole data frame}
+\item{year}{Integer vector of years to return. If \code{NULL}, returns all years.}
 
-\item{period}{The friction period that should be included (days/weeks),  default is including the whole dataframe}
+\item{units}{One or more of \code{c("days","weeks")}. Default: \code{"weeks"}.}
 
-\item{type}{If period is chosen, a decision can be made between the 5 year average and 1 year friction period in days/weeks. The default is the 5 year average}
+\item{avg}{One or more of \code{c("1yr","5yr")}. Default: \code{"5yr"}.}
+
+\item{output}{Either \code{"tibble"} (default) or \code{"value"}.
+If \code{"value"}, you must request exactly one year and one \verb{(units, avg)} combo.}
+
+\item{data}{Data source (mainly for testing); default is \code{tatooheene::df_fp}.}
 }
 \value{
-A data frame with friction periods for all years or a selection of years and variables.
+A tibble when \code{output = "tibble"}, or a single numeric when \code{output = "value"}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+Return friction periods from the internal CBS-based table.
 }
 \examples{
-# Example usage of the depreciation_interest function
-friction_period(year = 2019, period = "weeks", type = "5_year_avg")
+# All years, 5-year average in weeks (default)
+friction_period()
+
+# Specific year (2019), weeks 5-year average
+friction_period(year = 2019)
+
+# Days (1-year) for multiple years
+friction_period(year = 2018:2020, units = "days", avg = "1yr")
+
+# Single numeric value (requires one year + one combo)
+friction_period(year = 2019, units = "weeks", avg = "5yr", output = "value")
+
 }
-\keyword{CBS}
-\keyword{Generic,}
