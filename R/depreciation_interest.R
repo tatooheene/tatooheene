@@ -1,26 +1,42 @@
-#' A function to calculate the costs of medical equipment
+#' Annual depreciation + interest for medical equipment
 #'
 #' @description
 #' `r lifecycle::badge("experimental")`
-#' A function to calculate the costs of medical equipment based on Section 7.3 of the Dutch costing manual; k = annual depreciation and interest expense jaarlijkse afschrijvings- en rentekosten
+#' Compute the annuity factor and the annual depreciation-and-interest charge for medical equipment, following Section 7.3 of the Dutch costing manual; k = annual depreciation and interest expense jaarlijkse afschrijvings- en rentekosten
 #'
-#' @param v_replace_val V: vervangingswaarde; replacement value
-#' @param r_salvage_val R: restwaarde; salvage value
-#' @param n_amortisation_period N: afschrijvingstermijn,; amortization period
-#' @param i_interest_rt i: renteperceof ntage; interest rate
-#' @param output Default of output is a data frame with both the annuity factor and yearly deprecation and interest costs, but the values can be selected independently
-#' @return A data frame with the annuity factor, yearly depreciation and interest costs, or the values independently.
+#' Let V be replacement value, R the salvage value, N the amortisation period (years), and i the interest rate (per year). The annuity factor is:
+#' \deqn{a = \frac{1 - (1 + i)^{-N}}{i},}
+#' with the limiting case \eqn{a = N} when \eqn{i = 0}.
+#'
+#' The annual charge k is:
+#' \deqn{k = \frac{V - R / (1 + i)^{N}}{a}.}
+#' When \eqn{i = 0}, this reduces to \eqn{k = (V - R) / N}.
+#'
+#' @param v_replace_val V: vervangingswaarde; replacement value (numeric scalar, > 0)
+#' @param r_salvage_val R: restwaarde; salvage (residual) value at end of period (numeric scalar, >= 0)
+#' @param n_amortisation_period N: afschrijvingstermijn; amortisation period in years (numeric scalar, > 0)
+#' @param i_interest_rt i: rentepercntage; annual interest rate as a decimal (numeric scalar, >= 0)
+#' @param output One of `dataframe` (default), `annuity_factor`, or `annual_cost`.
+#'
+#' @return
+#' - If `output = "dataframe"`: a data.frame with two columns:
+#'  `Annuity factor` and `Yearly depreciation and interest costs`.
+#' - If `output = "annuity_factor"`: a single numeric (the annuity factor).
+#' - If `output = "annual_cost"`: a single numeric (the annual charge k).
+#'
 #' @keywords Generic, costs equipment
 #' @examples
-#' # Example usage of the depreciation_interest function
-#' # Calculate both annuity factor and yearly depreciation and interest costs as a data frame
+#' # Both values as a data frame (defaults: N=10, i=2.5%)
 #' depreciation_interest(v_replace_val = 50000, r_salvage_val = 5000)
 #'
-#' # Get only the annuity factor
-#' depreciation_interest(v_replace_val = 50000, r_salvage_val = 5000, output = "annuity factor")
+#' # Only the annuity factor
+#' depreciation_interest(50000, 5000, output = "annuity_factor")
 #'
-#' # Get only the annual depreciation and interest cost
-#' depreciation_interest(v_replace_val = 50000, r_salvage_val = 5000, output = "annual cost")
+#' # Only the annual charge (k)
+#' depreciation_interest(50000, 5000, output = "annual_cost")
+#'
+#' # Zero interest (uses the i -> 0 limit): a = N, k = (V - R)/N
+#' depreciation_interest(50000, 5000, n_amortisation_period = 8, i_interest_rt = 0, output = "dataframe")
 #'
 #' @export depreciation_interest
 
@@ -29,43 +45,54 @@ depreciation_interest <- function(
     r_salvage_val,
     n_amortisation_period = 10,
     i_interest_rt = 0.025,
-    output = c("data frame", "annuity factor", "annual cost")){
-
-  # match.arg() for the output parameter to ensure it is one of the valid choices
+    output = c("dataframe", "annuity_factor", "annual_cost")
+) {
   output <- match.arg(output)
 
-  # Input validation with assertthat
-  assertthat::assert_that(is.numeric(v_replace_val), msg = "`v_replace_val` must be numeric")
-  assertthat::assert_that(is.numeric(r_salvage_val), msg = "`r_salvage_val` must be numeric")
-  assertthat::assert_that(is.numeric(n_amortisation_period), msg = "`n_amortisation_period` must be numeric")
-  assertthat::assert_that(n_amortisation_period > 0, msg = "`n_amortisation_period` must be greater than 0")
-  assertthat::assert_that(is.numeric(i_interest_rt), msg = "`i_interest_rt` must be numeric")
-  assertthat::assert_that(i_interest_rt >= 0 && i_interest_rt <= 1, msg = "`i_interest_rt` must be between 0 and 1")
-  assertthat::assert_that(output %in% c("data frame", "annuity factor", "annual cost"),
-              msg = "`output` must be one of 'DataFrame', 'annuity_fct', or 'annual_cost'")
-
-  # Annuity factor
-  a_annuity_fct <- (1 / i_interest_rt) * (1 - (1 / (1 + i_interest_rt)^n_amortisation_period))
-
-  # Yearly depreciation and interest costs
-  k_annual_depr_int_exp <- (v_replace_val - (r_salvage_val /
-                                               (1 + i_interest_rt)^n_amortisation_period)
-  ) / (a_annuity_fct)
-
-  # If parameter output = data frame
-  if(output == "data frame"){
-    out <- data.frame(a_annuity_fct, k_annual_depr_int_exp) |>
-      dplyr::rename("Annuity factor" = a_annuity_fct,
-                    "Yearly depreciation and interest costs" = k_annual_depr_int_exp)
-
-    return(out)
-
-    # if parameter output = "annuity factor"
-  }else if(output == "annuity factor"){
-    print(a_annuity_fct)
-
-    # if parameter output = annual cost (Yearly depreciation and interest costs)
-  }else if(output == "annual cost"){
-    print(k_annual_depr_int_exp)
+  # ---- input checks (no extra deps) ----
+  if (!is.numeric(v_replace_val) || length(v_replace_val) != 1L || is.na(v_replace_val) || v_replace_val <= 0) {
+    stop("`v_replace_val` must be a single positive number.", call. = FALSE)
   }
+  if (!is.numeric(r_salvage_val) || length(r_salvage_val) != 1L || is.na(r_salvage_val) || r_salvage_val < 0) {
+    stop("`r_salvage_val` must be a single non-negative number.", call. = FALSE)
+  }
+  if (!is.numeric(n_amortisation_period) || length(n_amortisation_period) != 1L ||
+      is.na(n_amortisation_period) || n_amortisation_period <= 0) {
+    stop("`n_amortisation_period` must be a single positive number (years).", call. = FALSE)
+  }
+  if (!is.numeric(i_interest_rt) || length(i_interest_rt) != 1L || is.na(i_interest_rt) || i_interest_rt < 0) {
+    stop("`i_interest_rt` must be a single non-negative number (e.g., 0.025 for 2.5%).", call. = FALSE)
+  }
+  if (r_salvage_val > v_replace_val) {
+    warning("`r_salvage_val` is greater than `v_replace_val`. Is that intended?")
+  }
+
+  V <- v_replace_val
+  R <- r_salvage_val
+  N <- n_amortisation_period
+  i <- i_interest_rt
+
+  # ---- annuity factor with safe zero-interest branch ----
+  if (i == 0) {
+    a_annuity_fct <- N
+  } else {
+    a_annuity_fct <- (1 - (1 + i)^(-N)) / i
+  }
+
+  # ---- annual depreciation + interest ----
+  k_annual_depr_int_exp <- (V - R / (1 + i)^N) / a_annuity_fct
+
+  if (output == "annuity_factor") {
+    return(unname(a_annuity_fct))
+  }
+  if (output == "annual_cost") {
+    return(unname(k_annual_depr_int_exp))
+  }
+
+  out <- data.frame(
+    "Annuity factor" = a_annuity_fct,
+    "Yearly depreciation and interest costs" = k_annual_depr_int_exp,
+    check.names = FALSE
+  )
+  out
 }

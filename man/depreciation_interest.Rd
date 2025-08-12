@@ -2,44 +2,59 @@
 % Please edit documentation in R/depreciation_interest.R
 \name{depreciation_interest}
 \alias{depreciation_interest}
-\title{A function to calculate the costs of medical equipment}
+\title{Annual depreciation + interest for medical equipment}
 \usage{
 depreciation_interest(
   v_replace_val,
   r_salvage_val,
   n_amortisation_period = 10,
   i_interest_rt = 0.025,
-  output = c("data frame", "annuity factor", "annual cost")
+  output = c("dataframe", "annuity_factor", "annual_cost")
 )
 }
 \arguments{
-\item{v_replace_val}{V: vervangingswaarde; replacement value}
+\item{v_replace_val}{V: vervangingswaarde; replacement value (numeric scalar, > 0)}
 
-\item{r_salvage_val}{R: restwaarde; salvage value}
+\item{r_salvage_val}{R: restwaarde; salvage (residual) value at end of period (numeric scalar, >= 0)}
 
-\item{n_amortisation_period}{N: afschrijvingstermijn,; amortization period}
+\item{n_amortisation_period}{N: afschrijvingstermijn; amortisation period in years (numeric scalar, > 0)}
 
-\item{i_interest_rt}{i: renteperceof ntage; interest rate}
+\item{i_interest_rt}{i: rentepercntage; annual interest rate as a decimal (numeric scalar, >= 0)}
 
-\item{output}{Default of output is a data frame with both the annuity factor and yearly deprecation and interest costs, but the values can be selected independently}
+\item{output}{One of \code{dataframe} (default), \code{annuity_factor}, or \code{annual_cost}.}
 }
 \value{
-A data frame with the annuity factor, yearly depreciation and interest costs, or the values independently.
+\itemize{
+\item If \code{output = "dataframe"}: a data.frame with two columns:
+\verb{Annuity factor} and \verb{Yearly depreciation and interest costs}.
+\item If \code{output = "annuity_factor"}: a single numeric (the annuity factor).
+\item If \code{output = "annual_cost"}: a single numeric (the annual charge k).
+}
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-A function to calculate the costs of medical equipment based on Section 3.3 of the Dutch EE guideline; k = annual depreciation and interest expense jaarlijkse afschrijvings- en rentekosten
+Compute the annuity factor and the annual depreciation-and-interest charge for medical equipment, following Section 7.3 of the Dutch costing manual; k = annual depreciation and interest expense jaarlijkse afschrijvings- en rentekosten
+
+Let V be replacement value, R the salvage value, N the amortisation period (years), and i the interest rate (per year). The annuity factor is:
+$\deqn{a = \frac{1 - (1 + i)^{-N}}{i},}$
+with the limiting case \eqn{a = N} when $\eqn{i = 0}$.
+
+The annual charge k is:
+\deqn{k = \frac{V - R / (1 + i)^{N}}{a}.}
+When \eqn{i = 0}, this reduces to \eqn{k = (V - R) / N}.
 }
 \examples{
-# Example usage of the depreciation_interest function
-# Calculate both annuity factor and yearly depreciation and interest costs as a data frame
+# Both values as a data frame (defaults: N=10, i=2.5\%)
 depreciation_interest(v_replace_val = 50000, r_salvage_val = 5000)
 
-# Get only the annuity factor
-depreciation_interest(v_replace_val = 50000, r_salvage_val = 5000, output = "annuity factor")
+# Only the annuity factor
+depreciation_interest(50000, 5000, output = "annuity_factor")
 
-# Get only the annual depreciation and interest cost
-depreciation_interest(v_replace_val = 50000, r_salvage_val = 5000, output = "annual cost")
+# Only the annual charge (k)
+depreciation_interest(50000, 5000, output = "annual_cost")
+
+# Zero interest (uses the i -> 0 limit): a = N, k = (V - R)/N
+depreciation_interest(50000, 5000, n_amortisation_period = 8, i_interest_rt = 0, output = "dataframe")
 
 }
 \keyword{Generic,}
