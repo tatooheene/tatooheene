@@ -1,0 +1,124 @@
+---
+title: "Getting started with tatooheene"
+author: "The tatooheene team"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{getting-started}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Overview
+`tatooheene` stands for **T**echnology **A**ppraisal **Too**lbox for **H**ealth **E**conomic **E**valuations in the **Ne**therlands and helps you apply the Dutch costing manual according to the Dutch economic evaluation (EE) guideline, consistently in R. It provides:
+
+- Programmatic access to reference values from the Dutch costing manual (e.g., unit costs, informal care, travel assumptions).
+- Standard functions to calculate for example productivity loss via the friction cost method, purchasing power adjustments (PPP/OECD-style converters), and many more.
+
+Functions are designed to slot into R-based cost(-effectiveness) workflows and are tidyverse-friendly.
+
+# Installation
+
+```{r setup}
+# CRAN
+install.packages("tatooheene")
+```
+
+# Loading
+```{r load}
+# Load the package
+library(tatooheene)
+
+# We recommend using the tidyverse style
+library(tidyverse)
+```
+
+# Using `tatooheene`: a short tour
+
+## Inflation-correct historical costs (CBS CPI)
+
+Suppose your costing study reported 2019 EUR costs. Bring them to 2024 EUR using CPI indices.
+
+```{r}
+# Look up CPI indices with function nl_price_index()
+idx19_23 <- nl_price_index(
+  start_year = 2019,
+  end_year = 2023,
+  output = "factor"  # see ?nl_price_index for available outputs
+)
+
+idx19_23
+
+# Example tibble
+costs <- tibble::tibble(item = c("GP consult", "MRI"), cost_2019 = c(34.5, 285))
+
+# Adjust costs to 2024 EUR using the CPI index
+costs |>
+  mutate(cost_2024 = cost_2019 * idx19_23)
+```
+
+## Productivity losses via the friction cost method
+
+Estimate productivity costs from sick leave spells using the Dutch friction cost approach.
+
+First, we need to know the actual friction period for the analysis year 2023. This we can retrieve with the `friction_period()` function (see `?friction_period` for details).
+
+```{r}
+# Get the friction period for 2023
+v_5yr_mean_friction <- friction_period(
+  year = 2023, # Year of interest
+  units = "days", # We are interested in the number of days
+  avg = "5yr", # Use the 5-year average friction period as stated in the costing manual,
+  output = "value" # Return a single value
+  )
+```
+
+Based on this, we now know that the friction period in 2023 is `r v_5yr_mean_friciton` days. We can now calculate the productivity costs for sick leave spells.
+
+```{r}
+# Example sick-leave spells (days) and reference prices (EUR/day)
+df_spells <- tibble::tibble(
+  id = 1:3,
+  sick_days = c(140, 122, 30)) 
+
+# Get reference prices for productivity losses (paid work)
+# These are in table df_rp_prod
+
+# Get reference price for paid work in 2023
+p_ref_prod_paid_2023 <- df_rp_prod[1, "2023"]
+
+# Calculate productivity costs using the friction cost method
+df_spells %>% 
+  mutate(
+    # Apply the friction cost method
+    sick_days_friction = ifelse(
+    sick_days > v_5yr_mean_friction, v_5yr_mean_friction, sick_days),
+    # Calculate productivity costs
+    prod_cost = sick_days_friction * p_ref_prod_paid_2023)
+```
+
+More examples of productivity costs can be found in the [`friction_period` vignette](vignette("friction-period")).
+
+# Stijn
+- Depreciation
+- Nl_med_price
+- Nl_pat_fam_price
+- Nl_prod_oth_price
+
+# Eline
+- Discount (2 functie)
+- PPP
+- Price index
+
+# Fred
+- Friction cost
+- pretty_price
+

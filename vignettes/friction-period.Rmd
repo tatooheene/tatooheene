@@ -1,0 +1,85 @@
+---
+title: "Friction period: lookups in days/weeks (1-year vs 5-year average)"
+author: "tatooheene team"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    number_sections: false
+vignette: >
+  %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{Friction period: lookups in days/weeks (1-year vs 5-year average)}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7, fig.height = 4.2,
+  dpi = 120
+)
+library(tatooheene)
+library(dplyr)
+```
+
+## What this vignette covers
+
+- What the **friction period** is and where it lives in `tatooheene::df_fp`.
+- How to use `friction_period()` to:
+  - get **weeks** or **days**,
+  - choose **1‑year** vs **5‑year average**, and
+  - return either a **table** or a **single value**.
+
+> The function is `r lifecycle::badge("experimental")`. Column names reflect the CBS table embedded in `df_fp`.
+
+## The underlying data
+```{r peek-data}
+df_fp %>%
+  select(Year,
+         `Friction period in days`,
+         `Friction period days average over 5 years`,
+         `Friction period in weeks`,
+         `Friction period weeks average over 5 years`) %>%
+  head()
+```
+
+## Quick starts
+
+### 1) Default: all years, **weeks**, **5‑year average**
+
+```{r default}
+friction_period()
+```
+
+### 2) Specific year, **weeks**, **5‑year average** → single value
+
+```{r single-value}
+friction_period(year = 2019, units = "weeks", avg = "5yr", output = "value")
+```
+
+### 3) **Days**, **1‑year** values for a range of years
+
+```{r days-1yr}
+friction_period(year = 2018:2020, units = "days", avg = "1yr")
+```
+
+### 4) Multiple selections return multiple columns
+
+```{r multi-cols}
+friction_period(
+  year  = 2015:2019,
+  units = c("days", "weeks"),
+  avg   = "1yr"       # try c("1yr","5yr") to get four columns
+)
+```
+
+## Error messages you might see
+
+- **"Year out of range …"**  
+  You asked for a year outside `range(df_fp$Year)`. Use a valid year or pass `NULL` for all years.
+
+- **"For `output = "value"`, provide exactly one `year` and a single (units, avg) combination."**  
+  Single value mode needs exactly one year **and** one `(units, avg)`.
