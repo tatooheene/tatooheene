@@ -68,8 +68,8 @@ friction_period <- function(
 
   # Filter and select
   df <- data
-  if (!is.null(year)) df <- dplyr::filter(df, .data$Year %in% year)
-  out <- dplyr::select(df, Year = .data$Year, dplyr::all_of(sel_cols))
+  if (!is.null(year)) df <- dplyr::filter(df, Year %in% year)
+  out <- dplyr::select(df, Year = Year, dplyr::all_of(sel_cols))
 
   if (output == "tibble") return(out)
 
