@@ -2,7 +2,7 @@
 #'
 #' @description
 #' `r lifecycle::badge("experimental")`
-#' A function to calculate the costs of medical equipment based on Section 3.3 of the Dutch EE guideline; k = annual depreciation and interest expense jaarlijkse afschrijvings- en rentekosten
+#' A function to calculate the costs of medical equipment based on Section 7.3 of the Dutch costing manual; k = annual depreciation and interest expense jaarlijkse afschrijvings- en rentekosten
 #'
 #' @param v_replace_val V: vervangingswaarde; replacement value
 #' @param r_salvage_val R: restwaarde; salvage value
