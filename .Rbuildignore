@@ -6,3 +6,6 @@
 ^README\.Rmd$
 ^\.gitignore$
 ^\.git$
+^vignettes/*\.html$
+^vignettes/*\.pdf$
+^*\.Rproj\.user$
