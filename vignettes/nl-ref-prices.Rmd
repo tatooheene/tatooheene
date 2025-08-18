@@ -1,0 +1,88 @@
+---
+title: "Reference prices: lookups by domain/category/unit & years (table vs single value)"
+author: "tatooheene team"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    number_sections: false
+vignette: >
+  %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{Reference prices: filters, years, currency, and single-value output}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7, fig.height = 4.2,
+  dpi = 120
+)
+library(tatooheene)
+library(dplyr)
+library(tidyr)
+library(lifecycle)
+```
+
+## What this vignette covers
+
+-   Where the reference prices live: tatooheene::df_ref_prices.
+
+-   How to use nl_ref_prices() to:
+
+    -   filter by **domain, category, unit,**
+
+    -   select **one or multiple years** (e.g., 2022 or c (2022, 2023) ),
+
+    -   choose **currency** ("EUR" or "INT\$"; PPP adjusted), and
+
+    -   return either a **table** or a **single numeric value** (with a printed label).
+
+> The function is `r lifecycle::badge("experimental")`. Column names reflect the CBS table embedded in `df_ref_prices`.
+
+## The underlying data
+
+```{r peek-data}
+df_ref_prices %>%
+  head()
+```
+
+## Quick starts
+
+### 1) Default: all filters = "all" -\> table of all reference prices over all years
+
+```{r default}
+nl_ref_prices()
+```
+
+### 2) Specific **year**\* & **unit** -\> single value
+
+```{r specific}
+nl_ref_prices(year = 2022, unit = "Emergency care")
+```
+
+### 3) Years values for a range of years
+
+```{r range}
+nl_ref_prices(year = 2018:2020, category = "Nursing")
+```
+
+### 4) Multiple selections return multiple columns
+
+```{r multiple}
+nl_ref_prices(
+  year     = 2022:2024,
+  category = "Nursing",
+  unit     = c("Nursing day excluding personnel costs, hospital",
+               "Nursing day including personnel costs, hospital")
+)
+```
+
+## Error messages you might see
+
+-   **"Year out of range …"** You asked for a year outside the available year columns in `df_ref_prices`. Use a valid year or pass `"all"` for all years.
+
+-   **"For output = "value_label", provide exactly one year and a single (category, unit) combination."** Single value mode needs exactly one year **and** one (`category`, `unit`) (and, if used, a single domain) so that exactly one row remains.
