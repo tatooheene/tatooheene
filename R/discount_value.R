@@ -2,7 +2,7 @@
 #'
 #'@description
 #'`r lifecycle::badge("experimental")`
-#' This function calculates the discounted value of a future costs or effects based on the in paragraph 2.6.1.2 of the Dutch EE guideline mentioned discount rate and time period
+#' This function calculates the net discounted value of a future costs or effects based on the constant discounting model as presented in paragraph 2.6.1.2 of the Dutch Costing guideline (version 2024) and the recommended discount rate and time period
 #'
 #' @param value The value to be discounted.
 #' @param discount_rate Either "costs", "effects", or a numeric rate. Default is "costs".
