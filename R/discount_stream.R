@@ -22,15 +22,15 @@ discount_stream <- function(values,
   if (is.character(discount_rate)) {
     discount_rate <- match.arg(discount_rate)
     discount_rate <- switch(discount_rate,
-                            costs = 0.03,
+                            costs   = 0.03,
                             effects = 0.015)
   }
 
   # Validation
-  assertthat::assert_that(is.numeric(values), msg = "`values` must be numeric")
-  assertthat::assert_that(is.numeric(discount_rate), msg = "`discount_rate` must be numeric")
+  assertthat::assert_that(is.numeric(values),                       msg = "`values` must be numeric")
+  assertthat::assert_that(is.numeric(discount_rate),                msg = "`discount_rate` must be numeric")
   assertthat::assert_that(discount_rate >= 0 && discount_rate <= 1, msg = "`discount_rate` must be between 0 and 1")
-  assertthat::assert_that(is.logical(discount_year_one), msg = "`discount_year_one` must be a logical value (TRUE or FALSE)")
+  assertthat::assert_that(is.logical(discount_year_one),            msg = "`discount_year_one` must be a logical value (TRUE or FALSE)")
 
   # Time vector (t = 0 for the first value if not discounting year one)
   time <- seq_along(values) - ifelse(discount_year_one, 0, 1)
