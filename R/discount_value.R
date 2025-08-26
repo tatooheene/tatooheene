@@ -5,15 +5,15 @@
 #' This function calculates the net discounted value of a future costs or effects based on the constant discounting model as presented in paragraph 2.6.1.2 of the Dutch Costing guideline (version 2024) and the recommended discount rate and time period
 #'
 #' @param value The value to be discounted.
-#' @param discount_rate Either "costs", "effects", or a numeric rate. Default is "costs".
-#' @param time The time at which the future value occurs.
+#' @param discount_rate A categorical indication if the values are costs or health effects. The function uses the numeric discount rates for the Dutch guidelines accordingly (e.g. 0.03 for 3% of costs and 0.015 for 1.% for health effects). Default is 0.03.
+#' @param year The time at which the future value occurs.
 #' @param discount_year_one Logical value indicating whether to discount the first year as well. Default is FALSE.
 #' @return A numeric value of the discounted value.
 #' @keywords Discounting, Costs, Effects
 #' @examples
 #' # Example usage of the discount_value function
 #' # Calculate the discounted value of 100 after 3 years, the first year is not discounted
-#' discount_value(value = 100, discount_rate = 0.03, year = 3)
+#' discount_value(value = 100, discount_rate = "costs", year = 3)
 #'
 #' @export discount_value
 
