@@ -27,7 +27,7 @@ discount_value <- function(
   if (is.character(discount_rate)) {
     discount_rate <- match.arg(discount_rate)
     discount_rate <- switch(discount_rate,
-                            costs = 0.03,
+                            costs   = 0.03,
                             effects = 0.015)
   }
 

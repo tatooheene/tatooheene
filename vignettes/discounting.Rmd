@@ -50,12 +50,32 @@ No discounting is applied at $t=0$.
 
 Please note that the net present value for costs, $C$, could also be the net present value of an health effect, e.g. QALYs.
 
-## (Optional) R example
+## Difference between `discount_value()` and `discount_stream()`
 
-\`\`\`{r} \# Define annual costs K_t for t = 0..n and a constant discount rate i K \<- c(1000, 900, 800, 700, 600) \# example costs for t = 0..4 i \<- 0.03 \# 3% discount rate t \<- seq_along(K) - 1 \# t = 0..n
+`discount_value()` converts a single future value (cost or health effect) at time `t` to its present value using a discount rate. Use it when you have one payment or health outcome occurring in a specific year.
 
-# Present value using the formula: C = sum\_{t=0}\^n K_t / (1 + i)\^t
+`discount_stream()` converts a *vector* of values (costs or health effects) occurring at multiple times to a single present value by discounting each element and aggregating.
 
-C \<- sum( K / (1 + i)\^t )
+## R example from guidelines
 
-C
+In an economic evaluation annual costs for standard of care (SoC) are estimated to be €100.00. Without discounting, the costs after 3 years are €300.00.
+```{r}
+c_annual <- 100
+c_t3_undiscounted <- 3 * c_annual
+c_t3_undiscounted
+```
+
+In the event of a discounting basis of 3%, costs in years 1, 2 and 3 respectively are:
+```{r}
+d_c <- 0.03 # The discount rate for costs 
+v_c_SoC <- rep(c_annual, 3) # Vector/stream of costs values on all years for standard of care 
+names(v_c_SoC) <- c("Year 1", "Year2", "Year 3")
+```
+
+
+
+First year: €100 * (1+0.03)-0 = €100.00
+Second year: €100 * (1+0.03)-1 = €97.09
+Third year: €100 * (1+0.03)-2 = €94.26
+Total costs after 3 years are then €291.35.
+
