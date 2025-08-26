@@ -9,7 +9,7 @@
 #' @param discount_year_one Logical: should the first year (t = 0) be discounted? Default is FALSE.
 #' @param aggregate Logical: should the stream be aggregated? Default is FALSE.
 
-#' @return A numeric vector: the discounted values of the stream.
+#' @return A numeric vector: the discounted values of the stream (when aggregated is FALSE) or the total discounted sum (when aggregated is TRUE)
 #' @examples
 #' # Constant cost of 100 for 3 years, no discounting in year 0
 #' discount_stream(values = rep(100, 3), discount_rate = 0.03, discount_year_one = FALSE)
@@ -25,15 +25,18 @@ discount_stream <- function(values,
   if (is.character(discount_rate)) {
     discount_rate <- match.arg(discount_rate)
     discount_rate <- switch(discount_rate,
-                            costs   = 0.03,
-                            effects = 0.015)
+                            costs   = 0.03,  # discount rates for effects of Dutch costing manual
+                            effects = 0.015) # discount rates for effects of Dutch costing manual
   }
 
   # Validation
   assertthat::assert_that(is.numeric(values),                       msg = "`values` must be numeric")
-  assertthat::assert_that(is.numeric(discount_rate),                msg = "`discount_rate` must be numeric")
-  assertthat::assert_that(discount_rate >= 0 && discount_rate <= 1, msg = "`discount_rate` must be between 0 and 1")
   assertthat::assert_that(is.logical(discount_year_one),            msg = "`discount_year_one` must be a logical value (TRUE or FALSE)")
+  assertthat::assert_that(is.logical(aggregate),                    msg = "`aggregate` must be a logical value (TRUE or FALSE)")
+
+  #@Q Add a check for the most difficult parameter for the discount rate
+
+
 
   # Time vector (t = 0 for the first value if not discounting year one)
   time <- seq_along(values) - ifelse(discount_year_one, 0, 1)
@@ -47,5 +50,6 @@ discount_stream <- function(values,
   }
 
   # Return
-  round(discounted_values, 2)
+  round(discounted_values, 3) # round values to 3 digits
+  #@Q Do we like to round values? OR shall we make it an argument in the function?
 }
