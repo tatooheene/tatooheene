@@ -38,13 +38,16 @@ discount_stream <- function(values,
                             costs   = 0.03,  # discount rates for effects of Dutch costing manual
                             effects = 0.015) # discount rates for effects of Dutch costing manual
   }
+  #Add a message
+  #assertthat::assert_that(discount_rate == 0.03 | discount_rate == 0.015, msg = "`discount_rate` is different from the guidelines")
+
 
   # Validation
-  assertthat::assert_that(is.numeric(values),                       msg = "`values` must be numeric")
-  assertthat::assert_that(is.logical(discount_year_one),            msg = "`discount_year_one` must be a logical value (TRUE or FALSE)")
-  assertthat::assert_that(is.logical(aggregate),                    msg = "`aggregate` must be a logical value (TRUE or FALSE)")
-
-  #@Q Add a check for the most difficult parameter for the discount rate
+  assertthat::assert_that(is.numeric(values),                            msg = "`values` must be numeric")
+  assertthat::assert_that(is.logical(discount_year_one),                 msg = "`discount_year_one` must be a logical value (TRUE or FALSE)")
+  assertthat::assert_that(is.numeric(discount_rate),                     msg = "`discount_rate` must be numeric")
+  assertthat::assert_that(discount_rate >= 0 && discount_rate <= 1,      msg = "`discount_rate` must be between 0 and 1")
+  assertthat::assert_that(is.logical(aggregate),                         msg = "`aggregate` must be a logical value (TRUE or FALSE)")
 
 
 
