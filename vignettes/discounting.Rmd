@@ -96,4 +96,9 @@ If we like to only discount the annual costs at year 3. We can use `discountvalu
 discount_value(value = 100, discount_rate = "costs", year = 3)
 ```
 
+## R example for health effects
+
+
+
+## Input validation & common messages
 

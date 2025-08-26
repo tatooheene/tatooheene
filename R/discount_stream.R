@@ -9,11 +9,21 @@
 #' @param discount_year_one Logical: should the first year (t = 0) be discounted? Default is FALSE.
 #' @param aggregate Logical: should the stream be aggregated? Default is FALSE.
 
-#' @return A numeric vector: the discounted values of the stream (when aggregated is FALSE) or the total discounted sum (when aggregated is TRUE)
+#' @return A numeric vector: the discounted values of the stream (with aggregated = FALSE) or the total discounted sum (when aggregated = TRUE)
 #' @examples
 #' # Constant cost of 100 for 3 years, no discounting in year 0
-#' discount_stream(values = rep(100, 3), discount_rate = 0.03, discount_year_one = FALSE)
+#' discount_stream(values = rep(100, 3), discount_rate = "costs", discount_year_one = FALSE)
 #'
+#' # Constant cost of 100 for 3 years, no discounting in year 0 and give aggregated results
+#' discount_stream(values = rep(100, 3), discount_rate = "costs", discount_year_one = FALSE, aggregate = TRUE)
+#'
+#' # Explore a different discount rate of 4%
+#' discount_stream(values = rep(100, 3), discount_rate = 0.04, discount_year_one = FALSE)
+
+#' # Average QALY gain example for four years to be discounted
+#' discount_stream(values = c(1, 0.98, 0.68, 0.64), discount_rate = "effects", discount_year_one = FALSE)
+
+
 #' @export discount_stream
 
 discount_stream <- function(values,
