@@ -56,7 +56,7 @@ Please note that the net present value for costs, $C$, could also be the net pre
 
 `discount_stream()` converts a *vector* of values (costs or health effects) occurring at multiple times to a single present value by discounting each element and aggregating.
 
-## R example from guidelines 
+## R example from guidelines
 
 In an economic evaluation annual costs for standard of care (SoC) are estimated to be €100.00. Without discounting, the costs after 3 years are €300.00.
 
@@ -81,15 +81,16 @@ discount_stream(values = v_c_SoC, discount_rate = "costs" )
 ```
 
 You can sum these values using the basic sum function or set the argument `aggregate` to `TRUE`
+
 ```{r example-guideline}
 sum(discount_stream(values = v_c_SoC, discount_rate = "costs" ))
-discount_stream(values = v_c_SoC, discount_rate = "costs", aggregate = T)
+discount_stream(values = v_c_SoC,  discount_rate = "costs", aggregate = T)
 ```
 
-##@Q do we like aggregate? How about rounding?
-##@Q Year or time??
+\##@Q do we like aggregate? How about rounding? \##@Q Year or time?? - laten we jaar gebruiken - voor discount -\> functie en uitleggen
 
 ## R example with discount value
+
 If we like to only discount the annual costs at year 3. We can use `discountvalue`
 
 ```{r example-value}
@@ -98,7 +99,4 @@ discount_value(value = 100, discount_rate = "costs", year = 3)
 
 ## R example for health effects
 
-
-
 ## Input validation & common messages
-

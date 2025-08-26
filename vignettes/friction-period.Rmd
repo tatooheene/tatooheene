@@ -27,15 +27,16 @@ library(dplyr)
 
 ## What this vignette covers
 
-- What the **friction period** is and where it lives in `tatooheene::df_fp`.
-- How to use `friction_period()` to:
-  - get **weeks** or **days**,
-  - choose **1‑year** vs **5‑year average**, and
-  - return either a **table** or a **single value**.
+-   What the **friction period** is and where it lives in `tatooheene::df_fp`.
+-   How to use `friction_period()` to:
+    -   get **weeks** or **days**,
+    -   choose **1‑year** vs **5‑year average**, and
+    -   return either a **table** or a **single value**.
 
 > The function is `r lifecycle::badge("experimental")`. Column names reflect the CBS table embedded in `df_fp`.
 
 ## The underlying data
+
 ```{r peek-data}
 df_fp %>%
   select(Year,
@@ -78,8 +79,8 @@ friction_period(
 
 ## Error messages you might see
 
-- **"Year out of range …"**  
-  You asked for a year outside `range(df_fp$Year)`. Use a valid year or pass `NULL` for all years.
+-   **"Year out of range …"**\
+    You asked for a year outside `range(df_fp$Year)`. Use a valid year or pass `NULL` for all years.
 
-- **"For `output = "value"`, provide exactly one `year` and a single (units, avg) combination."**  
-  Single value mode needs exactly one year **and** one `(units, avg)`.
+-   **"For `output = "value"`, provide exactly one `year` and a single (units, avg) combination."**\
+    Single value mode needs exactly one year **and** one `(units, avg)`.
