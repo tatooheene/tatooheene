@@ -32,6 +32,18 @@ discount_value <- function(
                             effects = 0.015)
   }
 
+  # Show a message in case the user uses or explores a discount rate different than the Dutch costing manual
+  msg <- assertthat::validate_that(
+    discount_rate == 0.03 | discount_rate == 0.015,
+    msg = "The used `discount_rate` is different then the one recommend in the Dutch guidelines"
+  )
+
+  if (!isTRUE(msg)) {
+    message(msg)
+  }
+
+
+
   # Validation
   assertthat::assert_that(is.numeric(value),             msg = "`value` must be numeric")
   assertthat::assert_that(is.numeric(year) && year >= 0, msg = "`year` must be a non-negative number")

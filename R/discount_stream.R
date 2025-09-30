@@ -39,8 +39,17 @@ discount_stream <- function(values,
                             costs   = 0.03,  # discount rates for effects of Dutch costing manual
                             effects = 0.015) # discount rates for effects of Dutch costing manual
   }
-  #Add a message - if else statement
-  #assertthat::assert_that(discount_rate == 0.03 | discount_rate == 0.015, msg = "`discount_rate` is different from the guidelines") # validate_that() met een message
+
+  # Show a message in case the user uses or explores a discount rate different than the Duthc costing manual
+  msg <- assertthat::validate_that(
+    discount_rate == 0.03 | discount_rate == 0.015,
+    msg = "The used `discount_rate` is different then the one recommend in the Dutch guidelines"
+  )
+
+  if (!isTRUE(msg)) {
+    message(msg)
+  }
+
 
 
   # Validation
