@@ -53,10 +53,10 @@ discount_stream <- function(values,
 
 
   # Time vector (t = 0 for the first value if not discounting year one)
-  time <- seq_along(values) - ifelse(discount_year_one, 0, 1)
+  t <- seq_along(values) - ifelse(discount_year_one, 0, 1)
 
   # Apply discounting
-  discounted_values <- values * (1 + discount_rate)^(-time)
+  discounted_values <- values * (1 + discount_rate)^(-t)
 
   if(aggregate == TRUE){
     discounted_values <- sum(discounted_values)

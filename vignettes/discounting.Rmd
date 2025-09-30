@@ -86,14 +86,12 @@ sum(discount_stream(values = v_c_SoC, discount_rate = "costs" ))
 discount_stream(    values = v_c_SoC, discount_rate = "costs", aggregate = TRUE)
 ```
 
-\##@Q do we like aggregate? How about rounding? \##@Q Year or time?? - laten we jaar gebruiken - voor discount -\> functie en uitleggen
-
 ## R example with discount value
 
 If we like to only discount the annual costs at time year 3. We can use `discountvalue`
 
 ```{r example-value}
-discount_value(value = 100, discount_rate = "costs", time = 3)
+discount_value(value = 100, discount_rate = "costs", year = 3)
 ```
 
 ## R example for health effects
