@@ -6,20 +6,20 @@
 #'
 #' @param value The value to be discounted.
 #' @param discount_rate A categorical indication if the values are costs or health effects. The function uses the numeric discount rates for the Dutch guidelines accordingly (e.g. 0.03 for 3% of costs and 0.015 for 1.% for health effects). Default is 0.03.
-#' @param year The time at which the future value occurs.
+#' @param time The time at which the future value occurs.
 #' @param discount_year_one Logical value indicating whether to discount the first year as well. Default is FALSE.
 #' @return A numeric value of the discounted value.
 #' @keywords Discounting, Costs, Effects
 #' @examples
 #' # Example usage of the discount_value function
 #' # Calculate the discounted value of 100 after 3 years, the first year is not discounted
-#' discount_value(value = 100, discount_rate = "costs", year = 3)
+#' discount_value(value = 100, discount_rate = "costs", time = 3)
 #'
 #' @export discount_value
 
 discount_value <- function(
     value,
-    year,
+    time,
     discount_rate = c("costs", "effects"),
     discount_year_one = FALSE){
 
@@ -32,14 +32,14 @@ discount_value <- function(
   }
 
   # Validation
-  assertthat::assert_that(is.numeric(value), msg = "`value` must be numeric")
+  assertthat::assert_that(is.numeric(value),             msg = "`value` must be numeric")
   assertthat::assert_that(is.numeric(year) && year >= 0, msg = "`year` must be a non-negative number")
-  assertthat::assert_that(is.numeric(discount_rate), msg = "`discount_rate` must be numeric")
+  assertthat::assert_that(is.numeric(discount_rate),     msg = "`discount_rate` must be numeric")
   assertthat::assert_that(discount_rate >= 0 && discount_rate <= 1, msg = "`discount_rate` must be between 0 and 1")
   assertthat::assert_that(is.logical(discount_year_one), msg = "`discount_year_one` must be TRUE or FALSE")
 
   # Adjust year if first year is not discounted
-  t <- if (discount_year_one) year else max(year - 1, 0)
+  t <- if (discount_year_one) time else max(year - 1, 0)
 
   # Discounting
   discounted <- value * (1 + discount_rate)^(-t)

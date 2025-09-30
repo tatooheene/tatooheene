@@ -12,6 +12,8 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
   chunk_output_type: console
+  markdown: 
+    wrap: 72
 ---
 
 ```{r setup, include = FALSE}
@@ -22,17 +24,17 @@ library(tatooheene)
 ```
 
 ## What this vignette covers
-- The formula and meaning of the annuity factor and the annual depreciation+interest charge.
-- How to call depreciation_interest() and interpret its outputs.
-- Edge cases: zero interest rate and validation checks.
+
+-   The formula and meaning of the annuity factor and the annual
+    depreciation and interest charge.
+-   How to call depreciation_interest() and interpret its outputs.
+-   Edge cases: zero interest rate and validation checks.
 
 ## Background & formulas
 
-Let:
-- $V$ = replacement value,
-- $R$ = salvage value at end of period,
-- $N$ = amortisation period (years),
-= $i$ = annual interest rate (decimal).
+Let: - $V$ = replacement value, - $R$ = salvage value at end of
+period, - $N$ = amortisation period (years), = $i$ = annual interest
+rate (decimal).
 
 Annuity factor:
 $a = \frac{1 - (1 + i)^{-N}}{i},\quad \text{with } a = N \text{ if } i=0$.
@@ -62,6 +64,7 @@ depreciation_interest(
 ```
 
 Only the annual cost (k)
+
 ```{r annual-only}
 depreciation_interest(
   v_replace_val = 50000,
@@ -72,9 +75,8 @@ depreciation_interest(
 
 ## Zero‑interest edge case
 
-When $i$ = 0, the function uses the mathematical limit:
-- $a = N$,
-- $k = (V - R)/N$.
+When $i$ = 0, the function uses the mathematical limit: - $a = N$, -
+$k = (V - R)/N$.
 
 ```{r zero-interest}
 depreciation_interest(
@@ -87,9 +89,12 @@ depreciation_interest(
 ```
 
 ## Input validation & common messages
-- `v_replace_val` must be a single positive number; `r_salvage_val` a non‑negative number.
-- `n_amortisation_period` must be > 0; `i_interest_rt` must be ≥ 0.
-- If salvage value exceeds replacement value, a warning is raised (allowed, but uncommon).
+
+-   `v_replace_val` must be a single positive number; `r_salvage_val` a
+    non‑negative number.
+-   `n_amortisation_period` must be \> 0; `i_interest_rt` must be ≥ 0.
+-   If salvage value exceeds replacement value, a warning is raised
+    (allowed, but uncommon).
 
 Example (triggers an error):
 
@@ -99,4 +104,3 @@ depreciation_interest(
   r_salvage_val = -1
 )
 ```
-

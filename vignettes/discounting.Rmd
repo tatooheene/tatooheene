@@ -23,8 +23,7 @@ library(tatooheene)
 
 ## What this vignette covers
 
--   What the **discounting** is and where it lives in `tatooheene::df_fp`.
--   The formula and meaning of the annuity factor and the annual depreciation and interest charge.
+-   What the **discounting** is and where it lives in `tatooheene::df_fp`
 -   How to call `discount_value()` and `discount_stream()`and how to interpret there outputs.
 
 ## Background
@@ -52,7 +51,7 @@ Please note that the net present value for costs, $C$, could also be the net pre
 
 ## Difference between `discount_value()` and `discount_stream()`
 
-`discount_value()` converts a single future value (cost or health effect) at time `t` to its present value using a discount rate. Use it when you have one payment or health outcome occurring in a specific year.
+`discount_value()` converts a single future value (cost or health effect) at time `t` to its present value using a discount rate (default is Dutch Guidelines values). Use it when you have one payment or health outcome occurring in a specific year.
 
 `discount_stream()` converts a *vector* of values (costs or health effects) occurring at multiple times to a single present value by discounting each element and aggregating.
 
@@ -66,12 +65,12 @@ c_t3_undiscounted <- 3 * c_annual
 c_t3_undiscounted
 ```
 
-We define the discount rate (`d_c`) of 3% and make a vector/stream of these costs for the three years.
+The discount rate for costs in the Netherlands is 3%. We define the discount rate (`d_c`) and make a vector/stream of these costs for the three years.
 
 ```{r discount-rate}
 d_c <- 0.03 # The discount rate for costs 
 v_c_SoC <- rep(c_annual, 3) # Vector/stream of costs values on all years for standard of care 
-names(v_c_SoC) <- c("Year 1", "Year2", "Year 3")
+names(v_c_SoC) <- c("Year 1", "Year 2", "Year 3")
 ```
 
 This example is a stream of costs, therefore, we need the function `discount_stream`. Using the formulate this gives us:
@@ -84,17 +83,17 @@ You can sum these values using the basic sum function or set the argument `aggre
 
 ```{r example-guideline}
 sum(discount_stream(values = v_c_SoC, discount_rate = "costs" ))
-discount_stream(values = v_c_SoC,  discount_rate = "costs", aggregate = T)
+discount_stream(    values = v_c_SoC, discount_rate = "costs", aggregate = TRUE)
 ```
 
 \##@Q do we like aggregate? How about rounding? \##@Q Year or time?? - laten we jaar gebruiken - voor discount -\> functie en uitleggen
 
 ## R example with discount value
 
-If we like to only discount the annual costs at year 3. We can use `discountvalue`
+If we like to only discount the annual costs at time year 3. We can use `discountvalue`
 
 ```{r example-value}
-discount_value(value = 100, discount_rate = "costs", year = 3)
+discount_value(value = 100, discount_rate = "costs", time = 3)
 ```
 
 ## R example for health effects
