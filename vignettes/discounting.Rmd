@@ -57,7 +57,7 @@ Please note that the net present value for costs, $C$, could also be the net pre
 
 ## R example from guidelines
 
-In an economic evaluation annual costs for standard of care (SoC) are estimated to be €100.00. Without discounting, the costs after 3 years are €300.00.
+In an economic evaluation annual costs for standard of care (SoC) are estimated to be €100.00. Without discounting, the total costs after 3 years are €300.00.
 
 ```{r no-discount}
 c_annual <- 100
@@ -65,24 +65,23 @@ c_t3_undiscounted <- 3 * c_annual
 c_t3_undiscounted
 ```
 
-The discount rate for costs in the Netherlands is 3%. We define the discount rate (`d_c`) and make a vector/stream of these costs for the three years.
-
+Based on the annual costs, we make a vector/stream of these costs for the three years. 
 ```{r discount-rate}
-d_c <- 0.03 # The discount rate for costs 
 v_c_SoC <- rep(c_annual, 3) # Vector/stream of costs values on all years for standard of care 
 names(v_c_SoC) <- c("Year 1", "Year 2", "Year 3")
 ```
 
-This example is a stream of costs, therefore, we need the function `discount_stream`. Using the formulate this gives us:
 
+This example is a stream of costs, therefore, we need the function `discount_stream`. Using the formulate this gives us:
 ```{r example-guideline}
-discount_stream(values = v_c_SoC, discount_rate = "costs" )
+discount_stream(values = v_c_SoC, discount_rate = "costs")
 ```
+Please NOTE: The discount rate for costs in the Netherlands is 3% and is the default discount rate in the functions. 
 
 You can sum these values using the basic sum function or set the argument `aggregate` to `TRUE`
 
 ```{r example-guideline}
-sum(discount_stream(values = v_c_SoC, discount_rate = "costs" ))
+sum(discount_stream(values = v_c_SoC, discount_rate = "costs"))
 discount_stream(    values = v_c_SoC, discount_rate = "costs", aggregate = TRUE)
 ```
 
@@ -96,4 +95,17 @@ discount_value(value = 100, discount_rate = "costs", year = 3)
 
 ## R example for health effects
 
+
+
+
+
 ## Input validation & common messages
+
+## Error messages you might see
+
+-   **"Year out of range …"**\
+    You asked for a year outside `range(df_fp$Year)`. Use a valid year or pass `NULL` for all years.
+
+-   **"For `output = "value"`, provide exactly one `year` and a single (units, avg) combination."**\
+    Single value mode needs exactly one year **and** one `(units, avg)`.
+

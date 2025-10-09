@@ -5,8 +5,9 @@
 #' This function calculates the net present value of a vector of future costs or effects using constant discounting, as described in the Dutch guideline for economic evaluations in healthcare (section 2.6.1.2 version 2024).
 #'
 #' @param values        A numeric vector of costs or effects over time (one value per period).
-#' @param discount_rate A categorical indication if the values are costs or health effects. The function uses the numeric discount rates for the Dutch guidelines accordingly (e.g. 0.03 for 3% of costs and 0.015 for 1.5% for health effects). Default is 0.03.
+#' @param discount_rate A categorical indication if the values are costs or health effects. The function uses the numeric annual discount rates for the Dutch guidelines accordingly (e.g. 0.03 for 3% of costs and 0.015 for 1.5% for health effects). Default is 0.03.
 #' @param discount_year_one Logical: should the first year (t = 0) be discounted? Default is FALSE.
+#' @param time_unit    A categorical indicator of the duration of a cycle length
 #' @param aggregate Logical: should the stream be aggregated? Default is FALSE.
 
 #' @return A numeric vector: the discounted values of the stream (with aggregated = FALSE) or the total discounted sum (when aggregated = TRUE)
@@ -20,8 +21,14 @@
 #' # Explore a different discount rate of 4%
 #' discount_stream(values = rep(100, 3), discount_rate = 0.04, discount_year_one = FALSE)
 
-#' # Average QALY gain example for four years to be discounted
+#' # Example: Average QALY gain for four years to be discounted
 #' discount_stream(values = c(1, 0.98, 0.68, 0.64), discount_rate = "effects", discount_year_one = FALSE)
+
+#' # Monthly QALYs for 1 year
+#' discount_stream(rep(1/12, 12), discount_rate = "effects", cycle_length_in_years = 1/12)
+
+#' Average QALY gain
+
 
 
 #' @export discount_stream
@@ -29,6 +36,7 @@
 discount_stream <- function(values,
                             discount_rate = c("costs", "effects"),
                             discount_year_one = FALSE,
+                            cycle_length_in_years = 1,
                             aggregate = FALSE,
                             digits = 3 ) {
 
@@ -40,7 +48,7 @@ discount_stream <- function(values,
                             effects = 0.015) # discount rates for effects of Dutch costing manual
   }
 
-  # Show a message in case the user uses or explores a discount rate different than the Duthc costing manual
+  # Show a message in case the user uses or explores a discount rate different than the Dutch costing manual
   msg <- assertthat::validate_that(
     discount_rate == 0.03 | discount_rate == 0.015,
     msg = "The used `discount_rate` is different then the one recommend in the Dutch guidelines"
@@ -53,16 +61,19 @@ discount_stream <- function(values,
 
 
   # Validation
-  assertthat::assert_that(is.numeric(values),                            msg = "`values` must be numeric")
-  assertthat::assert_that(is.logical(discount_year_one),                 msg = "`discount_year_one` must be a logical value (TRUE or FALSE)")
-  assertthat::assert_that(is.numeric(discount_rate),                     msg = "`discount_rate` must be numeric")
-  assertthat::assert_that(discount_rate >= 0 && discount_rate <= 1,      msg = "`discount_rate` must be between 0 and 1")
+  assertthat::assert_that(is.numeric(values),                                      msg = "`values` must be numeric")
+  assertthat::assert_that(is.numeric(cycle_length_in_years),                      msg = "`cycles_length_in_years` must be numeric")
+  assertthat::assert_that(is.logical(discount_year_one),                           msg = "`discount_year_one` must be a logical value (TRUE or FALSE)")
+  assertthat::assert_that(is.numeric(discount_rate),                               msg = "`discount_rate` must be numeric")
+  assertthat::assert_that(discount_rate >= 0 && discount_rate <= 1,                  msg = "`discount_rate` must be between 0 and 1")
+  assertthat::assert_that(cycle_length_in_years >= 0 && cycle_length_in_years <= 1,      msg = "`discount_rate` must be between 0 and 1")
   assertthat::assert_that(is.logical(aggregate),                         msg = "`aggregate` must be a logical value (TRUE or FALSE)")
 
 
-
   # Time vector (t = 0 for the first value if not discounting year one)
-  t <- seq_along(values) - ifelse(discount_year_one, 0, 1)
+  offset <- ifelse(discount_year_one, 0, 1)
+  t      <- (seq_along(values) - offset) / cycle_length_in_years
+
 
   # Apply discounting
   discounted_values <- values * (1 + discount_rate)^(-t)
