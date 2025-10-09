@@ -6,7 +6,7 @@
 #'
 #' @param value The value to be discounted.
 #' @param discount_rate A categorical indication if the values are costs or health effects. The function uses the numeric discount rates for the Dutch guidelines accordingly (e.g. 0.03 for 3% of costs and 0.015 for 1.5% for health effects). Default is 0.03.
-#' @param year The time at which the future value occurs.
+#' @param year The time at which the future value occurs in years. For other duration us fractions of a year, a month 1/12 and a day 1/365 etc.
 #' @param discount_year_one Logical value indicating whether to discount the first year as well. Default is FALSE.
 #' @return A numeric value of the discounted value.
 #' @keywords Discounting, Costs, Effects

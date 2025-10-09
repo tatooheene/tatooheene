@@ -37,7 +37,7 @@
 
 discount_stream <- function(values,
                             discount_rate = c("costs", "effects"),
-                            discount_year_one = FALSE,
+                            discount_year_one = FALSE, #Q: shall we rename to discount_cycle_one??
                             cycle_length_in_years = 1,
                             aggregate = FALSE,
                             digits = 3 ) {
