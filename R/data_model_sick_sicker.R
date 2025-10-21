@@ -32,3 +32,48 @@
 #' @source Adapted from the DARTH workgroup's Sick-Sicker model materials
 #' (\url{https://darthworkgroup.com}).
 "data_model_output_sick_sicker"
+#'
+#' #' @examples
+#' # Load the dataset
+#' data("data_model_output_sick_sicker")
+#'
+#' # Explore the available objects
+#' ls(pattern = "l_|v_")
+#'
+#' # View names of health states
+#' v_names_str
+#'
+#' # Inspect the first few cycles of the annual Markov trace for the first strategy
+#' head(l_m_M_annual[[1]])
+#'
+#' # Compare dimensions of annual and monthly traces
+#' dim(l_m_M_annual[[1]])
+#' dim(l_m_M_monthly[[1]])
+#'
+#' # Example: compute mean annual utility
+#' mean(unlist(l_u_annual))
+#'
+#' # Apply the half cycle correction
+#' ## Loop through each strategy and calculate total utilities and costs ----
+#'
+
+#'for (i in 1:length(v_names_str)) {
+#'  v_u_str <- l_u[[i]]   # select the vector of state utilities for the i-th strategy
+#'  v_c_str <- l_c[[i]]   # select the vector of state costs for the i-th strategy
+#'
+#'   ###* Expected QALYs and costs per cycle
+#'   ##* Vector of QALYs and Costs
+#'   #* Apply state rewards
+#'   v_qaly_str <- l_m_M[[i]] %*% v_u_str # sum the utilities of all states for each cycle
+#'   v_cost_str <- l_m_M[[i]] %*% v_c_str # sum the costs of all states for each cycle
+#'
+#'   ###* Discounted total expected QALYs and Costs per strategy and apply within-cycle correction if applicable
+#'   #* QALYs
+#'   v_tot_qaly[i] <- t(v_qaly_str) %*% v_wcc
+#'   #* Costs
+#'   v_tot_cost[i] <- t(v_cost_str) %*% v_wcc
+#' }
+
+#'
+"data_set_model_output_sick_sicker"
+
