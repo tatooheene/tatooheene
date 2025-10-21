@@ -23,14 +23,12 @@ library(tatooheene)
 
 ## What this vignette covers
 
--   What the **discounting** is and where it lives in `tatooheene::df_fp`
--   How to call `discount_value()` and `discount_stream()`and how to interpret there outputs.
+-   What **discounting** is and where it lives in `tatooheene::df_fp`
+-   How to call `discount_value()` and `discount_stream()`and how to interpret the outputs.
 
 ## Background
 
-Costs and health outcomes that are expected to occur in the future are generally values less than those that occur in the present, and so it is recommended that they be discounted in economic analyses. This is typically done by presenting the costs and health outcomes as a stream of values over time, applying a discounting factor to each value, and then aggregating them to obtain the ‘present value’ of each stream.
-
-The discount factor is increasing over time, based on an underlying fixed discount rate. In the Netherlands, we use a discount rate of 1.5% for health effects and 3% for costs.
+Costs and health outcomes that are expected to occur in the future are generally valued less than those that occur in the present, and so it is recommended that they be discounted in economic analyses. In the Netherlands, we use a discount rate of 1.5% for health effects and 3% for costs. Discounting is typically done by presenting the costs and health outcomes as a stream of values over time and applying a discounting factor based on the discount rate to each value, and then aggregating them to obtain the ‘present value’ of each stream. The discount factor is increasing over time, based on the underlying fixed discount rate. 
 
 *Text adapted from Dutch costing manual and Discount Rate [online]. (2016). York; York Health Economics Consortium; 2016. <https://yhec.co.uk/glossary/discount-rate/>.*
 
@@ -51,7 +49,7 @@ Please note that the net present value for costs, $C$, could also be the net pre
 
 ## Difference between `discount_value()` and `discount_stream()`
 
-`discount_value()` converts a single future value (cost or health effect) at time `t` to its present value using a discount rate (default is Dutch Guidelines values). Use it when you have one payment or health outcome occurring in a specific year.
+`discount_value()` converts a single future value (cost or health effect) at time `t` to its present value using the approriate discount rate (default is Dutch Guidelines values). Use it when you have one payment or health outcome occurring in a specific year.
 
 `discount_stream()` converts a *vector* of values (costs or health effects) occurring at multiple times to a single present value by discounting each element and aggregating.
 
@@ -65,7 +63,7 @@ c_t3_undiscounted <- 3 * c_annual
 c_t3_undiscounted
 ```
 
-Based on the annual costs, we make a vector/stream of these costs for the three years. 
+Based on the annual costs, we make a vector of these costs for the three years. 
 ```{r discount-rate}
 v_c_SoC <- rep(c_annual, 3) # Vector/stream of costs values on all years for standard of care 
 names(v_c_SoC) <- c("Year 1", "Year 2", "Year 3")
@@ -87,14 +85,70 @@ discount_stream(    values = v_c_SoC, discount_rate = "costs", aggregate = TRUE)
 
 ## R example with discount value
 
-If we like to only discount the annual costs at time year 3. We can use `discountvalue`
+If we like to only discount the annual costs at time year 3. We can use `discount_value`
 
 ```{r example-value}
 discount_value(value = 100, discount_rate = "costs", year = 3)
 ```
 
 ## R example for health effects
+As discussed before, the same applies to health effects, in this example QALYs. Where over a four year period an individual is expected to life a perfect life and each year 1 QALY is accrued. 
 
+```{r example-discount-stream-QALY}
+discount_stream(value = c(1, 1, 1, 1), discount_rate = "effects")
+```
+
+
+# Discounting of the first cycle
+As you might have noticed, the first cycle is not discounted by default. This is in line with the Dutch guidelines that recommend not to discount the first cycle. Therefore, functions provided in this package skip discounting of only the first cycle by default. Via the parameter `discount_year_one`, the analyst can decide whether to discount the initial cycle by setting it to `TRUE`.
+
+```{r example-discount-year-one}
+discount_stream(value = c(1, 1, 1, 1), discount_rate = "effects", discount_year_one = FALSE)
+discount_stream(value = c(1, 1, 1, 1), discount_rate = "effects", discount_year_one = TRUE)
+
+
+discount_value(value = c(1), discount_rate = "effects", year = 5, discount_year_one = TRUE)
+discount_value(value = c(1), discount_rate = "effects", year = 5, discount_year_one = FALSE)
+
+```
+
+# Discounting in models with cycle lengths different then annual
+While the discounting approach is straightforward for models with annual cycles, its application becomes ambiguous in models with sub-annual time steps, such as monthly or weekly cycles. The guideline does not specify whether **not discounting the first year** should translate to excluding only the first cycle (e.g., 1 month), or the entire first year from discounting. As a result, different interpretations exist in the modeling community. 
+
+
+# Why does this matter? 
+Although yearly and monthly discounting approaches produce the same total undiscounted QALYs or costs, they differ in discounted values due to when outcomes are assumed to occur. In annual models, outcomes are often assumed to occur at the end of the year, while in sub-annual models the rewards are typically accrued more evenly across time. This leads to slightly higher present values in the latter, as benefits (or costs) occur earlier and are therefore less discounted.
+
+```{r demo-difference}
+values = c(1, 1, 1, 1)            # 1 QALY per year
+discount_rate = 0.015              # 3% annual discount rate
+t_year <- seq_along(values)       # Time: 1, 2, 3, 4
+discounted_values <- values * (1 + discount_rate)^(-t_year)
+sum(discounted_values)            # ~3.7171
+
+discount_stream(values = values, discount_rate = "effects", aggregate = T, discount_year_one = T)
+
+
+```
+
+# Our approach
+Since discounting relate to the fundamental principle that costs and benefits should be discounted beyond the present, we interpret every time point after the first cycle (present) as future. Therefore, in our code we exclude only the first cycle from discounting, regardless of its length. However, this design choice has practical implications that might not be in line with the desired way of coding for all modelers and we therefore, demonstrate how to adjust the code in case other modelling assumptions are desired. 
+
+## 
+For demonstration purposses we will make use of the Sick-Sicker example 
+```{r exmple-}
+
+
+```
+
+
+# Discussion
+Weird to have non-annual cycles, but give the cycles annual?
+What if you only dont disocunt hte first year but all after 
+
+[cycle lengt adjustment ]
+
+For some Cite Attema, Claxton 2018 paper
 
 
 
