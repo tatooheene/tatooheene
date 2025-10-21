@@ -23,9 +23,8 @@ library(tatooheene)
 
 ## What this vignette covers
 
--   What **discounting** is. 
--   How to call `apply_discounting()` and how to interpret the outputs.
--   How to make use of the accompanied case-example dataset `tatooheene::data_model_sick_sicker.R` #@Stijn is dit logisch? 
+-   What **discounting** is and where it lives in `tatooheene::df_fp`
+-   How to call `discount_value()` and `discount_stream()`and how to interpret the outputs.
 
 ## Background
 
@@ -48,6 +47,12 @@ No discounting is applied at $t=0$.
 
 Please note that the net present value for costs, $C$, could also be the net present value of an health effect, e.g. QALYs.
 
+## Difference between `discount_value()` and `discount_stream()`
+
+`discount_value()` converts a single future value (cost or health effect) at time `t` to its present value using the approriate discount rate (default is Dutch Guidelines values). Use it when you have one payment or health outcome occurring in a specific year.
+
+`discount_stream()` converts a *vector* of values (costs or health effects) occurring at multiple times to a single present value by discounting each element and aggregating.
+
 ## R example from guidelines
 
 In an economic evaluation annual costs for standard of care (SoC) are estimated to be €100.00. Without discounting, the total costs after 3 years are €300.00.
@@ -64,34 +69,33 @@ v_c_SoC <- rep(c_annual, 3) # Vector/stream of costs values on all years for sta
 names(v_c_SoC) <- c("Year 1", "Year 2", "Year 3")
 ```
 
+
 This example is a stream of costs, therefore, we need the function `discount_stream`. Using the formulate this gives us:
 ```{r example-guideline}
-apply_discounting(values = v_c_SoC, discount_rate = "costs", times = c(0, 1, 2))
+discount_stream(values = v_c_SoC, discount_rate = "costs")
 ```
 Please NOTE: The discount rate for costs in the Netherlands is 3% and is the default discount rate in the functions. 
 
 You can sum these values using the basic sum function or set the argument `aggregate` to `TRUE`
 
 ```{r example-guideline}
-sum(apply_discounting(values = v_c_SoC, discount_rate = "costs", times = c(0, 1, 2)))
-# discount_stream(    values = v_c_SoC, discount_rate = "costs", aggregate = TRUE) #@STIJN verwijderen dus dit??
+sum(discount_stream(values = v_c_SoC, discount_rate = "costs"))
+discount_stream(    values = v_c_SoC, discount_rate = "costs", aggregate = TRUE)
 ```
 
-## R example for discounting on single value
+## R example with discount value
 
-If we like to only discount a one time costs of 150 euro at time year 3. We can use use the function as follows:
+If we like to only discount the annual costs at time year 3. We can use `discount_value`
 
 ```{r example-value}
-apply_discounting(values = 150, discount_rate = "costs", times = 3)
+discount_value(value = 100, discount_rate = "costs", year = 3)
 ```
-This gives us the present values of 150 euro in 3 years time. 
-
 
 ## R example for health effects
 As discussed before, the same applies to health effects, in this example QALYs. Where over a four year period an individual is expected to life a perfect life and each year 1 QALY is accrued. 
 
 ```{r example-discount-stream-QALY}
-apply_discounting(value = c(1, 1, 1, 1), discount_rate = "effects", times = c(0, 1, 2, 3))
+discount_stream(value = c(1, 1, 1, 1), discount_rate = "effects")
 ```
 
 
@@ -99,12 +103,12 @@ apply_discounting(value = c(1, 1, 1, 1), discount_rate = "effects", times = c(0,
 As you might have noticed, the first cycle is not discounted by default. This is in line with the Dutch guidelines that recommend not to discount the first cycle. Therefore, functions provided in this package skip discounting of only the first cycle by default. Via the parameter `discount_year_one`, the analyst can decide whether to discount the initial cycle by setting it to `TRUE`.
 
 ```{r example-discount-year-one}
-apply_discounting(value = c(1, 1, 1, 1), discount_rate = "effects", discount_year_one = FALSE)
-apply_discounting(value = c(1, 1, 1, 1), discount_rate = "effects", discount_year_one = TRUE)
+discount_stream(value = c(1, 1, 1, 1), discount_rate = "effects", discount_year_one = FALSE)
+discount_stream(value = c(1, 1, 1, 1), discount_rate = "effects", discount_year_one = TRUE)
 
 
-apply_discounting(value = c(1), discount_rate = "effects", year = 5, discount_year_one = TRUE)
-apply_discounting(value = c(1), discount_rate = "effects", year = 5, discount_year_one = FALSE)
+discount_value(value = c(1), discount_rate = "effects", year = 5, discount_year_one = TRUE)
+discount_value(value = c(1), discount_rate = "effects", year = 5, discount_year_one = FALSE)
 
 ```
 
