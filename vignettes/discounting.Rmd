@@ -117,7 +117,7 @@ While the discounting approach is straightforward for models with annual cycles,
 
 
 # Why does this matter? 
-Although yearly and monthly discounting approaches produce the same total undiscounted QALYs or costs, they differ in discounted values due to when outcomes are assumed to occur. In annual models, outcomes are often assumed to occur at the end of the year, while in sub-annual models the rewards are typically accrued more evenly across time. This leads to slightly higher present values in the latter, as benefits (or costs) occur earlier and are therefore less discounted.
+Although yearly and monthly discounting approaches produce the same total undiscounted QALYs or costs, they differ in discounted values due to when outcomes are assumed to occur. In annual models, outcomes are often assumed to occur at the end of the year, while in sub-annual models the rewards are typically accrued more evenly across time. This leads to slightly higher present values in the latter (sub-annual), as benefits (or costs) occur earlier and are therefore less discounted.
 
 ```{r demo-difference}
 values = c(1, 1, 1, 1)            # 1 QALY per year
@@ -135,8 +135,20 @@ discount_stream(values = values, discount_rate = "effects", aggregate = T, disco
 Since discounting relate to the fundamental principle that costs and benefits should be discounted beyond the present, we interpret every time point after the first cycle (present) as future. Therefore, in our code we exclude only the first cycle from discounting, regardless of its length. However, this design choice has practical implications that might not be in line with the desired way of coding for all modelers and we therefore, demonstrate how to adjust the code in case other modelling assumptions are desired. 
 
 ## 
-For demonstration purposses we will make use of the Sick-Sicker example 
-```{r exmple-}
+For demonstration purposes we will make use of the Sick-Sicker example 
+```{r exmple-sick-sicker}
+data("data_model_output_sick_sicker") # Load the data 
+
+# Use the annual model
+l_m_M_annual[["Standard of care"]]
+
+# Apply the utilities
+v_Q_SoC <- l_m_M_annual[["Standard of care"]] %*% l_u_annual[["Standard of care"]]
+sum(v_Q_SoC) # get the undiscounted QALYs
+
+# Apply discounting
+discount_stream(v_Q_SoC, discount_rate = "effects", discount_year_one = FALSE, cycle_length_in_years = 1, aggregate = T) # This gives the discounted QALYs
+
 
 
 ```
