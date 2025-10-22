@@ -10,9 +10,9 @@
 #'
 #' @format A collection of R objects saved as an `.RData` file containing:
 #' \describe{
-#'   \item{l_m_M_annual}{List: Markov trace results for the annual-cycle model.}
+#'   \item{l_m_M_annual} {List: Markov trace results for the annual-cycle model.}
 #'   \item{l_m_M_monthly}{List: Markov trace results for the monthly-cycle model.}
-#'   \item{v_wcc_annual}{Vector: half-cycle correction weights for the annual model.}
+#'   \item{v_wcc_annual} {Vector: half-cycle correction weights for the annual model.}
 #'   \item{v_wcc_monthly}{Vector: half-cycle correction weights for the monthly model.}
 #'   \item{v_names_str} {Vector: names of the interventions strategies used in the model.}
 #'   \item{l_u_annual} {List: annual utilities for each health state.}
@@ -67,7 +67,7 @@
 #'   v_qaly_str <- l_m_M[[i]] %*% v_u_str # sum the utilities of all states for each cycle
 #'   v_cost_str <- l_m_M[[i]] %*% v_c_str # sum the costs of all states for each cycle
 #'
-#'   ###* Discounted total expected QALYs and Costs per strategy and apply within-cycle correction if applicable
+#'   ###*  Total expected QALYs and costs per strategy and apply half-cycle correction (if applicable)
 #'   #* QALYs
 #'   v_tot_qaly[i] <- t(v_qaly_str) %*% v_wcc
 #'   #* Costs
@@ -75,5 +75,5 @@
 #' }
 
 #'
-"data_set_model_output_sick_sicker"
+"data_model_output_sick_sicker"
 
