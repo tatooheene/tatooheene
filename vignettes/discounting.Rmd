@@ -178,6 +178,7 @@ cycle_length   <- 1/12 # cycle length in fraction of a year
 v_times_monthly <- seq_along(v_Q_SoC_monthly) * cycle_length
 
 v_times_monthly[1:((1/cycle_length))] <- 0 #@Stijn, we doen altijd 1 cycle meer dan normaal. Initial cycle. 
+v_times_monthly[1:20] # print first twenty items to show times vector
 
 v_QALY_dis_Sick_Sicker_monthly <- apply_discounting(values = v_Q_SoC_monthly, discount_rate = "effects", times = v_times_monthly) # This gives the discounted QALYs
 round(sum(v_QALY_dis_Sick_Sicker_monthly),3)
@@ -216,16 +217,16 @@ sum(apply_discounting(values = v_c_sick_sicker_annual_aggrated_from_month, disco
 ```
 
 
-Alternatively, you could re
+Alternatively, you could use the vector with indicator for the year as the `times` vector and apply the discounting this way. This gives the same approach compared to 
 ```{r}
-apply_discounting(values = m_M_SoC_monthly[])
+v_c_sick_sicker_month <- m_M_SoC_monthly[, c("H", "S1", "S2", "D")] %*% l_u_monthly[["Standard of care"]]
+sum(apply_discounting(values = v_c_sick_sicker_month, discount_rate = "effect", times = v_years ))
 ```
 
 
 
-
-
 # Table with overview of the resuls
+#@stijn, willen we een overzicht van de verschillende getallen? Ik gebruik nu zowel effecten als kosten door elkaar. Willen we dat consitent hetzelfde? 
 
 
 
