@@ -31,9 +31,8 @@
 #'
 #' @source Adapted from the DARTH workgroup's Sick-Sicker model materials
 #' (\url{https://darthworkgroup.com}).
-"data_model_output_sick_sicker"
 #'
-#' #' @examples
+#' @examples
 #' # Load the dataset
 #' data("data_model_output_sick_sicker")
 #'

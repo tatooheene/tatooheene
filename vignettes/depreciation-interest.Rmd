@@ -25,21 +25,25 @@ library(tatooheene)
 
 ## What this vignette covers
 
--   The formula and meaning of the annuity factor and the annual
-    depreciation and interest charge.
--   How to call depreciation_interest() and interpret its outputs.
+-   The formula and meaning of the annuity factor and the annual depreciation and interest charge.
+-   How to call `depreciation_interest()` and interpret its outputs.
 -   Edge cases: zero interest rate and validation checks.
 
 ## Background & formulas
 
-Let: - $V$ = replacement value, - $R$ = salvage value at end of
-period, - $N$ = amortisation period (years), = $i$ = annual interest
-rate (decimal).
+Let:
+
+- $V$ = replacement value,
+- $R$ = salvage value at end of period,
+- $N$ = amortisation period (years),
+- $i$ = annual interest rate (decimal).
 
 Annuity factor:
+
 $a = \frac{1 - (1 + i)^{-N}}{i},\quad \text{with } a = N \text{ if } i=0$.
 
 Annual depreciation + interest:
+
 $k = \frac{V - \frac{R}{(1 + i)^N}}{a},\quad \text{with } k = \frac{V - R}{N} \text{ if } i=0$.
 
 ## Quick starts
@@ -75,8 +79,10 @@ depreciation_interest(
 
 ## Zero‑interest edge case
 
-When $i$ = 0, the function uses the mathematical limit: - $a = N$, -
-$k = (V - R)/N$.
+When $i$ = 0, the function uses the mathematical limit:
+
+- $a = N$,
+- $k = (V - R)/N$.
 
 ```{r zero-interest}
 depreciation_interest(

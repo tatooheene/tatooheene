@@ -3,10 +3,9 @@
 #'#' `r lifecycle::badge("experimental")`
 #' This function calculates the net present value of future costs or effects using constant discounting, as described in the Dutch guideline for economic evaluations in healthcare (section 2.6.1.2 version 2024).
 #'
-#' @param values  A numeric (vector of) costs or effects over time (one value per period).
+#' @param values A numeric (vector of) costs or effects over time (one value per period).
 #' @param discount_rate A categorical indication if the values are costs or health effects. The function uses the numeric annual discount rates for the Dutch guidelines accordingly (e.g. 0.03 for 3% of costs and 0.015 for 1.5% for health effects). Default is 0.03.
-#' @param times   A numeric (vector of) time points indicating the time used for the discounting
-#'
+#' @param times A numeric (vector of) time points indicating the time used for the discounting. Since the default discounting is annual, the time points should be in years. The length of this vector should be the same as the length of the `values` vector. When the first year is not discounted, the time points should start at 0 (e.g., c(0, 1, 2) for three years with no discounting in the first year). When the first year is discounted, the time points should start at 1 (e.g., c(1, 2, 3) for three years with discounting in the first year). In case discounting_rate is provided for other than yearly discounting, the time points should be adjusted accordingly.#'
 #'
 #' @examples
 #' # Constant cost of 100 for 3 years, no discounting in first year
@@ -27,7 +26,7 @@
 #' apply_discounting(values = c(0.98, 0.82, 0.79), discount_rate = "effect", times = c(0, 1, 2))
 #'
 #'
-#'#' @export discount
+#'#' @export discount_rate
 #'
 #'
 #'

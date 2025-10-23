@@ -25,11 +25,11 @@ library(tatooheene)
 
 -   What **discounting** is. 
 -   How to call `apply_discounting()` and how to interpret the outputs.
--   How to make use of the accompanied case-example dataset `tatooheene::data_model_sick_sicker.R` #@Stijn is dit logisch? 
+-   How to make use of the accompanied case-example dataset `tatooheene::data_model_sick_sicker` 
 
 ## Background
 
-Costs and health outcomes that are expected to occur in the future are generally valued less than those that occur in the present, and so it is recommended that they be discounted in economic analyses. In the Netherlands, we use a discount rate of 1.5% for health effects and 3% for costs. Discounting is typically done by presenting the costs and health outcomes as a stream of values over time and applying a discounting factor based on the discount rate to each value, and then aggregating them to obtain the ‘present value’ of each stream. The discount factor is increasing over time, based on the underlying fixed discount rate. 
+Costs and health outcomes that are expected to occur in the future are generally valued less than those that occur in the present, and so it is recommended that they be discounted in economic analyses. In the Netherlands, a discount rate of 1.5% for health effects and 3% for costs are used. Discounting is typically done by presenting the costs and health outcomes as a stream of values over time and applying a discounting factor based on the discount rate to each value, and then aggregating them to obtain the ‘present value’ of each stream. The discount factor is increasing over time, based on the underlying fixed discount rate. 
 
 *Text adapted from Dutch costing manual and Discount Rate [online]. (2016). York; York Health Economics Consortium; 2016. <https://yhec.co.uk/glossary/discount-rate/>.*
 
@@ -43,14 +43,14 @@ $$
 C \;=\; \sum_{t=0}^{n} \frac{K_t}{(1+i)^{t}}
 $$
 
-where $K_t$ denotes the costs in year $t$ and $i$ is the constant discount rate.\
+where $K_t$ denotes the costs in year $t$ and $i$ is the constant discount rate.
 No discounting is applied at $t=0$.
 
 Please note that the net present value for costs, $C$, could also be the net present value of an health effect, e.g. QALYs.
 
-## R example from guidelines
+## R example from the Dutch guideline
 
-In an economic evaluation annual costs for standard of care (SoC) are estimated to be €100.00. Without discounting, the total costs after 3 years are €300.00.
+In an economic evaluation, annual costs for standard of care (SoC) are estimated to be €100.00. Without discounting, the total costs after 3 years are €300.00.
 
 ```{r no-discount}
 c_annual <- 100
@@ -58,36 +58,39 @@ c_t3_undiscounted <- 3 * c_annual
 c_t3_undiscounted
 ```
 
-Based on the annual costs, we make a vector of these costs for the three years. 
+Based on the annual costs, we make a vector of these costs for the three years.
+
 ```{r discount-rate}
 v_c_SoC <- rep(c_annual, 3) # Vector/stream of costs values on all years for standard of care 
 names(v_c_SoC) <- c("Year 1", "Year 2", "Year 3")
 ```
 
-This example is a stream of costs, therefore, we need the function `discount_stream`. Using the formulate this gives us:
+This example is a stream of costs, therefore, we need the function `apply_discounting`. Using the formulate this gives us:
+
 ```{r example-guideline}
 apply_discounting(values = v_c_SoC, discount_rate = "costs", times = c(0, 1, 2))
 ```
-Please NOTE: The discount rate for costs in the Netherlands is 3% and is the default discount rate in the functions. 
 
-You can sum these values using the basic `sum `function or [@STIJN, gaat dit er uit? set the argument `aggregate` to `TRUE`]
+Please NOTE: The discount rate for costs in the Netherlands is 3% and is the default discount rate in the function. 
 
-```{r example-guideline}
+You can sum these values using the basic `sum()`.
+
+```{r example-guideline-sum}
 sum(apply_discounting(values = v_c_SoC, discount_rate = "costs", times = c(0, 1, 2)))
-# discount_stream(    values = v_c_SoC, discount_rate = "costs", aggregate = TRUE) #@STIJN verwijderen dus dit??
 ```
 
 ## R example for discounting on single value
 
-If we like to only discount a one time costs of €150 euro at time year 4. We can use use the function as follows:
+If we like to only discount a one time costs of €150 euro at time year 4. We can use the function as follows:
 
 ```{r example-value}
 apply_discounting(values = 150, discount_rate = "costs", times = 4)
 ```
+
 The function now returns the net present values of 150 euro in 4 years time. 
 
-
 ## R example for health effects
+
 As discussed before, the same applies to health effects, in this example QALYs. In this example, an individual is expected to life a perfect life over a four year period and each year 1 QALY is accrued. We do not apply discounting in the first year.  
 
 ```{r example-discount-stream-QALY}
@@ -110,11 +113,12 @@ v_times_discount_y1 <- seq_along(v_c_SoC)
 
 ```
 
-
 # Discounting in models with cycle lengths different then annual
+
 While the discounting approach is straightforward for models with annual cycles, its application becomes ambiguous in models with sub-annual time steps, such as monthly or weekly cycles. The guideline does not specify whether **not discounting the first year** should translate to excluding only the first cycle (e.g., 1 month), or the entire first year from discounting. As a result, different interpretations exist in the modeling community. 
 
-# Why does this matter? 
+## Why does this matter?
+
 Although yearly and monthly discounting approaches produce the same total undiscounted QALYs or costs, they differ in discounted values due to when outcomes are assumed to occur. In annual models, outcomes are often assumed to occur at the end of the year, while in sub-annual models the rewards are typically accrued more evenly across time. This leads to slightly higher present values in the latter (sub-annual), as benefits (or costs) occur earlier and are therefore less discounted.
 
 ```{r demo-difference}
@@ -133,11 +137,12 @@ sum(v_QALY_month_discounted)            # ~3.8808
 
 ```
 
-# Our approach
+## Our approach
 Since discounting relate to the fundamental principle that costs and benefits should be discounted beyond the present, we interpret every time point after the first cycle (present) as future. Therefore, in our code we exclude only the first cycle from discounting, regardless of its length. However, this design choice has practical implications that might not be in line with the desired way of coding for all modelers and we therefore, demonstrate how to adjust the code in case other modelling assumptions are desired. 
 
 # Example using the Sick-Sicker model  
-For demonstration purposes we will make use of the Sick-Sicker example.In the code below we show applying discounting to the annual model. 
+For demonstration purposes we will make use of the Sick-Sicker example.In the code below we show applying discounting to the annual model.
+
 ```{r exmple-sick-sicker-annual}
 data("data_model_output_sick_sicker") # Load the data 
 
@@ -155,7 +160,8 @@ round(sum(v_QALY_dis_Sick_Sicker_annual),3)
 
 ```
 
-Below we focus on the model results for simulating the model using monthly cycles. 
+Below we focus on the model results for simulating the model using monthly cycles.
+
 ```{r exmple-sick-sicker-monthly}
 
 # Use the annual model
