@@ -70,7 +70,7 @@ apply_discounting(values = v_c_SoC, discount_rate = "costs", times = c(0, 1, 2))
 ```
 Please NOTE: The discount rate for costs in the Netherlands is 3% and is the default discount rate in the functions. 
 
-You can sum these values using the basic sum function or set the argument `aggregate` to `TRUE`
+You can sum these values using the basic `sum `function or [@STIJN, gaat dit er uit? set the argument `aggregate` to `TRUE`]
 
 ```{r example-guideline}
 sum(apply_discounting(values = v_c_SoC, discount_rate = "costs", times = c(0, 1, 2)))
@@ -79,60 +79,66 @@ sum(apply_discounting(values = v_c_SoC, discount_rate = "costs", times = c(0, 1,
 
 ## R example for discounting on single value
 
-If we like to only discount a one time costs of 150 euro at time year 3. We can use use the function as follows:
+If we like to only discount a one time costs of €150 euro at time year 4. We can use use the function as follows:
 
 ```{r example-value}
-apply_discounting(values = 150, discount_rate = "costs", times = 3)
+apply_discounting(values = 150, discount_rate = "costs", times = 4)
 ```
-This gives us the present values of 150 euro in 3 years time. 
+The function now returns the net present values of 150 euro in 4 years time. 
 
 
 ## R example for health effects
-As discussed before, the same applies to health effects, in this example QALYs. Where over a four year period an individual is expected to life a perfect life and each year 1 QALY is accrued. 
+As discussed before, the same applies to health effects, in this example QALYs. In this example, an individual is expected to life a perfect life over a four year period and each year 1 QALY is accrued. We do not apply discounting in the first year.  
 
 ```{r example-discount-stream-QALY}
 apply_discounting(value = c(1, 1, 1, 1), discount_rate = "effects", times = c(0, 1, 2, 3))
 ```
 
 
-# Discounting of the first cycle
-As you might have noticed, the first cycle is not discounted by default. This is in line with the Dutch guidelines that recommend not to discount the first cycle. Therefore, functions provided in this package skip discounting of only the first cycle by default. Via the parameter `discount_year_one`, the analyst can decide whether to discount the initial cycle by setting it to `TRUE`.
+# Discounting the first cycle and set up the vector for time
+As you might have noticed, the first cycle is not discounted. This is in line with the Dutch guidelines that recommend not to discount the first cycle. Therefore, the vector for times start with a zero. A generic example of how to set up the vector for time is shown below
 
-```{r example-discount-year-one}
-apply_discounting(value = c(1, 1, 1, 1), discount_rate = "effects", discount_year_one = FALSE)
-apply_discounting(value = c(1, 1, 1, 1), discount_rate = "effects", discount_year_one = TRUE)
+```{r example-set-up-times-vector}
+v_times             <- seq(from = 0, to = length(v_c_SoC) - 1, by = 1 )
+```
 
-
-apply_discounting(value = c(1), discount_rate = "effects", year = 5, discount_year_one = TRUE)
-apply_discounting(value = c(1), discount_rate = "effects", year = 5, discount_year_one = FALSE)
+However, in some circumstances the first year has to be discounted. In that case, vector for times has to start at 1. This can be done with the code below. 
+```{r example-set-up-times-vector-discount-y1}
+v_times_discount_y1 <- seq(from = 1, to = length(v_c_SoC), by = 1 ) 
+# or 
+v_times_discount_y1 <- seq_along(v_c_SoC)
 
 ```
 
+
 # Discounting in models with cycle lengths different then annual
 While the discounting approach is straightforward for models with annual cycles, its application becomes ambiguous in models with sub-annual time steps, such as monthly or weekly cycles. The guideline does not specify whether **not discounting the first year** should translate to excluding only the first cycle (e.g., 1 month), or the entire first year from discounting. As a result, different interpretations exist in the modeling community. 
-
 
 # Why does this matter? 
 Although yearly and monthly discounting approaches produce the same total undiscounted QALYs or costs, they differ in discounted values due to when outcomes are assumed to occur. In annual models, outcomes are often assumed to occur at the end of the year, while in sub-annual models the rewards are typically accrued more evenly across time. This leads to slightly higher present values in the latter (sub-annual), as benefits (or costs) occur earlier and are therefore less discounted.
 
 ```{r demo-difference}
-values = c(1, 1, 1, 1)            # 1 QALY per year
-discount_rate = 0.015             # 3% annual discount rate
-t_year <- seq_along(values)       # Time: 1, 2, 3, 4
-discounted_values <- values * (1 + discount_rate)^(-t_year)
-sum(discounted_values)            # ~3.7171
+values <- c(1, 1, 1, 1)            # 1 QALY per year
+sum(values) # total undiscounted QALYs
+v_times_year <- seq_along(values) # Time: 1, 2, 3, 4
+v_QALY_discounted <- apply_discounting(values = values, discount_rate = "effects", times = v_times_year)
+sum(v_QALY_discounted)            # ~3.854385
 
-discount_stream(values = values, discount_rate = "effects", aggregate = T, discount_year_one = T)
 
+values_month <-  rep(1/12, 4/(1/12)) # 1 QALY per year
+sum(values_month) # total undiscounted QALYs
+v_times_month <- seq_along(values_month) * 1/12 # Time: 1/12, 2/12, 3/12, etc.until time is 4
+v_QALY_month_discounted <- apply_discounting(values = values_month, discount_rate = "effects", times = v_times_month)
+sum(v_QALY_month_discounted)            # ~3.8808
 
 ```
 
 # Our approach
 Since discounting relate to the fundamental principle that costs and benefits should be discounted beyond the present, we interpret every time point after the first cycle (present) as future. Therefore, in our code we exclude only the first cycle from discounting, regardless of its length. However, this design choice has practical implications that might not be in line with the desired way of coding for all modelers and we therefore, demonstrate how to adjust the code in case other modelling assumptions are desired. 
 
-## 
-For demonstration purposes we will make use of the Sick-Sicker example 
-```{r exmple-sick-sicker}
+# Example using the Sick-Sicker model  
+For demonstration purposes we will make use of the Sick-Sicker example.In the code below we show applying discounting to the annual model. 
+```{r exmple-sick-sicker-annual}
 data("data_model_output_sick_sicker") # Load the data 
 
 # Use the annual model
@@ -142,32 +148,96 @@ l_m_M_annual[["Standard of care"]]
 v_Q_SoC <- l_m_M_annual[["Standard of care"]] %*% l_u_annual[["Standard of care"]]
 sum(v_Q_SoC) # get the undiscounted QALYs
 
-# Apply discounting
-discount_stream(v_Q_SoC, discount_rate = "effects", discount_year_one = FALSE, cycle_length_in_years = 1, aggregate = T) # This gives the discounted QALYs
+# Apply discounting without discounting in the first year
+v_times_annual <- seq(from = 0, to = length(v_Q_SoC)-1, by = 1 )  
+v_QALY_dis_Sick_Sicker_annual <- apply_discounting(values = v_Q_SoC, discount_rate = "effects", times = v_times_annual) # This gives the discounted QALYs
+round(sum(v_QALY_dis_Sick_Sicker_annual),3)
 
+```
+
+Below we focus on the model results for simulating the model using monthly cycles. 
+```{r exmple-sick-sicker-monthly}
+
+# Use the annual model
+head(l_m_M_monthly[["Standard of care"]])
+tail(l_m_M_monthly[["Standard of care"]]) 
+# here you see this file has more cycles compared to the annual model
+
+# Apply the utilities for the montly cycles 
+v_Q_SoC_monthly <- l_m_M_monthly[["Standard of care"]] %*% l_u_monthly[["Standard of care"]]
+sum(v_Q_SoC_monthly) # get the undiscounted QALYs
+# 
+```
+Please note the total undiscounted values between the monthly and yearly model differ a bit. This has to due with the timing of events during the simulation.
+
+In the code example below we show how to discount the results for the monthly simulated model results without discounting in the first year, by applying a step-wise discounting after the first year. This means that we set the vector for time using 
+
+```{r example-sick-sicker-monhtly-discount-small-steps}
+# Apply discounting without discounting in the first year 
+cycle_length   <- 1/12 # cycle length in fraction of a year
+v_times_monthly <- seq_along(v_Q_SoC_monthly) * cycle_length
+
+v_times_monthly[1:((1/cycle_length))] <- 0 #@Stijn, we doen altijd 1 cycle meer dan normaal. Initial cycle. 
+
+v_QALY_dis_Sick_Sicker_monthly <- apply_discounting(values = v_Q_SoC_monthly, discount_rate = "effects", times = v_times_monthly) # This gives the discounted QALYs
+round(sum(v_QALY_dis_Sick_Sicker_monthly),3)
+
+```
+
+
+Alternatively, one could sum the markov trace `l_M` in periods of a yearly cycle and assume that all rewards happen at the end of the cycle. After this summation, discounting with yearly step can be applied. 
+
+#@stijn, after we agree that we like to show this we can simpilfy and improve this code section
+
+```{r}
+# Add a year column based on cycle number
+v_years         <- floor((seq_len(nrow(l_m_M_monthly$`Standard of care`)) - 1) / 12) 
+m_M_SoC_monthly <- cbind(l_m_M_monthly$`Standard of care`, year = v_years)
+
+# Aggregate by year
+m_M_annual_aggrated_from_month <- as.matrix(aggregate(m_M_SoC_monthly[, c("H", "S1", "S2", "D")]/12,
+                           by = list(m_M_SoC_monthly[, c("year")]),
+                           FUN = sum))
+
+
+# View the result
+print(m_M_annual_aggrated_from_month)
+
+# Apply costs
+
+v_c_sick_sicker_annual_aggrated_from_month <-  (m_M_annual_aggrated_from_month[, c("H", "S1", "S2", "D")] %*% l_u_annual[["Standard of care"]])
+
+
+
+v_times <- seq(from = 0, to = length(v_c_sick_sicker_annual_aggrated_from_month) - 1, by = 1)
+sum(apply_discounting(values = v_c_sick_sicker_annual_aggrated_from_month, discount_rate = "effect", times = v_times))
 
 
 ```
 
 
-# Discussion
-Weird to have non-annual cycles, but give the cycles annual?
-What if you only dont disocunt hte first year but all after 
+Alternatively, you could re
+```{r}
+apply_discounting(values = m_M_SoC_monthly[])
+```
 
-[cycle lengt adjustment ]
 
-For some Cite Attema, Claxton 2018 paper
 
+
+
+# Table with overview of the resuls
 
 
 
 ## Input validation & common messages
+# @Stijn what do add here?  and are the error messages ok 
 
 ## Error messages you might see
 
--   **"Year out of range …"**\
-    You asked for a year outside `range(df_fp$Year)`. Use a valid year or pass `NULL` for all years.
+-   **"`values` must be numeric"**\
+    The values argument needs to get a numeric value (scalar) or vector of numeric values (vector)
+-  **"`discount_rate` must be numeric" **\
+-  **"`discount_rate` must be between 0 and 1")** \
 
--   **"For `output = "value"`, provide exactly one `year` and a single (units, avg) combination."**\
-    Single value mode needs exactly one year **and** one `(units, avg)`.
+
 

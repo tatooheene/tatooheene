@@ -57,6 +57,24 @@ apply_discounting <- function(values,
   }
 
 
+  # Convert to vectors if they are matrices
+  if (is.matrix(values)) {
+    values <- as.vector(values)
+  }
+  if (is.matrix(times)) {
+    time <- as.vector(times)
+  }
+
+  # Check both are vectors
+  if (!is.vector(values) || !is.vector(times)) {
+    stop("Both inputs must be vectors or convertible to vectors.")
+  }
+
+  # Check they are the same length
+  if (length(values) != length(times)) {
+    stop("Values and time must be the same length.")
+  }
+
   # Validation
   assertthat::assert_that(is.numeric(values),                       msg = "`values` must be numeric")
   assertthat::assert_that(is.numeric(discount_rate),                msg = "`discount_rate` must be numeric")
