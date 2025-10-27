@@ -48,7 +48,7 @@ apply_discounting <- function(values,
   # Show a message in case the user uses or explores a discount rate different than the Dutch costing manual
   msg <- assertthat::validate_that(
     discount_rate == 0.03 | discount_rate == 0.015,
-    msg = "The used `discount_rate` is different then the one recommend in the Dutch guidelines"
+    msg = "The used `discount_rate` is different than the one recommended in the Dutch guidelines"
   )
 
   if (!isTRUE(msg)) {

@@ -23,13 +23,13 @@ library(tatooheene)
 
 ## What this vignette covers
 
--   What **discounting** is. 
+-   What **discounting** is.
 -   How to call `apply_discounting()` and how to interpret the outputs.
--   How to make use of the accompanied case-example dataset `tatooheene::data_model_sick_sicker` 
+-   How to make use of the accompanied case-example dataset `tatooheene::data_model_sick_sicker`
 
 ## Background
 
-Costs and health outcomes that are expected to occur in the future are generally valued less than those that occur in the present, and so it is recommended that they be discounted in economic analyses. In the Netherlands, a discount rate of 1.5% for health effects and 3% for costs are used. Discounting is typically done by presenting the costs and health outcomes as a stream of values over time and applying a discounting factor based on the discount rate to each value, and then aggregating them to obtain the ‘present value’ of each stream. The discount factor is increasing over time, based on the underlying fixed discount rate. 
+Costs and health outcomes that are expected to occur in the future are generally valued less than those that occur in the present, and so it is recommended that they be discounted in economic analyses. In the Netherlands, a discount rate of 1.5% for health effects and 3% for costs are used. Discounting is typically done by presenting the costs and health outcomes as a stream of values over time and applying a discounting factor based on the discount rate to each value, and then aggregating them to obtain the ‘present value’ of each stream. The discount factor is increasing over time, based on the underlying fixed discount rate.
 
 *Text adapted from Dutch costing manual and Discount Rate [online]. (2016). York; York Health Economics Consortium; 2016. <https://yhec.co.uk/glossary/discount-rate/>.*
 
@@ -43,17 +43,16 @@ $$
 C \;=\; \sum_{t=0}^{n} {K_t}{(1+i)^{-t}}
 $$
 
-where $K_t$ denotes the costs in year $t$ and $i$ is the constant discount rate.
-No discounting is applied at $t=0$.
+where $K_t$ denotes the costs in year $t$ and $i$ is the constant discount rate. No discounting is applied at $t=0$.
 
 Please note that the net present value for costs, $C$, could also be the net present value of an health effect, e.g. QALYs.
 
-It is also worth noticing, that the formula as presented in the Dutch manual is a rewritten form from the often presented formula in this form: 
+It is also worth noticing, that the formula as presented in the Dutch manual is a rewritten form from the often presented formula in this form:
 
 $$
 NPV \;=\; \frac{V}{(1+r)^{t}}
-$$
-where $V$ is the value, and $r$ the discount rate. 
+$$ 
+where $NVP$ is the next present value, $V$ is the value, $r$ the discount rate and $t$ time. 
 
 ## R example from the Dutch guideline
 
@@ -78,7 +77,7 @@ This example is a stream of costs, therefore, we need the function `apply_discou
 apply_discounting(values = v_c_SoC, discount_rate = "costs", times = c(0, 1, 2))
 ```
 
-Please NOTE: The discount rate for costs in the Netherlands is 3% and is the default discount rate in the function. 
+Please NOTE: The discount rate for costs in the Netherlands is 3% and is the default discount rate in the function.
 
 You can sum these values using the basic `sum()`.
 
@@ -94,25 +93,26 @@ If we like to only discount a one time costs of €150 euro at time year 4. We c
 apply_discounting(values = 150, discount_rate = "costs", times = 4)
 ```
 
-The function now returns the net present values of 150 euro in 4 years time. 
+The function now returns the net present values of 150 euro in 4 years time.
 
 ## R example for health effects
 
-As discussed before, the same applies to health effects, in this example QALYs. In this example, an individual is expected to life a perfect life over a four year period and each year 1 QALY is accrued. We do not apply discounting in the first year.  
+As discussed before, the same applies to health effects, in this example QALYs. In this example, an individual is expected to life a perfect life over a four year period and each year 1 QALY is accrued. We do not apply discounting in the first year.
 
 ```{r example-discount-stream-QALY}
 apply_discounting(value = c(1, 1, 1, 1), discount_rate = "effects", times = c(0, 1, 2, 3))
 ```
 
-
 # Discounting the first cycle and set up the vector for time
+
 As you might have noticed, the first cycle is not discounted. This is in line with the Dutch guidelines that recommend not to discount the first cycle. Therefore, the vector for times start with a zero. A generic example of how to set up the vector for time is shown below
 
 ```{r example-set-up-times-vector}
 v_times             <- seq(from = 0, to = length(v_c_SoC) - 1, by = 1 )
 ```
 
-However, in some circumstances the first year has to be discounted. In that case, vector for times has to start at 1. This can be done with the code below. 
+However, in some circumstances the first year has to be discounted. In that case, vector for times has to start at 1. This can be done with the code below.
+
 ```{r example-set-up-times-vector-discount-y1}
 v_times_discount_y1 <- seq(from = 1, to = length(v_c_SoC), by = 1 ) 
 # or 
@@ -122,7 +122,7 @@ v_times_discount_y1 <- seq_along(v_c_SoC)
 
 # Discounting in models with cycle lengths different then annual
 
-While the discounting approach is straightforward for models with annual cycles, its application becomes ambiguous in models with sub-annual time steps, such as monthly or weekly cycles. The guideline does not specify whether **not discounting the first year** should translate to excluding only the first cycle (e.g., 1 month), or the entire first year from discounting. As a result, different interpretations exist in the modeling community. 
+While the discounting approach is straightforward for models with annual cycles, its application becomes ambiguous in models with sub-annual time steps, such as monthly or weekly cycles. The guideline does not specify whether **not discounting the first year** should translate to excluding only the first cycle (e.g., 1 month), or the entire first year from discounting. As a result, different interpretations exist in the modeling community.
 
 ## Why does this matter?
 
@@ -145,9 +145,11 @@ sum(v_QALY_month_discounted)            # ~3.8808
 ```
 
 ## Our approach
-Since discounting relate to the fundamental principle that costs and benefits should be discounted beyond the present, we interpret every time point after the first cycle (present) as future. Therefore, in our code we exclude only the first cycle from discounting, regardless of its length. However, this design choice has practical implications that might not be in line with the desired way of coding for all modelers and we therefore, demonstrate how to adjust the code in case other modelling assumptions are desired. 
 
-# Example using the Sick-Sicker model  
+Since discounting relate to the fundamental principle that costs and benefits should be discounted beyond the present, we interpret every time point after the first cycle (present) as future. Therefore, in our code we exclude only the first cycle from discounting, regardless of its length. However, this design choice has practical implications that might not be in line with the desired way of coding for all modelers and we therefore, demonstrate how to adjust the code in case other modelling assumptions are desired.
+
+# Example using the Sick-Sicker model
+
 For demonstration purposes we will make use of the Sick-Sicker example.In the code below we show applying discounting to the annual model.
 
 ```{r exmple-sick-sicker-annual}
@@ -181,9 +183,10 @@ v_Q_SoC_monthly <- l_m_M_monthly[["Standard of care"]] %*% l_u_monthly[["Standar
 sum(v_Q_SoC_monthly) # get the undiscounted QALYs
 # 
 ```
+
 Please note the total undiscounted values between the monthly and yearly model differ a bit. This has to due with the timing of events during the simulation.
 
-In the code example below we show how to discount the results for the monthly simulated model results without discounting in the first year, by applying a step-wise discounting after the first year. This means that we set the vector for time using 
+In the code example below we show how to discount the results for the monthly simulated model results without discounting in the first year, by applying a step-wise discounting after the first year. This means that we set the vector for time using
 
 ```{r example-sick-sicker-monhtly-discount-small-steps}
 # Apply discounting without discounting in the first year 
@@ -198,10 +201,9 @@ round(sum(v_QALY_dis_Sick_Sicker_monthly),3)
 
 ```
 
+Alternatively, one could sum the markov trace `l_M` in periods of a yearly cycle and assume that all rewards happen at the end of the cycle. After this summation, discounting with yearly step can be applied.
 
-Alternatively, one could sum the markov trace `l_M` in periods of a yearly cycle and assume that all rewards happen at the end of the cycle. After this summation, discounting with yearly step can be applied. 
-
-#@stijn, after we agree that we like to show this we can simpilfy and improve this code section
+\#@stijn, after we agree that we like to show this we can simpilfy and improve this code section
 
 ```{r}
 # Add a year column based on cycle number
@@ -229,29 +231,24 @@ sum(apply_discounting(values = v_c_sick_sicker_annual_aggrated_from_month, disco
 
 ```
 
+Alternatively, you could use the vector with indicator for the year as the `times` vector and apply the discounting this way. This gives the same approach compared to
 
-Alternatively, you could use the vector with indicator for the year as the `times` vector and apply the discounting this way. This gives the same approach compared to 
 ```{r}
 v_c_sick_sicker_month <- m_M_SoC_monthly[, c("H", "S1", "S2", "D")] %*% l_u_monthly[["Standard of care"]]
 sum(apply_discounting(values = v_c_sick_sicker_month, discount_rate = "effect", times = v_years ))
 ```
 
-
-
 # Table with overview of the resuls
-#@stijn, willen we een overzicht van de verschillende getallen? Ik gebruik nu zowel effecten als kosten door elkaar. Willen we dat consitent hetzelfde? 
 
-
+\#@stijn, willen we een overzicht van de verschillende getallen? Ik gebruik nu zowel effecten als kosten door elkaar. Willen we dat consitent hetzelfde?
 
 ## Input validation & common messages
-# @Stijn what do add here?  and are the error messages ok 
+
+# @Stijn what do add here? and are the error messages ok
 
 ## Error messages you might see
 
 -   **"`values` must be numeric"**\
     The values argument needs to get a numeric value (scalar) or vector of numeric values (vector)
--  **"`discount_rate` must be numeric" **\
--  **"`discount_rate` must be between 0 and 1")** \
-
-
-
+-   **"`discount_rate` must be numeric"** \
+-   **"`discount_rate` must be between 0 and 1")**\
