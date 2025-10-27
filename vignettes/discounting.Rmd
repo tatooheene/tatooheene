@@ -37,16 +37,23 @@ Costs and health outcomes that are expected to occur in the future are generally
 
 The most common method is to calculate a net present value based on constant discounting.
 
-When taking costs as an example, the present value of costs ($C$) from the current year ($t=0$) up to and including year $n$ under a constant discounting model is:
+When taking costs as an example, the net present value of costs ($C$) from the current year ($t=0$) up to and including year $n$ under a constant discounting model is:
 
 $$
-C \;=\; \sum_{t=0}^{n} \frac{K_t}{(1+i)^{t}}
+C \;=\; \sum_{t=0}^{n} {K_t}{(1+i)^{-t}}
 $$
 
 where $K_t$ denotes the costs in year $t$ and $i$ is the constant discount rate.
 No discounting is applied at $t=0$.
 
 Please note that the net present value for costs, $C$, could also be the net present value of an health effect, e.g. QALYs.
+
+It is also worth noticing, that the formula as presented in the Dutch manual is a rewritten form from the often presented formula in this form: 
+
+$$
+NPV \;=\; \frac{V}{(1+r)^{t}}
+$$
+where $V$ is the value, and $r$ the discount rate. 
 
 ## R example from the Dutch guideline
 

@@ -83,7 +83,7 @@ apply_discounting <- function(values,
   t      <- times # save the time for the time vector
 
   # Apply discounting
-  discounted_values <- values * (1 + discount_rate)^(-t)
+  discounted_values <- values * (1 + discount_rate)^(-t) # Note - this is the formula based on the equation in the Dutch guidelines. The more common form to write this formula is value / (1 + r) ^ t. The results however are identical.
 
   return(discounted_values)
 
