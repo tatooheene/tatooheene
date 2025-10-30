@@ -51,8 +51,7 @@ It is also worth noticing, that the formula as presented in the Dutch manual is 
 
 $$
 NPV \;=\; \frac{V}{(1+r)^{t}}
-$$ 
-where $NVP$ is the next present value, $V$ is the value, $r$ the discount rate and $t$ time. 
+$$ where $NVP$ is the next present value, $V$ is the value, $r$ the discount rate and $t$ time.
 
 ## R example from the Dutch guideline
 
@@ -74,10 +73,12 @@ names(v_c_SoC) <- c("Year 1", "Year 2", "Year 3")
 This example is a stream of costs, therefore, we need the function `apply_discounting`. Using the formulate this gives us:
 
 ```{r example-guideline}
-apply_discounting(values = v_c_SoC, discount_rate = "costs", times = c(0, 1, 2))
+apply_discounting(values = v_c_SoC, discount_rate = "costs", times = c(0,1,2))
 ```
 
-Please NOTE: The discount rate for costs in the Netherlands is 3% and is the default discount rate in the function.
+**Please NOTE**: The discount rate for costs in the Netherlands is 3% and is the default discount rate in the function.
+
+@Eline**, misschien hier dan toch in de functie de mogelijkheid geven om dit in een keer te doen, omdat de meeste mensen hier vaak meteen naar op zoek zijn**
 
 You can sum these values using the basic `sum()`.
 
@@ -93,7 +94,7 @@ If we like to only discount a one time costs of €150 euro at time year 4. We c
 apply_discounting(values = 150, discount_rate = "costs", times = 4)
 ```
 
-The function now returns the net present values of 150 euro in 4 years time.
+The function now returns the net present values of 150 euro in 4 years time. @Eline **is after hier niet duidelijker dan in ?**
 
 ## R example for health effects
 
@@ -203,8 +204,7 @@ round(sum(v_QALY_dis_Sick_Sicker_monthly),3)
 
 Alternatively, one could sum the markov trace `l_M` in periods of a yearly cycle and assume that all rewards happen at the end of the cycle. After this summation, discounting with yearly step can be applied.
 
-\#@stijn, after we agree that we like to show this we can simpilfy and improve this code section
-
+\#@stijn, after we agree that we like to show this we can simpilfy and improve this code section \*\* Ik ben het hier mee eens, misschien even samen nog naar kijken hoe we dit het beste hier neer kunnen zetten. Wellicht kunnen we er subhoofdstukken van maken zodat het duidelijker wordt. Dus dat je een hoofdstuk hebt waar je de objecten maakt en dan de alternatieve manieren hoe je het kan aanpakken 
 ```{r}
 # Add a year column based on cycle number
 v_years         <- floor((seq_len(nrow(l_m_M_monthly$`Standard of care`)) - 1) / 12) 
@@ -240,15 +240,15 @@ sum(apply_discounting(values = v_c_sick_sicker_month, discount_rate = "effect", 
 
 # Table with overview of the resuls
 
-\#@stijn, willen we een overzicht van de verschillende getallen? Ik gebruik nu zowel effecten als kosten door elkaar. Willen we dat consitent hetzelfde?
+\#@stijn, willen we een overzicht van de verschillende getallen? Ik gebruik nu zowel effecten als kosten door elkaar. Willen we dat consitent hetzelfde? --> Misschien kunnen we per subhoofdstuk zoals hierboven beschreven de resultaten geven zodat ze ook weten dat de betreffende resultaten bij een bepaalde subparagraaf horen. 
 
 ## Input validation & common messages
 
-# @Stijn what do add here? and are the error messages ok
+# @Stijn what do add here? Hier kunnen we nog toevoegen dat gebruikers een keuze moeten maken tussen wat voor rate ze willen voor discount (op dit moment tussen effects and costs), dat de vector van tijd van gelijke lengte moet zijn als de vector van de kosten, utilities nooit groter kunnen zijn dan 1 en kosten nooit lager dan 0 in de input. 
 
-## Error messages you might see
+## Error messages you might see 
 
 -   **"`values` must be numeric"**\
     The values argument needs to get a numeric value (scalar) or vector of numeric values (vector)
--   **"`discount_rate` must be numeric"** \
+-   **"`discount_rate` must be numeric"**\
 -   **"`discount_rate` must be between 0 and 1")**\

@@ -1,7 +1,7 @@
 #' Example dataset: data_model_output_sick_sicker
 #'
-#' A dataset containing model output objects from the **Sick-Sicker** example
-#' model developed by the **DARTH (Decision Analysis in R for Technologies in Health)**
+#'@description
+#' A dataset containing model output objects from the **Sick-Sicker** examplemodel developed by the **DARTH (Decision Analysis in R for Technologies in Health)**
 #' workgroup. This dataset includes the results from both annual and monthly
 #' Markov model runs, specifically the Markov trace files and related output
 #' objects produced during simulation.

@@ -1,11 +1,12 @@
 #' Calculate the discounted (net present value) of costs or effects
 #'
-#'#' `r lifecycle::badge("experimental")`
+#'@description
+#' `r lifecycle::badge("experimental")`
 #' This function calculates the net present value of future costs or effects using constant discounting, as described in the Dutch guideline for economic evaluations in healthcare (section 2.6.1.2 version 2024).
 #'
 #' @param values A numeric (vector of) costs or effects over time (one value per period).
 #' @param discount_rate A categorical indication if the values are costs or health effects. The function uses the numeric annual discount rates for the Dutch guidelines accordingly (e.g. 0.03 for 3% of costs and 0.015 for 1.5% for health effects). Default is 0.03.
-#' @param times A numeric (vector of) time points indicating the time used for the discounting. Since the default discounting is annual, the time points should be in years. The length of this vector should be the same as the length of the `values` vector. When the first year is not discounted, the time points should start at 0 (e.g., c(0, 1, 2) for three years with no discounting in the first year). When the first year is discounted, the time points should start at 1 (e.g., c(1, 2, 3) for three years with discounting in the first year). In case costs or effects are accrued in time steps other they annual, the time points should be adjusted accordingly.#'
+#' @param times A numeric (vector of) time points indicating the time used for the discounting. Since the default discounting is annual, the time points should be in years. The length of this vector should be the same as the length of the `values` vector. When the first year is not discounted, the time points should start at 0 (e.g., c(0, 1, 2) for three years with no discounting in the first year). When the first year is discounted, the time points should start at 1 (e.g., c(1, 2, 3) for three years with discounting in the first year). In case costs or effects are accrued in time steps other they annual, the time points should be adjusted accordingly.
 #'
 #' @examples
 #' # Constant cost of 100 for 3 years, no discounting in first year
@@ -27,10 +28,7 @@
 #'
 #'
 #'#' @export discount_rate
-#'
-#'
-#'
-#'@STIJN : do we like to have a default for times - in case time is not specified? Assum annual? Or that is to risky and trick? - Function aggregate data is now removed, as we had previously? Or shall I add this back into the function?
+
 
 
 apply_discounting <- function(values,
