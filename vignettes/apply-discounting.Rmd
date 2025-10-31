@@ -186,7 +186,6 @@ n_discounted_Q_SoC
 ## Sick-Sicker with montly cycles
 Below we focus on the model results for simulating the model using monthly cycles.
 ```{r exmple-sick-sicker-monthly}
-
 # Use the annual model
 head(l_m_M_monthly[["Standard of care"]])
 tail(l_m_M_monthly[["Standard of care"]]) 
@@ -204,8 +203,8 @@ In the code example below we show how to discount the results for the monthly si
 
 ```{r example-sick-sicker-monhtly-discount-small-steps}
 # Apply discounting without discounting in the first year 
-cycle_length   <- 1/12 # cycle length in fraction of a year
-v_times_monthly <- seq(from = 0, to = length(v_Q_SoC) - 1, by = cycle_length ) 
+cycle_length    <- 1/12 # cycle length in fraction of a year
+v_times_monthly <- seq(from = 0, to = length(v_Q_SoC) - 1, by = cycle_length) 
 
 v_times_monthly[1:((1/cycle_length))] <- 0 
 v_times_monthly[1:20] # print first twenty items to show times vector
@@ -216,7 +215,7 @@ n_discounted_Q_SoC_monthly
 
 ```
 
-## Sick-Sicker simulatied using montly cycles but discounted on a yearly scale
+## Sick-Sicker simulatied using monthly cycles but discounted on a yearly scale
 Alternatively, one could sum the markov trace `l_M` in periods of a yearly cycle and assume that all rewards happen at the end of the cycle. After this summation, discounting with yearly step can be applied.
 
 \#@stijn, after we agree that we like to show this we can simpilfy and improve this code section \*\* Ik ben het hier mee eens, misschien even samen nog naar kijken hoe we dit het beste hier neer kunnen zetten. Wellicht kunnen we er subhoofdstukken van maken zodat het duidelijker wordt. Dus dat je een hoofdstuk hebt waar je de objecten maakt en dan de alternatieve manieren hoe je het kan aanpakken -> Ik heb nu sub-kopjes gemaakt. Maar ik denk dat jij bedoelt => data lade, tijd versies maken en daarna discounting wil laten zien? Dat kan dan misschien dinsdag gedaan worden. 
@@ -226,17 +225,16 @@ v_years         <- floor((seq_len(nrow(l_m_M_monthly$`Standard of care`)) - 1) /
 m_M_SoC_monthly <- cbind(l_m_M_monthly$`Standard of care`, year = v_years)
 
 
+##[STOP HERE - adjust rightS]
+## apply first this rewards and sum than per year - after the discounting - otherwise not correctly done]
+# tricky appraoch
+
 sum(apply_discounting(values = v_Q_SoC_monthly, discount_rate = "effect", times = v_years))
 
 # Aggregate by year
-m_M_annual_aggrated_from_month_init <- m_M_SoC_monthly[1, ]
-m_M_annual_aggrated_from_month <- as.matrix(aggregate(m_M_SoC_monthly[-1, c("H", "S1", "S2", "D")]/12,
-                           by = list(m_M_SoC_monthly[-1, c("year")]),
-                           FUN = sum))
+v_times_select_trace <- seq(1, length(v_Q_SoC_monthly), by = 12) # Identify the rows needed 
 
-m_M_annual_aggrated_from_month <- rbind(m_M_annual_aggrated_from_month_init[c("H", "S1", "S2", "D")],
-                                        m_M_annual_aggrated_from_month[, c("H", "S1", "S2", "D")] )
-
+m_M_annual_aggrated_from_month <- m_M_SoC_monthly[v_times_select_trace, ]
 
 # View the result
 print(m_M_annual_aggrated_from_month)
