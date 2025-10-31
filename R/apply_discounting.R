@@ -17,7 +17,7 @@
 #'   }
 #' @param times A numeric (vector of) time points indicating the time used for the discounting. Since the default discounting is annual, the time points should be in years. The length of this vector should be the same as the length of the `values` vector. When the first year is not discounted, the time points should start at 0 (e.g., c(0, 1, 2) for three years with NO discounting in the first year). When the first year is discounted, the time points should start at 1 (e.g., c(1, 2, 3) for three years WITH discounting in the first year). In case costs or effects are accrued in time steps other they annual, the time points should be adjusted accordingly, see more details in the vignettes of this package about discounting.
 #' @param aggregate Logical: should the stream be aggregated? Default is FALSE.
-#' @param digitis A numeric value to indicate the number of digits to round the value. Default is 3 digits
+#' @param digits A numeric value to indicate the number of digits to round the value. Default is 3 digits
 #'
 #'
 #' @examples
@@ -37,7 +37,8 @@
 #' Same applies to utility values
 #' Generated QALYs over three years, NO discounting in first year
 #' apply_discounting(values = c(0.98, 0.82, 0.79), discount_rate = "effect", times = c(0, 1, 2))
-#'
+#' With aggregating and rounding of results
+#' apply_discounting(values = c(0.98, 0.82, 0.79), discount_rate = "effect", times = c(0, 1, 2), aggregate = TRUE, digits = 3)
 #'
 #' @export `discounted_values`
 #' @details
@@ -49,7 +50,7 @@ apply_discounting <- function(values,
                               discount_rate = c("costs", "effects"),
                               times,
                               aggregate = FALSE,
-                              digits = 3) {
+                              digits = NULL) {
 
   # Validate and convert discount rate
   if (is.character(discount_rate)) {
@@ -102,8 +103,11 @@ apply_discounting <- function(values,
 
 
   if(aggregate == TRUE){
-    discounted_values <- sum(discounted_values)
-    discounted_values <- round(discounted_values, digits)  # round values to digits
+    discounted_values <- sum(discounted_values)}
+
+  # Only round if user specifies digits
+  if (!is.null(digits)) {
+    discounted_values <- round(discounted_values, digits)
   }
 
 
