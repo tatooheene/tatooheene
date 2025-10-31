@@ -94,6 +94,7 @@ discount_stream <- function(values,
 
   if(aggregate == TRUE){
     discounted_values <- sum(discounted_values)
+    discounted_values <- round(discounted_values, digits) # round values to digits
 }
 
   # Return
