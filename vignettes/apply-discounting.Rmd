@@ -66,25 +66,31 @@ c_t3_undiscounted
 Based on the annual costs, we make a vector of these costs for the three years.
 
 ```{r discount-rate}
-v_c_SoC <- rep(c_annual, 3) # Vector/stream of costs values on all years for standard of care 
-names(v_c_SoC) <- c("Year 1", "Year 2", "Year 3")
+v_c_SoC <- rep(c_annual, 3) # Vector of costs values on all years for standard of care 
+names(v_c_SoC) <- c("Year 1", "Year 2", "Year 3") # name the vector 
 ```
 
-This example is a stream of costs, therefore, we need the function `apply_discounting`. Using the formulate this gives us:
+Next, we can discount this stream of costs using the function `apply_discounting` via the following code:
 
 ```{r example-guideline}
-apply_discounting(values = v_c_SoC, discount_rate = "costs", times = c(0,1,2))
+apply_discounting(values = v_c_SoC, discount_rate = "costs", times = c(0, 1, 2))
 ```
+The function gives a vector of discounted values. As the default discount rate for costs in the Netherlands is 3%, this is the values as used by the function. 
 
-**Please NOTE**: The discount rate for costs in the Netherlands is 3% and is the default discount rate in the function.
 
-@Eline**, misschien hier dan toch in de functie de mogelijkheid geven om dit in een keer te doen, omdat de meeste mensen hier vaak meteen naar op zoek zijn**
-
-You can sum these values using the basic `sum()`.
+### Present the values as aggreated or rounded values
+You can sum these values using the basic `sum()` or using the argument `aggregate`. 
 
 ```{r example-guideline-sum}
-sum(apply_discounting(values = v_c_SoC, discount_rate = "costs", times = c(0, 1, 2)))
+# aggregate the values
+sum(apply_discounting(values = v_c_SoC, discount_rate = "costs", times = c(0, 1, 2))) # sum 
+apply_discounting(values = v_c_SoC, discount_rate = "costs", times = c(0, 1, 2), aggregate = TRUE) # aggregate TRUE
+
+# rounding 
+apply_discounting(values = v_c_SoC, discount_rate = "costs", times = c(0, 1, 2), digits = 3) # use 3 digits 
+apply_discounting(values = v_c_SoC, discount_rate = "costs", times = c(0, 1, 2), aggregate = TRUE, digits = 2) # round to 2 decimals 
 ```
+
 
 ## R example for discounting on single value
 
@@ -94,7 +100,7 @@ If we like to only discount a one time costs of €150 euro at time year 4. We c
 apply_discounting(values = 150, discount_rate = "costs", times = 4)
 ```
 
-The function now returns the net present values of 150 euro in 4 years time. @Eline **is after hier niet duidelijker dan in ?**
+The function now returns the net present values of 150 euro after 4 years time.
 
 ## R example for health effects
 
@@ -121,22 +127,26 @@ v_times_discount_y1 <- seq_along(v_c_SoC)
 
 ```
 
-# Discounting in models with cycle lengths different then annual
+# Discounting in models with sub-annual cycle lengths
 
-While the discounting approach is straightforward for models with annual cycles, its application becomes ambiguous in models with sub-annual time steps, such as monthly or weekly cycles. The guideline does not specify whether **not discounting the first year** should translate to excluding only the first cycle (e.g., 1 month), or the entire first year from discounting. As a result, different interpretations exist in the modeling community.
+While the application of discounting is straightforward in models with annual cycles, it becomes more ambiguous in models that use sub-annual time steps (e.g., monthly or weekly cycles). The Dutch guideline does not specify how to handle the timing of discounting in such cases, leaving room for interpretation within the modeling community.
+
+Different approaches have emerged: some modelers apply discounting starting after the first sub-annual cycle (e.g., excluding only the first month from discounting), as they link this to the fact that discounting relate to the fundamental principle that costs and benefits should be discounted beyond the present, and interpret every time point after the first cycle (present) as future. Others assume that no discounting occurs during the first full year, after which discounting is applied at intervals corresponding to the model’s cycle length. This lack of explicit guidance can lead to variation in results and underlines the importance of transparently reporting how discounting is implemented in sub-annual models.
 
 ## Why does this matter?
+Although yearly and monthly discounting approaches produce the same total undiscounted QALYs or costs, they differ in discounted values due to when outcomes are assumed to occur. In annual models, outcomes are often assumed to occur at the end of the yearly cycle, while in sub-annual models the rewards are typically accrued more evenly across time as they are awarded at the end of each monthly cycle. This leads to slightly higher present values in the sub-annual models, as benefits (or costs) occur earlier in time, and are therefore less discounted.
 
-Although yearly and monthly discounting approaches produce the same total undiscounted QALYs or costs, they differ in discounted values due to when outcomes are assumed to occur. In annual models, outcomes are often assumed to occur at the end of the year, while in sub-annual models the rewards are typically accrued more evenly across time. This leads to slightly higher present values in the latter (sub-annual), as benefits (or costs) occur earlier and are therefore less discounted.
+In the example below we demonstrate this concept using a hypothetical situation in which 1 QALY is awarded in a period of 4 years, the annual model. This gives a total of 4 undiscounted QALYs and 3.854385 discounted QALYs. Next, we demonstrate a model with monthly cycles, in which 1/12th QALY is awarded each cycle. This results in a total of 4 undiscounted QALYS, similar to the annual model. However, the discounted QALYs are 3.8808, which are 0.026427 QALYs more compared to the annual model.
 
 ```{r demo-difference}
+# Example of an annual model
 values <- c(1, 1, 1, 1)            # 1 QALY per year
 sum(values) # total undiscounted QALYs
 v_times_year <- seq_along(values) # Time: 1, 2, 3, 4
 v_QALY_discounted <- apply_discounting(values = values, discount_rate = "effects", times = v_times_year)
 sum(v_QALY_discounted)            # ~3.854385
 
-
+# Example of a model with monthly cycles 
 values_month <-  rep(1/12, 4/(1/12)) # 1 QALY per year
 sum(values_month) # total undiscounted QALYs
 v_times_month <- seq_along(values_month) * 1/12 # Time: 1/12, 2/12, 3/12, etc.until time is 4
@@ -146,13 +156,14 @@ sum(v_QALY_month_discounted)            # ~3.8808
 ```
 
 ## Our approach
+Since the Dutch guidelines specifically state that the first year should not be discounted, this package does not discount the first year, while after this first year, discounting is applied using the cycle length of the model. However, this design choice has practical implications that might not be in line with the desired way of coding for all modelers and we therefore, demonstrate how to adjust the code in case other modelling assumptions are desired.
 
-Since discounting relate to the fundamental principle that costs and benefits should be discounted beyond the present, we interpret every time point after the first cycle (present) as future. Therefore, in our code we exclude only the first cycle from discounting, regardless of its length. However, this design choice has practical implications that might not be in line with the desired way of coding for all modelers and we therefore, demonstrate how to adjust the code in case other modelling assumptions are desired.
 
 # Example using the Sick-Sicker model
 
-For demonstration purposes we will make use of the Sick-Sicker example.In the code below we show applying discounting to the annual model.
+For demonstration purposes we will make use of the Sick-Sicker example. In the code below we show applying discounting to the annual model.
 
+## Sick-Sicker with annual cycles
 ```{r exmple-sick-sicker-annual}
 data("data_model_output_sick_sicker") # Load the data 
 
@@ -161,17 +172,19 @@ l_m_M_annual[["Standard of care"]]
 
 # Apply the utilities
 v_Q_SoC <- l_m_M_annual[["Standard of care"]] %*% l_u_annual[["Standard of care"]]
-sum(v_Q_SoC) # get the undiscounted QALYs
+n_undiscounted_Q_SoC <- sum(v_Q_SoC) # get the undiscounted QALYs
+n_undiscounted_Q_SoC
 
 # Apply discounting without discounting in the first year
-v_times_annual <- seq(from = 0, to = length(v_Q_SoC)-1, by = 1 )  
+v_times_annual <- seq(from = 0, to = length(v_Q_SoC) - 1, by = 1 )  
 v_QALY_dis_Sick_Sicker_annual <- apply_discounting(values = v_Q_SoC, discount_rate = "effects", times = v_times_annual) # This gives the discounted QALYs
-round(sum(v_QALY_dis_Sick_Sicker_annual),3)
+n_discounted_Q_SoC <- sum(v_QALY_dis_Sick_Sicker_annual)
+n_discounted_Q_SoC
 
 ```
 
+## Sick-Sicker with montly cycles
 Below we focus on the model results for simulating the model using monthly cycles.
-
 ```{r exmple-sick-sicker-monthly}
 
 # Use the annual model
@@ -181,53 +194,60 @@ tail(l_m_M_monthly[["Standard of care"]])
 
 # Apply the utilities for the montly cycles 
 v_Q_SoC_monthly <- l_m_M_monthly[["Standard of care"]] %*% l_u_monthly[["Standard of care"]]
-sum(v_Q_SoC_monthly) # get the undiscounted QALYs
-# 
+n_undiscounted_Q_SoC_monthly <- sum(v_Q_SoC_monthly) # get the undiscounted QALYs
+n_undiscounted_Q_SoC_monthly
 ```
 
-Please note the total undiscounted values between the monthly and yearly model differ a bit. This has to due with the timing of events during the simulation.
+Please note, that the total undiscounted values between the monthly and yearly Sick-Sicker model differ a bit. This has to due with the timing of events during the simulation.
 
 In the code example below we show how to discount the results for the monthly simulated model results without discounting in the first year, by applying a step-wise discounting after the first year. This means that we set the vector for time using
 
 ```{r example-sick-sicker-monhtly-discount-small-steps}
 # Apply discounting without discounting in the first year 
 cycle_length   <- 1/12 # cycle length in fraction of a year
-v_times_monthly <- seq_along(v_Q_SoC_monthly) * cycle_length
+v_times_monthly <- seq(from = 0, to = length(v_Q_SoC) - 1, by = cycle_length ) 
 
-v_times_monthly[1:((1/cycle_length))] <- 0 #@Stijn, we doen altijd 1 cycle meer dan normaal. Initial cycle. 
+v_times_monthly[1:((1/cycle_length))] <- 0 
 v_times_monthly[1:20] # print first twenty items to show times vector
 
 v_QALY_dis_Sick_Sicker_monthly <- apply_discounting(values = v_Q_SoC_monthly, discount_rate = "effects", times = v_times_monthly) # This gives the discounted QALYs
-round(sum(v_QALY_dis_Sick_Sicker_monthly),3)
+n_discounted_Q_SoC_monthly <- round(sum(v_QALY_dis_Sick_Sicker_monthly), 3)
+n_discounted_Q_SoC_monthly
 
 ```
 
+## Sick-Sicker simulatied using montly cycles but discounted on a yearly scale
 Alternatively, one could sum the markov trace `l_M` in periods of a yearly cycle and assume that all rewards happen at the end of the cycle. After this summation, discounting with yearly step can be applied.
 
-\#@stijn, after we agree that we like to show this we can simpilfy and improve this code section \*\* Ik ben het hier mee eens, misschien even samen nog naar kijken hoe we dit het beste hier neer kunnen zetten. Wellicht kunnen we er subhoofdstukken van maken zodat het duidelijker wordt. Dus dat je een hoofdstuk hebt waar je de objecten maakt en dan de alternatieve manieren hoe je het kan aanpakken 
+\#@stijn, after we agree that we like to show this we can simpilfy and improve this code section \*\* Ik ben het hier mee eens, misschien even samen nog naar kijken hoe we dit het beste hier neer kunnen zetten. Wellicht kunnen we er subhoofdstukken van maken zodat het duidelijker wordt. Dus dat je een hoofdstuk hebt waar je de objecten maakt en dan de alternatieve manieren hoe je het kan aanpakken -> Ik heb nu sub-kopjes gemaakt. Maar ik denk dat jij bedoelt => data lade, tijd versies maken en daarna discounting wil laten zien? Dat kan dan misschien dinsdag gedaan worden. 
 ```{r}
 # Add a year column based on cycle number
 v_years         <- floor((seq_len(nrow(l_m_M_monthly$`Standard of care`)) - 1) / 12) 
 m_M_SoC_monthly <- cbind(l_m_M_monthly$`Standard of care`, year = v_years)
 
+
+sum(apply_discounting(values = v_Q_SoC_monthly, discount_rate = "effect", times = v_years))
+
 # Aggregate by year
-m_M_annual_aggrated_from_month <- as.matrix(aggregate(m_M_SoC_monthly[, c("H", "S1", "S2", "D")]/12,
-                           by = list(m_M_SoC_monthly[, c("year")]),
+m_M_annual_aggrated_from_month_init <- m_M_SoC_monthly[1, ]
+m_M_annual_aggrated_from_month <- as.matrix(aggregate(m_M_SoC_monthly[-1, c("H", "S1", "S2", "D")]/12,
+                           by = list(m_M_SoC_monthly[-1, c("year")]),
                            FUN = sum))
+
+m_M_annual_aggrated_from_month <- rbind(m_M_annual_aggrated_from_month_init[c("H", "S1", "S2", "D")],
+                                        m_M_annual_aggrated_from_month[, c("H", "S1", "S2", "D")] )
 
 
 # View the result
 print(m_M_annual_aggrated_from_month)
 
 # Apply costs
-
 v_c_sick_sicker_annual_aggrated_from_month <-  (m_M_annual_aggrated_from_month[, c("H", "S1", "S2", "D")] %*% l_u_annual[["Standard of care"]])
 
 
-
 v_times <- seq(from = 0, to = length(v_c_sick_sicker_annual_aggrated_from_month) - 1, by = 1)
-sum(apply_discounting(values = v_c_sick_sicker_annual_aggrated_from_month, discount_rate = "effect", times = v_times))
-
+n_discounted_Q_SoC_monthly_annual_discount <- sum(apply_discounting(values = v_c_sick_sicker_annual_aggrated_from_month, discount_rate = "effect", times = v_times))
+n_discounted_Q_SoC_monthly_annual_discount
 
 ```
 
@@ -235,10 +255,33 @@ Alternatively, you could use the vector with indicator for the year as the `time
 
 ```{r}
 v_c_sick_sicker_month <- m_M_SoC_monthly[, c("H", "S1", "S2", "D")] %*% l_u_monthly[["Standard of care"]]
-sum(apply_discounting(values = v_c_sick_sicker_month, discount_rate = "effect", times = v_years ))
+v_c_sick_sicker_month <- sum(apply_discounting(values = v_c_sick_sicker_month, discount_rate = "effect", times = v_years ))
 ```
 
 # Table with overview of the resuls
+The overview below shows the undiscounted and discounted values of the different assumptions regarding time. 
+
+#@EK: something seems weird as the annual discounted is higher compared to monthly, has to do with the timing of "cycles
+```{r overview-discounted-values}
+# Define the data
+approaches          <- c("Annual-cycles and discounting", "Monthly cycles and discounting", "Monthly cycles, discounted annual")
+undiscounted_values <- round(c(n_undiscounted_Q_SoC, n_undiscounted_Q_SoC_monthly, n_undiscounted_Q_SoC_monthly),3)
+discounted_values   <- round(c(n_discounted_Q_SoC,   n_discounted_Q_SoC_monthly,   n_discounted_Q_SoC_monthly_annual_discount), 3)
+
+
+# Create a data frame
+results_table <- data.frame(
+  Approach = approaches,
+  Undiscounted_Value = undiscounted_values,
+  Discounted_Value = discounted_values
+)
+
+# Print the table
+print(results_table)
+
+```
+
+
 
 \#@stijn, willen we een overzicht van de verschillende getallen? Ik gebruik nu zowel effecten als kosten door elkaar. Willen we dat consitent hetzelfde? --> Misschien kunnen we per subhoofdstuk zoals hierboven beschreven de resultaten geven zodat ze ook weten dat de betreffende resultaten bij een bepaalde subparagraaf horen. 
 

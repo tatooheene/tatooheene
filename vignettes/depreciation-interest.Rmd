@@ -52,8 +52,8 @@ Default (returns a data frame)
 
 ```{r default}
 depreciation_interest(
-  v_replace_val = 50000,
-  r_salvage_val = 5000
+  v_replace_val = 50000, # replacement value 
+  r_salvage_val = 5000   # salvage value at end of period 
 )
 ```
 
