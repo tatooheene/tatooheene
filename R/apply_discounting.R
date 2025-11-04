@@ -86,7 +86,7 @@ apply_discounting <- function(values,
 
   # Check they are the same length
   if (length(values) != length(times)) {
-    stop("Values and time must be the same length.")
+    stop("Values and time must be of the same length.")
   }
 
   # Validation
@@ -97,9 +97,12 @@ apply_discounting <- function(values,
 
   t      <- times # save the time for the time vector
 
-  # Apply discounting
-  discounted_values <- values * (1 + discount_rate)^(-t) # Note - this is the formula based on the equation in the Dutch guidelines. The more common form to write this formula is value / (1 + r) ^ t. The results however are identical.
+  #  Calculate the discount factor at the time point of interest
+  v_discount_weights <- 1 * (1 + discount_rate)^(-t) # vector discount weights
+  # Note - this is the formula based on the equation in the Dutch guidelines. The more common form to write this formula is PV = value / (1 + r) ^ t, with PV: present value . The results however are identical.ß
 
+  # Apply discounting
+  discounted_values <- values * v_discount_weights
 
 
   if(aggregate == TRUE){
@@ -109,7 +112,6 @@ apply_discounting <- function(values,
   if (!is.null(digits)) {
     discounted_values <- round(discounted_values, digits)
   }
-
 
 
   # Return

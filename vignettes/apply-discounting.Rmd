@@ -86,6 +86,7 @@ You can sum these values using the basic `sum()` or using the argument `aggregat
 sum(apply_discounting(values = v_c_SoC, discount_rate = "costs", times = c(0, 1, 2))) # sum 
 apply_discounting(values = v_c_SoC, discount_rate = "costs", times = c(0, 1, 2), aggregate = TRUE) # aggregate TRUE
 
+
 # rounding 
 apply_discounting(values = v_c_SoC, discount_rate = "costs", times = c(0, 1, 2), digits = 3) # use 3 digits 
 apply_discounting(values = v_c_SoC, discount_rate = "costs", times = c(0, 1, 2), aggregate = TRUE, digits = 2) # round to 2 decimals 
@@ -97,7 +98,9 @@ apply_discounting(values = v_c_SoC, discount_rate = "costs", times = c(0, 1, 2),
 If we like to only discount a one time costs of €150 euro at time year 4. We can use the function as follows:
 
 ```{r example-value}
-apply_discounting(values = 150, discount_rate = "costs", times = 4)
+c_PV_150 <- apply_discounting(values = 150, discount_rate = "costs", times = 4)
+cat("Present Value of", 150, " euro in", 4, "years at", 3, "% =", round(c_PV_150, 2), "\n")
+
 ```
 
 The function now returns the net present values of 150 euro after 4 years time.
