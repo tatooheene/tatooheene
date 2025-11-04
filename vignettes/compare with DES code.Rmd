@@ -1,0 +1,154 @@
+---
+title: "Compare with code DES"
+author: "Eline Krijkamp"
+date: "2025-11-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Code we had from course
+```{r cars}
+discount_at <- function(amount, time_point, rate) {
+  # This function can be used to discount an amount at a specific
+  # point in time.
+  #
+  # IMPORTANT! The input arguments 'time_point' and 'rate' need
+  # to be defined in the same time unit (i.e., years or days)!!!
+  #
+  # INPUT:
+  # - amount            the amount to be discounted
+  # - time_point        the time point at which the amount is to be discounted
+  # - rate              the discount rate (% per year)
+  #
+  # USES:
+  #
+  # OUTPUT:
+  # - out
+  #   [1] disc_amount   real      the discounted amount
+  # Calculate the discount factor at the time point of interest
+  disc_factor <- 1 / ((1 + (rate / 100)) ^ time_point);
+  # Calculate the discounted amount
+  disc_amount <- amount * disc_factor;
+  # Define output object
+  out <- c(disc_amount);
+  return(out)
+}
+```
+
+Test with an example about what the present value would be for a fix amount 
+```{r}
+# Discount $100 received in 3 years at 3% per year
+amount <- 100
+time_point <- 3
+rate <- 3
+
+pv_single <- discount_at(amount, time_point, rate)
+cat("Present Value of $", amount, "in", time_point, "years at", rate, "% =", round(pv_single, 2), "\n")
+
+
+
+```
+
+Formula assuming that over a time period the same amount is accumulated each period 
+```{r}
+
+discount_fromto <- function(amount, time_from, time_to, time_step, rate) {
+  # This function can be used to discount an amount over a specific
+  # time interval in steps.
+  #
+  # IMPORTANT! The input arguments 'time_from', 'time_to', 'time_step' 
+  # and 'rate' need to be defined in the same time unit (i.e., years 
+  # or days)!!!
+  #
+  # INPUT:
+  # - amount                the amount to be discounted
+  # - time_from             the time point at which timing sequence is to be started
+  # - time_to               the time point at which timing sequence is to be stopped
+  # - time_step             the interval of the timing sequence
+  # - rate                  the discount rate (% per year)
+  #
+  # USES:
+  #
+  # OUTPUT:
+  # - out
+  #   [1] cum_disc_amount   real      the sum of the discounted amounts
+  # Define the time sequence of interest
+  time_seq <- seq(from = time_from, to = time_to, by = time_step);
+  # Calculate the discount factor at the time point of interest
+  disc_factors <- 1 / ((1 + (rate / 100)) ^ time_seq);
+  # Calculate the discounted amounts
+  disc_amount <- amount * disc_factors;
+  # Calculate the sum of the discounted amounts
+  cum_disc_amount <- sum(disc_amount);
+  # Define output object
+  out <- c(cum_disc_amount);
+  return(out)
+}
+
+```
+
+Voorbeeld 
+
+```{r}
+
+# Suppose we receive $100 at the end of each year for 5 years.
+# We’ll find the total present value of these payments.
+
+amount <- 100
+time_from <- 0
+time_to <- 3
+time_step <- 1
+rate <- 3
+
+pv_series <- discount_fromto(amount, time_from, time_to, time_step, rate)
+cat("Cumulative Present Value of $", amount, "/year for", time_to, "years at", rate, "% =", round(pv_series, 2), "\n")
+```
+
+[OBSERVATION]: als je van 0 naar 3 gaat, heb je het dus over 4 jaar (0, 1, 2, 3). Want bij rate = 0, krijg je 400 euro. En dus heb je 4 x 100 euro. In de beschrijving is het dus essentieel om te vermelden hoe er moet worden om gegaan met time_from and time_to. 
+
+```{r}
+ time_seq <- seq(from = time_from, to = time_to, by = time_step);
+time_seq
+```
+
+
+
+Volgens de beschrijving die code aanpassen. Nu deden we alles jaarlijks, maar stel je wilt naar maandelijk. Dan zegt de code dat je 
+"  # IMPORTANT! The input arguments 'time_from', 'time_to', 'time_step' # and 'rate' need to be defined in the same time unit (i.e., years  or days)!!!" 
+
+Dus dat interpreren wij als
+
+```{r}
+amount <- 100/12 # adjust to monthly (although not specified in the description )
+time_from <- 0
+time_to <- 3*12 # adjust to months 
+time_step <- 1/12 # indicate months
+rate <- 3/12 # adjust a annual rate to monthly 
+
+pv_series <- discount_fromto(amount, time_from, time_to, time_step, rate)
+cat("Cumulative Present Value of $", amount, "/months for", time_to, "months at", rate, "% =", round(pv_series, 2), "\n")
+
+
+
+```
+Dit geeft echt een verkeerde uitkomst. 
+
+Waarschijnlijk moet de beschrijving als volgt:
+ # IMPORTANT! The input arguments 'time_from' and 'time_to' as well as "rate" need to be on the annual scale. 'time_step' and `amount` need to be in the same unit as the simulation (i.e., years  or days)!!!" 
+
+
+```{r}
+amount <- 100/12
+time_from <- 0
+time_to <- 3
+time_step <- 1/12
+rate <- 3/12
+
+pv_series <- discount_fromto(amount, time_from, time_to, time_step, rate)
+cat("Cumulative Present Value of $", amount, "/months for", time_to, "months at", rate, "% =", round(pv_series, 2), "\n")
+
+
+```
