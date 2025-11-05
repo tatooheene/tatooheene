@@ -2,7 +2,7 @@
 #'
 #'@description
 #' `r lifecycle::badge("experimental")`
-#' The apply_discounting function is designed to calculate the net present value of future costs or effects using constant discounting, following the Dutch guidelines for economic evaluations in health care.  (section 2.6.1.2 version 2024). Here's a breakdown of how the function works:
+#' The apply_discounting function is designed to calculate the net present value of future costs or effects using a constant  discount rate, following the Dutch guidelines for economic evaluations in health care.  (section 2.6.1.2 version 2024). Here's a breakdown of how the function works:
 #'
 #'@Usage
 #' apply_discounting(v, ... )
