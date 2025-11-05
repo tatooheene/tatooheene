@@ -21,7 +21,7 @@
 #' nl_ref_prices(year = "2022", category = "Nursing" , currency = "INT$")
 #'
 #' @keywords Generic, Costing Manual, Dutch Reference Prices, Medical Prices
-#' @export nl_med_prices
+#' @export nl_ref_prices
 
 
 nl_ref_prices <- function(

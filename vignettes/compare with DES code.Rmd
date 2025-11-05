@@ -152,3 +152,27 @@ cat("Cumulative Present Value of $", amount, "/months for", time_to, "months at"
 
 
 ```
+
+
+
+```{r}
+
+utility <- 100
+dr_health <- 0.03
+dr_health <- 0.000000000001 # test no discounting -> Get the 3 rather then 4 with time = 0 and t_duration = 3 ()
+
+apply_discounting_continuous_Git <- function(utility, t_start, t_duration){
+  PV <- utility / (1 + dr_health) ^ t_start / log(1 + dr_health) * (1 - 1 / (1 + dr_health) ^ t_duration)
+  
+  return(PV)
+  } 
+
+
+
+apply_discounting_continuous_Git(utility = 1, 
+                                 t_start = 0,
+                                 t_duration = 3 )
+
+
+
+```
