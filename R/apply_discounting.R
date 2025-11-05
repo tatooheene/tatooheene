@@ -2,42 +2,43 @@
 #'
 #'@description
 #' `r lifecycle::badge("experimental")`
-#' This function calculates the net present value of future costs or effects using constant discounting, as described in the Dutch guideline for economic evaluations in healthcare (section 2.6.1.2 version 2024).
+#' The apply_discounting function is designed to calculate the net present value of future costs or effects using constant discounting, following the Dutch guidelines for economic evaluations in health care.  (section 2.6.1.2 version 2024). Here's a breakdown of how the function works:
 #'
 #'@Usage
 #' apply_discounting(v, ... )
 #'@Arguments
 #' @param values A numeric (vector of) costs or effects over time (one value per period).
-#' @param discount_rate A categorical or numeric input indicating the discount rate to use.
+#' @param discount_rate Specifies the discount rate to be used. It can be "costs", "effects" or a custom numeric value
 #'   Acceptable values are:
 #'   \itemize{
 #'     \item \code{"costs"} — applies a 3\% (0.03) annual discount rate
 #'     \item \code{"effects"} — applies a 1.5\% (0.015) annual discount rate
 #'     \item A numeric value (e.g., \code{0.04}) — applies a custom annual discount rate
 #'   }
-#' @param times A numeric (vector of) time points indicating the time used for the discounting. Since the default discounting is annual, the time points should be in years. The length of this vector should be the same as the length of the `values` vector. When the first year is not discounted, the time points should start at 0 (e.g., c(0, 1, 2) for three years with NO discounting in the first year). When the first year is discounted, the time points should start at 1 (e.g., c(1, 2, 3) for three years WITH discounting in the first year). In case costs or effects are accrued in time steps other they annual, the time points should be adjusted accordingly, see more details in the vignettes of this package about discounting.
-#' @param aggregate Logical: should the stream be aggregated? Default is FALSE.
+#' @param times A numeric (vector of) time points indicating the time used for the discounting. The lenght must match the lenght of hte values vector. Since the default discounting is annual, the time points should be in years. The length of this vector should be the same as the length of the `values` vector. When the first year is not discounted, the time points should start at 0 (e.g., c(0, 1, 2) for three years with NO discounting in the first year). When the first year is discounted, the time points should start at 1 (e.g., c(1, 2, 3) for three years WITH discounting in the first year). In case costs or effects are accrued in time steps other they annual, the time points should be adjusted accordingly, see more details in the vignettes of this package about discounting.
+#' @param aggregate A logical: indicating whether to sum the discounted values. Default is FALSE.
 #' @param digits A numeric value to indicate the number of digits to round the value. Default is 3 digits
 #'
 #'
 #' @examples
-#' # Constant cost of 100 for 3 years, NO discounting in first year (t starts at 0)
+#' # NO Discounting in First Year (t starts at 0)
+#' example: constant cost of 100 for 3 years,
 #' apply_discounting(values = rep(100, 3), discount_rate = "costs", times = c(0, 1, 2))
 #'
-#' # Constant cost of 100 for 3 years, WITH discounting in first year (t starts at 1)
+#' # WITH discounting in first year (t starts at 1)
+#' example: Constant cost of 100 for 3 years,
 #'  apply_discounting(values = rep(100, 3), discount_rate = "costs", times = c(1, 2, 3))
 #'
-#' # Explore the present value of 100 euro in 3 years
+#' # Present value of 100 euro in 3 years
 #'  apply_discounting(values = 100, discount_rate = "costs", times = 3)
 #'
-#' # Explore a different discount rate of 4%, no discounting in first year
-#' This will give you a messages to inform you about the different discount rate
+#' # Custom Discount Rate
+#' # example: discount rate of 4%, no discounting in first year
 #' apply_discounting(values = rep(100, 3), discount_rate = 0.04, times = c(0, 1, 2))
+#'#' This will give you a messages to inform you about the different discount rate
 #'
 #' Same applies to utility values
-#' Generated QALYs over three years, NO discounting in first year
-#' apply_discounting(values = c(0.98, 0.82, 0.79), discount_rate = "effect", times = c(0, 1, 2))
-#' With aggregating and rounding of results
+#' Utility values with aggregation - NO discounting in first year
 #' apply_discounting(values = c(0.98, 0.82, 0.79), discount_rate = "effect", times = c(0, 1, 2), aggregate = TRUE, digits = 3)
 #'
 #' @export `discounted_values`
