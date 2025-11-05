@@ -113,6 +113,10 @@ As discussed before, the same applies to health effects, in this example QALYs. 
 apply_discounting(value = c(1, 1, 1, 1), discount_rate = "effects", times = c(0, 1, 2, 3))
 ```
 
+
+
+#@STIJN: @Frederick: misschien ook hier alleen schrijven vanuit het perspectief van ZIN? Geen discounting eerste jaar en dat als uitleg/voorbeeld geven? OF zoals het nu is? Ik vind het langdradig en nog niet heel logsich hoe het nu is. Wellicht hebben jullie een frissere inkijk.
+
 # Understanding assumption about time in discounting.
 As you might have noticed, the first cycle is not discounted in the examples above. This is in line with the Dutch guidelines that recommend not to discount the first cycle. With this comes an assumption about when we place rewards on the time axis. When we assume that outcomes occur at the *start of each cycle*, the first year is not discounted and the time points start at zero, e.g., 0, 1, 2 ,3
 
