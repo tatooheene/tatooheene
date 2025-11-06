@@ -29,7 +29,7 @@ library(tatooheene)
 
 ## Background
 
-Costs and health outcomes that are expected to occur in the future are generally valued less than those that occur in the present, and so it is recommended that they be discounted in economic analyses. In the Netherlands, a discount rate of 1.5% for health effects and 3% for costs are used. Discounting is typically done by presenting the costs and health outcomes as a stream of values over time and applying a discounting factor based on the discount rate to each value, and then aggregating them to obtain the ‘present value’ of each stream. The discount factor is increasing over time, based on the underlying fixed discount rate.
+Costs and health outcomes that are expected to occur in the future are generally valued less than those that occur in the present, and so it is recommended that they be discounted in economic analyses. In the Netherlands, a discount rate of 1.5% for health effects and 3% for costs are used. Discounting is typically done by presenting the costs and health outcomes as a stream of values over time and applying a discounting factor based on the discount rate to each value, and then aggregating them to obtain the 'present value' of each stream. The discount factor is increasing over time, based on the underlying fixed discount rate.
 
 *Text adapted from Dutch costing manual and Discount Rate [online]. (2016). York; York Health Economics Consortium; 2016. <https://yhec.co.uk/glossary/discount-rate/>.*
 
@@ -51,7 +51,8 @@ It is also worth noticing, that the formula as presented in the Dutch manual is 
 
 $$
 NPV \;=\; \frac{V}{(1+r)^{t}}
-$$ where $NVP$ is the next present value, $V$ is the value, $r$ the discount rate and $t$ time.
+$$
+where $NVP$ is the next present value, $V$ is the value, $r$ the discount rate and $t$ time.
 
 ## R example from the Dutch guideline
 
@@ -70,16 +71,17 @@ v_c_SoC <- rep(c_annual, 3) # Vector of costs values on all years for standard o
 names(v_c_SoC) <- c("Year 1", "Year 2", "Year 3") # name the vector 
 ```
 
-Next, we can discount this stream of costs using the function `apply_discounting` via the following code:
+Next, we can discount this stream of costs using the function `tatooheene::apply_discounting()` via the following code:
 
 ```{r example-guideline}
 apply_discounting(values = v_c_SoC, discount_rate = "costs", times = c(0, 1, 2))
 ```
+
 The function gives a vector of discounted values. As the default discount rate for costs in the Netherlands is 3%, this is the values as used by the function. 
 
+### Present the values as aggregated or rounded values
 
-### Present the values as aggreated or rounded values
-You can sum these values using the basic `sum()` or using the argument `aggregate`. 
+You can sum these values using the Base R `sum()` function or using the argument `aggregate`. 
 
 ```{r example-guideline-sum}
 # aggregate the values
@@ -92,61 +94,67 @@ apply_discounting(values = v_c_SoC, discount_rate = "costs", times = c(0, 1, 2),
 apply_discounting(values = v_c_SoC, discount_rate = "costs", times = c(0, 1, 2), aggregate = TRUE, digits = 2) # round to 2 decimals 
 ```
 
-
 ## R example for discounting on single value
 
 If we like to only discount a one time costs of €150 euro at time year 4. We can use the function as follows:
 
 ```{r example-value}
-c_PV_150 <- apply_discounting(values = 150, discount_rate = "costs", times = 4)
-cat("Present Value of", 150, " euro in", 4, "years at", 3, "% =", round(c_PV_150, 2), "\n")
 
+c_PV_150 <- apply_discounting(values = 150, discount_rate = "costs", times = 4)
+
+cat("Present Value of", 150, " Euro in", 4, "years at", 3, "% =", round(c_PV_150, 2), "\n")
 ```
 
 The function now returns the net present values of 150 euro after 4 years time.
 
 ## R example for health effects
 
-As discussed before, the same applies to health effects, in this example QALYs. In this example, an individual is expected to life a perfect life over a four year period and each year 1 QALY is accrued. We do not apply discounting in the first year.
+The same applies to health effects, in this example QALYs. Here, an individual is expected to life a perfect life over a four year period and each year 1 QALY is accrued. We do not apply discounting in the first year.
 
 ```{r example-discount-stream-QALY}
 apply_discounting(value = c(1, 1, 1, 1), discount_rate = "effects", times = c(0, 1, 2, 3))
 ```
 
+## Understanding time assumptions in discounting
 
+Discounting depends on when outcomes are assumed to occur within each model cycle. The Dutch guideline recommends *not discounting the first cycle*, which implies a specific assumption about timing. The examples below illustrate how to set up the `times` vector based on different timing assumptions.
 
-#@STIJN: @Frederick: misschien ook hier alleen schrijven vanuit het perspectief van ZIN? Geen discounting eerste jaar en dat als uitleg/voorbeeld geven? OF zoals het nu is? Ik vind het langdradig en nog niet heel logsich hoe het nu is. Wellicht hebben jullie een frissere inkijk.
+### Outcomes at the start of each cycle
 
-# Understanding assumption about time in discounting.
-As you might have noticed, the first cycle is not discounted in the examples above. This is in line with the Dutch guidelines that recommend not to discount the first cycle. With this comes an assumption about when we place rewards on the time axis. When we assume that outcomes occur at the *start of each cycle*, the first year is not discounted and the time points start at zero, e.g., 0, 1, 2 ,3
+When outcomes are placed at the **start** of each cycle, the first year is not discounted. Time points start at 0 (e.g., 0, 1, 2, 3 …).
 
-Setting up this vector would be: 
 ```{r example-set-up-times-vector}
-v_times             <- seq(from = 0, to = length(v_c_SoC) - 1, by = 1 )
+v_times <- seq(from = 0, to = length(v_c_SoC) - 1, by = 1)
 ```
 
-However, when outcomes are assumed to occur at the *end of each cycle*, discounting starts immediately. In that case, vector for times has to start at 1. This can be done with the code below.
+### Outcomes at the end of each cycle
+
+When outcomes are assumed to occur at the **end** of each cycle, discounting starts immediately. In this case, the `times` vector should start at 1 (e.g., 1, 2, 3 …).
 
 ```{r example-set-up-times-vector-discount-y1}
-v_times_discount_y1 <- seq(from = 1, to = length(v_c_SoC), by = 1 ) 
+
+v_times_discount_y1 <- seq(from = 1, to = length(v_c_SoC), by = 1) 
 # or 
 v_times_discount_y1 <- seq_along(v_c_SoC)
-
 ```
 
-Or one can assume that outcomes occur halfway through (a compromise between the two), and often applied. 
+### Outcomes halfway through each cycle
+A half-cycle correction assumes outcomes occur halfway through each cycle which could be a practical compromise between start- and end-of-cycle conventions.
 
+```{r example-set-up-times-vector-half-cycle}
+v_times_half_cycle <- seq(from = 0.5, to = length(v_c_SoC) - 0.5, by = 1)
+```
 
-# Discounting in models with sub-annual cycle lengths
+## Discounting in models with sub-annual cycle lengths
 
 While the application of discounting is straightforward in models with annual cycles, it becomes more ambiguous in models that use sub-annual time steps (e.g., monthly or weekly cycles). The Dutch guideline does not specify how to handle the timing of discounting in such cases, leaving room for interpretation within the modeling community.
 
 Different approaches have emerged: some modelers apply discounting starting after the first sub-annual cycle (e.g., excluding only the first month from discounting), as they link this to the fact that discounting relate to the fundamental principle that costs and benefits should be discounted beyond the present, and interpret every time point after the first cycle (present) as future. Others assume that no discounting occurs during the first full year, after which discounting is applied at intervals corresponding to the model’s cycle length. This lack of explicit guidance can lead to variation in results and underlines the importance of transparently reporting how discounting is implemented in sub-annual models.
 
-## Why does this matter? Why does timing affects the present value?
+### Why does this matter? Why does timing affects the present value?
 Although yearly and monthly discounting approaches produce the same total undiscounted QALYs or costs, they differ in discounted values due to when outcomes are assumed to occur. Events that occur earlier are discounted less and therefore have a higher present value. So if we switch from annual to monthly cycles, we simulate that instead of receiving one full QALY at the end of each year, we receive 1/12 of a QALY each month. And because the QALYs in a sub-annual model, the rewards happen slightly earlier in time, they lose a little less by discounting. Therefore, under the assumption that rewards occur at the *end of each period* (meaning discounting from the start), the monthly model gives slightly higher present values. This can be seen in the example below: 
 
-### Example without discounting in the first year 
+#### Example without discounting in the first year 
 Below, demonstrate this concept using a hypothetical situation in which 1 QALY is awarded in a period of 4 years, the annual model. This gives a total of 4 undiscounted QALYs and 3.854385 discounted QALYs. Next, we demonstrate a model with monthly cycles, in which 1/12th QALY is awarded each cycle. This results in a total of 4 undiscounted QALYS, similar to the annual model. However, the discounted QALYs are 3.8808, which are 0.026427 QALYs more compared to the annual model.
 
 ```{r demo-difference}
@@ -167,7 +175,7 @@ pv_month_end <- sum(v_QALY_month_discounted)        # ~3.8808 WITH discounting f
 pv_month_end
 ```
 
-## A counter intuative change 
+### A counter intuative change 
 When we assume that reward occur *at the start* of each period, the first QALY occurs immediately at time = 0, and we begin discounting only form the second year onwards This results in a shirt from the time horizon. With the annual model, the time ranges from year 0 to year 3, meaning the last event occurs at year 3. While in a monthly model, the time ranges from 0 to year 4, meaning that the last event occurs at year 4. 
 
 So although in the monthly model, rewards occur earlier in time, they also extend one year further into the future. And this extra year of later events, offsets the early advantages, and results in a slight lower present value compared to the annual model. This is demonstrated in the example below: 
@@ -223,7 +231,7 @@ ggplot(df_compare, aes(x = Timing_assumption, y = PV, fill = Model)) +
 ```
 
 
-# What to remember from timing in discounting? 
+## What to remember from timing in discounting? 
 When discounting begins immediately, shorter cycles (monthly) give slightly higher PVs.
 When the first period is undiscounted, shorter cycles extend the horizon and yield slightly lower PVs.
 
@@ -308,18 +316,18 @@ print(p)
 ```
 
 
-# What to remember from timing in discounting for the Dutch guidelines? 
+## What to remember from timing in discounting for the Dutch guidelines? 
 Since the Dutch guidelines specifically state that the first year should not be discounted, the assumption should be made that rewards occur at the beginning of the cycle.
 In order to NOT discount the first year, the `times` parameters should start with a zero in year 0 or needs to be zero of all months in the first year. 
 In general, the differences in results are small, and will not have a consequence for the final decision. However, reporting the assumption help to interpet the reported discounted value.
 And in most models, cycle-correction is applied any way, which gives a balanced approximation between both assumptions. 
 
 
-# Example using the Sick-Sicker model
+## Example using the Sick-Sicker model
 
 For demonstration purposes we will make use of the Sick-Sicker example. In the code below we show applying discounting to the annual model.
 
-## Sick-Sicker with annual cycles
+### Sick-Sicker with annual cycles
 ```{r exmple-sick-sicker-annual}
 data("data_model_output_sick_sicker") # Load the data 
 
@@ -339,7 +347,7 @@ n_discounted_Q_SoC
 
 ```
 
-## Sick-Sicker with montly cycles
+### Sick-Sicker with monthly cycles
 Below we focus on the model results for simulating the model using monthly cycles.
 ```{r exmple-sick-sicker-monthly}
 # Use the annual model
@@ -371,7 +379,7 @@ n_discounted_Q_SoC_monthly
 
 ```
 
-## Sick-Sicker simulatied using monthly cycles but discounted on a yearly scale
+### Sick-Sicker simulatied using monthly cycles but discounted on a yearly scale
 Alternatively, one could sum the markov trace `l_M` in periods of a yearly cycle and assume that all rewards happen at the end of the cycle. After this summation, discounting with yearly step can be applied.
 
 \#@stijn, after we agree that we like to show this we can simpilfy and improve this code section \*\* Ik ben het hier mee eens, misschien even samen nog naar kijken hoe we dit het beste hier neer kunnen zetten. Wellicht kunnen we er subhoofdstukken van maken zodat het duidelijker wordt. Dus dat je een hoofdstuk hebt waar je de objecten maakt en dan de alternatieve manieren hoe je het kan aanpakken -> Ik heb nu sub-kopjes gemaakt. Maar ik denk dat jij bedoelt => data lade, tijd versies maken en daarna discounting wil laten zien? Dat kan dan misschien dinsdag gedaan worden. 
@@ -412,7 +420,7 @@ v_c_sick_sicker_month <- m_M_SoC_monthly[, c("H", "S1", "S2", "D")] %*% l_u_mont
 v_c_sick_sicker_month <- sum(apply_discounting(values = v_c_sick_sicker_month, discount_rate = "effect", times = v_years ))
 ```
 
-# Table with overview of the resuls
+### Table with overview of the resuls
 The overview below shows the undiscounted and discounted values of the different assumptions regarding time. 
 This is consistent with how we discussed the timing of event before. 
 
@@ -434,7 +442,6 @@ results_table <- data.frame(
 print(results_table)
 
 ```
-
 
 
 ## Error messages you might see 
