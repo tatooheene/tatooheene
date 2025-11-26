@@ -71,7 +71,6 @@ apply_discounting <- function(values,
     message(msg)
   }
 
-
   # Convert to vectors if they are matrices
   if (is.matrix(values)) {
     values <- as.vector(values)
@@ -100,7 +99,10 @@ apply_discounting <- function(values,
 
   #  Calculate the discount factor at the time point of interest
   v_discount_weights <- 1 * (1 + discount_rate)^(-t) # vector discount weights
-  # Note - this is the formula based on the equation in the Dutch guidelines. The more common form to write this formula is PV = value / (1 + r) ^ t, with PV: present value . The results however are identical.ß
+  # Note - this is the formula based on the equation in the Dutch guidelines.
+  # The more common form to write this formula is PV = value / (1 + r) ^ t, with
+  # PV: present value . The results however are identical. This would look like:
+  # v_discount_weights <- 1 / (1 + discount_rate)^(t)
 
   # Apply discounting
   discounted_values <- values * v_discount_weights
@@ -113,7 +115,6 @@ apply_discounting <- function(values,
   if (!is.null(digits)) {
     discounted_values <- round(discounted_values, digits)
   }
-
 
   # Return
   return(discounted_values)
