@@ -27,6 +27,7 @@ nl_price_index <- function(start_year = 2013,
   # Read in the dataset
   df <- tatooheene::df_cpi_combined
 
+
   # Output
   output <- match.arg(output)
 
@@ -36,12 +37,37 @@ nl_price_index <- function(start_year = 2013,
   assertthat::assert_that(start_year < end_year,  msg = "`start_year` must be smaller than `end_year`")
   assertthat::assert_that(output %in% c("table", "factor"),
                           msg = "`output` must be one of 'table' or 'factor'")
-  assertthat::assert_that(start_year >= min(df$`Year to`),
-                          msg = "`start_year` must be greater than or equal to the minimum year in the dataset")
-  assertthat::assert_that(end_year <= max(df$`Year to`),
-                          msg = "`end_year` must be less than or equal to the maximum year in the dataset")
+
+  #assertthat::assert_that(start_year >= min(df$`Year to`),
+                         # msg = paste0("`start_year` must be greater than or equal to the minimum year in the dataset which is:", lowest_year_from, sep = " "))
+
+#  assertthat::assert_that(end_year <= max(df$`Year to`),
+                    #      msg = "`end_year` must be less than or equal to the maximum year in the dataset")
+
+
+  msg_year_from <- assertthat::validate_that(
+    start_year >= min(df$`Year from`),
+    msg = paste("`start_year` must be greater than or equal to the minimum year in the dataset which is:", min(df$`Year from`), sep = " ")
+  )
+
+  if (!isTRUE(msg_year_from)) {
+    message(msg_year_from)
+  }
+
+  msg_year_to <- assertthat::validate_that(
+    end_year <= max(df$`Year to`),
+    msg = paste("`end_year` must be less than or equal to the maximum year in the dataset which is:", max(df$`Year to`), sep = " ")
+  )
+
+  if (!isTRUE(msg_year_to)) {
+    message(msg_year_to)
+  }
+
+
+
 
   # Check if the output is a table or factor
+
   # If the output is a factor:
   if(output == "factor"){
     factor <- df |>

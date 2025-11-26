@@ -65,7 +65,7 @@ apply_discounting <- function(values,
   msg <- assertthat::validate_that(
     discount_rate == 0.03 | discount_rate == 0.015,
     msg = "The used `discount_rate` is different than the one recommended in the Dutch guidelines"
-  )
+  ) # Note, there is no warning in case a users uses the discount rates for effects for costs (or the other way around)
 
   if (!isTRUE(msg)) {
     message(msg)
@@ -107,17 +107,16 @@ apply_discounting <- function(values,
   # Apply discounting
   discounted_values <- values * v_discount_weights
 
-
+  # Sum the results
   if(aggregate == TRUE){
     discounted_values <- sum(discounted_values)}
 
-  # Only round if user specifies digits
+  # Only round if user specifies the digits argument
   if (!is.null(digits)) {
     discounted_values <- round(discounted_values, digits)
   }
 
-  # Return
-  return(discounted_values)
+  return(discounted_values)   # Return
 
 }
 
