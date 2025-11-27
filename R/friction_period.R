@@ -40,7 +40,7 @@ friction_period <- function(
 
   # Validate units/avg
   units <- match.arg(units, c("days", "weeks"), several.ok = TRUE)
-  avg   <- match.arg(avg,   c("1yr", "5yr"),   several.ok = TRUE)
+  avg   <- match.arg(avg,   c("1yr", "5yr"),    several.ok = TRUE)
 
   # Column map
   col_map <- c(

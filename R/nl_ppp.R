@@ -12,11 +12,9 @@
 #' nl_ppp(year = 2019)
 #' @export nl_ppp
 
-nl_ppp <- function(
-    year = "all"){
+nl_ppp <- function(year = "all"){
 
-  # Read in the dataset
-  df <- tatooheene::df_ppp
+  df <- tatooheene::df_ppp   # Read in the dataset
 
   # Select the specified years, or all years if not specified
   if(year != "all"){
@@ -25,8 +23,9 @@ nl_ppp <- function(
       dplyr::pull(PPP)
 
     return(ppp)
-  }else{
 
-    return(df)
+  } else{
+
+    return(df) # otherwise, return the full dataset
   }
 }

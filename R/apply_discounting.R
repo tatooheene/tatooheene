@@ -65,12 +65,11 @@ apply_discounting <- function(values,
   msg <- assertthat::validate_that(
     discount_rate == 0.03 | discount_rate == 0.015,
     msg = "The used `discount_rate` is different than the one recommended in the Dutch guidelines"
-  )
+  ) # Note, there is no warning in case a users uses the discount rates for effects for costs (or the other way around)
 
   if (!isTRUE(msg)) {
     message(msg)
   }
-
 
   # Convert to vectors if they are matrices
   if (is.matrix(values)) {
@@ -100,23 +99,24 @@ apply_discounting <- function(values,
 
   #  Calculate the discount factor at the time point of interest
   v_discount_weights <- 1 * (1 + discount_rate)^(-t) # vector discount weights
-  # Note - this is the formula based on the equation in the Dutch guidelines. The more common form to write this formula is PV = value / (1 + r) ^ t, with PV: present value . The results however are identical.ß
+  # Note - this is the formula based on the equation in the Dutch guidelines.
+  # The more common form to write this formula is PV = value / (1 + r) ^ t, with
+  # PV: present value . The results however are identical. This would look like:
+  # v_discount_weights <- 1 / (1 + discount_rate)^(t)
 
   # Apply discounting
   discounted_values <- values * v_discount_weights
 
-
+  # Sum the results
   if(aggregate == TRUE){
     discounted_values <- sum(discounted_values)}
 
-  # Only round if user specifies digits
+  # Only round if user specifies the digits argument
   if (!is.null(digits)) {
     discounted_values <- round(discounted_values, digits)
   }
 
-
-  # Return
-  return(discounted_values)
+  return(discounted_values)   # Return
 
 }
 

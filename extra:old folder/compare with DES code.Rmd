@@ -155,23 +155,35 @@ cat("Cumulative Present Value of $", amount, "/months for", time_to, "months at"
 
 
 
+
+# Daarnaast is er dan nog de code om discounting continues te doen. Dat hebben we gevonden in de paper op GitHub
+
 ```{r}
 
-utility <- 100
-dr_health <- 0.03
-dr_health <- 0.000000000001 # test no discounting -> Get the 3 rather then 4 with time = 0 and t_duration = 3 ()
+amount <- 1
+rate <- 0.03
+rate <- 0.000000000001 # test no discounting -> Get the 3 rather then 4 with time = 0 and t_duration = 3 ()
 
-apply_discounting_continuous_Git <- function(utility, t_start, t_duration){
-  PV <- utility / (1 + dr_health) ^ t_start / log(1 + dr_health) * (1 - 1 / (1 + dr_health) ^ t_duration)
+apply_discounting_continuous_Git <- function(amount, t_start, t_duration){
+  PV <- amount / (1 + rate) ^ t_start / log(1 + rate) * (1 - 1 / (1 + rate) ^ t_duration)
   
   return(PV)
   } 
 
 
 
-apply_discounting_continuous_Git(utility = 1, 
+# apply continous discounting 
+apply_discounting_continuous_Git(amount = 1, 
                                  t_start = 0,
                                  t_duration = 3 )
+
+
+# Compare with discrete discounting
+apply_discounting(values = c(1, 1, 1),
+                  discount_rate = rate,
+                  times = c(0, 1, 2),
+                  aggregate = T)
+
 
 
 
