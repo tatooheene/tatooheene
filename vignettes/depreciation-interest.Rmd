@@ -33,18 +33,21 @@ library(tatooheene)
 
 Let:
 
+- $k$ = annual depreciation and interest costs,
 - $V$ = replacement value,
-- $R$ = salvage value at end of period,
-- $N$ = amortisation period (years),
-- $i$ = annual interest rate (decimal).
+- $R$ = residual value at end of period,
+- $n$ = depreciation period (years),
+- $i$ = annual interest rate (decimal),
+- $a_{n,i}$ = annuity factor.
 
-Annuity factor:
-
-$a = \frac{1 - (1 + i)^{-N}}{i},\quad \text{with } a = N \text{ if } i=0$.
 
 Annual depreciation + interest:
 
-$k = \frac{V - \frac{R}{(1 + i)^N}}{a},\quad \text{with } k = \frac{V - R}{N} \text{ if } i=0$.
+$k = \frac{V - \frac{R}{(1 + i)^N}}{a_{n,i}}$.
+
+Annuity factor:
+
+$a_{n,i} = \frac{1}{i}*\bigg(1-\frac{1}{(1 + i)^{n}}\bigg)$.
 
 ## Quick starts
 
@@ -81,8 +84,8 @@ depreciation_interest(
 
 When $i$ = 0, the function uses the mathematical limit:
 
-- $a = N$,
-- $k = (V - R)/N$.
+- $a = n$,
+- $k = (V - R)/n$.
 
 ```{r zero-interest}
 depreciation_interest(
