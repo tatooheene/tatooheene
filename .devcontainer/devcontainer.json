@@ -1,0 +1,57 @@
+{
+	"name": "tatooheene R Package Development",
+	// "build": {
+	// 	"dockerfile": "Dockerfile",
+	// 	"context": ".."
+	// },
+	"image": "ghcr.io/tatooheene/tatooheene-devcontainer:latest",
+	"remoteEnv": {
+		"SSH_AUTH_SOCK": "/ssh-agent",
+		"GIT_AUTHOR_NAME": "${localEnv:GIT_AUTHOR_NAME:${localEnv:USER}}",
+		"GIT_AUTHOR_EMAIL": "${localEnv:GIT_AUTHOR_EMAIL}",
+		"GIT_COMMITTER_NAME": "${localEnv:GIT_COMMITTER_NAME:${localEnv:USER}}",
+		"GIT_COMMITTER_EMAIL": "${localEnv:GIT_COMMITTER_EMAIL}"
+	},
+	"runArgs": [
+		"--network=host"
+	],
+	"mounts": [
+		"source=${env:SSH_AUTH_SOCK},target=/ssh-agent,type=bind",
+		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/root/.ssh,type=bind,consistency=cached"
+	],
+	"features": {
+		"ghcr.io/devcontainers/features/git:1": {
+			"ppa": true,
+    		"version": "latest"
+		},
+		"ghcr.io/devcontainers/features/github-cli:1": {},
+		"ghcr.io/devcontainers/features/git-lfs:1": {}
+	},
+	"postCreateCommand": "git config --global --add safe.directory ${containerWorkspaceFolder} && bash .devcontainer/setup.sh",
+	"containerUser": "root",
+	"remoteUser": "root",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"REditorSupport.r",
+				"rdebugger.r-debugger",
+				"anthropic.claude-code",
+				"streetsidesoftware.code-spell-checker",
+				"yzhang.markdown-all-in-one"
+			],
+			"settings": {
+				"git.terminalAuthentication": true,
+				"remote.autoForwardPorts": false,
+				"remote.restoreForwardedPorts": false,
+				"r.rterm.linux": "/usr/local/bin/R",
+				"r.rpath.linux": "/usr/local/bin/R",
+				"r.bracketedPaste": true,
+				"r.sessionWatcher": true,
+				"files.associations": {
+					"*.R": "r",
+					"*.Rmd": "rmd"
+				}
+			}
+		}
+	}
+}
