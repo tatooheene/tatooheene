@@ -6,6 +6,7 @@ output:
   rmarkdown::html_vignette:
     toc: true
     number_sections: false
+bibliography: references.bib
 vignette: >
   %\VignetteIndexEntry{Discounting with tatooheene}
   %\VignetteEncoding{UTF-8}
@@ -39,14 +40,15 @@ The vignette proceeds in the following order:
 
 ## Background
 
-Costs and health outcomes that are expected to occur in the future are generally valued less than those that occur in the present, and so it is recommended that they be discounted in economic analyses. In the Netherlands, a discount rate of 1.5% for health effects and 3% for costs are used. Discounting is typically done by presenting the costs and health outcomes as a stream of values over time and applying a discounting factor based on the discount rate to each value, and then aggregating them to obtain the 'present value' of each stream. The discount factor is increasing over time, based on the underlying fixed discount rate.
+Costs and health outcomes that are expected to occur in the future are generally valued less than those that occur in the present, and so it is recommended that they be discounted in economic analyses. In the Netherlands, a discount rate of 1.5% for health effects and 3% for costs are used. Discounting is typically done by presenting the costs and health outcomes as a stream of values over time and applying a discounting factor for each time point based on the discount rate to each value, and then aggregating them to obtain the 'present value' of each stream. The discount factor is increasing over time, based on the underlying fixed discount rate.
 
-*Text adapted from Dutch costing manual and Discount Rate [online]. (2016). York; York Health Economics Consortium; 2016. <https://yhec.co.uk/glossary/discount-rate/>.*
+*Text adapted from Dutch costing manual and discount rate page from @YHEC_Discount_Rate. 
+
 
 
 ## Mathematical definitions  
 
-The most common method is to calculate a net present value based on constant discounting.
+The most common method is to calculate a net present value based on a constant discount rate. 
 
 When taking costs as an example, the net present value of costs ($C$) from the current year ($t=0$) up to and including year $n$ under a constant discounting model is:
 
@@ -65,7 +67,7 @@ NPV \;=\; \frac{V}{(1+r)^{t}}
 $$
 where $NVP$ is the next present value, $V$ is the value, $r$ the discount rate and $t$ time.
 
-###  Example following Dutch guidelines  
+##  Example following Dutch guidelines  
 
 In an economic evaluation, annual costs for standard of care (SoC) are estimated to be €100.00. Without discounting, the total costs after 3 years are €300.00.
 
@@ -101,7 +103,7 @@ apply_discounting(value = c(1, 1, 1, 1), discount_rate = "effects", times = c(0,
 
 ### Aggregated or rounded present values
 
-You can sum these values using the Base R `sum()` function or using the argument `aggregate`. 
+You can sum these values using the base R `sum()` function or using the argument `aggregate`, both shown below. The aggregated value can be rounded by providing the number of decimals to the `digitss` argument in the function. 
 
 ```{r example-guideline-sum}
 # aggregate the values
@@ -114,9 +116,9 @@ apply_discounting(values = v_c_SoC, discount_rate = "costs", times = c(0, 1, 2),
 apply_discounting(values = v_c_SoC, discount_rate = "costs", times = c(0, 1, 2), aggregate = TRUE, digits = 2) # round to 2 decimals 
 ```
 
-### Example for discounting on single value
+### Example for discounting a single value
 
-If we like to only discount a one time costs of €150 euro at time year 4. We can use the function as follows:
+To only discount a one-time costs of €150 euro at year 4, the function can be used as follows:
 
 ```{r example-value}
 
@@ -130,10 +132,10 @@ The function now returns the net present values of 150 euro after 4 years time.
 
 
 ## Implementation in a cohort state transitions model
-To demonstrate how to use the discount formula to an state-transitions model, we make use of the previously published Sick-Sicker example. The code of this model has been slightly adapted to run the model in monthly cycles, and the resulting Markov trace has been saved with the package. 
+To demonstrate how to use the `tatooheene::apply_discounting()` formula to an state-transition model, we make use of the previously published Sick-Sicker example[@AlaridEscudero2022]. The original model uses annual cycles. Applying discounting in annual models is more straight forwards compared to sub-annual models. Therefore, we like to also demonstrate discounting in a model with monthly cycles and we modified the code a bit. The Markov trace of the Sick-Sicker example with monthly cycles  has been saved with the package. 
 
 ### Sick-Sicker with monthly cycles
-In the code example below we show how to discount the results for the monthly simulated model results without discounting in the first year (replace the first 12 items with a zero), followed by applying a step-wise discounting after this first year.
+In the code example below we show how to discount the outcomes for the monthly simulated model without discounting in the first year, followed by applying a step-wise discounting after this first year. In order to NOT discount the first year we replace the first 12 elements of the discount factor values with a zero.
 ```{r exmple-sick-sicker-monthly}
 # Use the annual model
 head(l_m_M_monthly[["Standard of care"]])
@@ -158,38 +160,41 @@ n_discounted_Q_SoC_monthly
 
 ```
 
-
-
 ## Practical challenges when applying discounting
-In de code above we have demonstrated how to us our discounting formula using the examples from the Dutch guidelines as well as a Markov trace from a state-transition model.
+In de code above we have demonstrated how to use the `tatooheene::apply_discounting()`formula using the examples from the Dutch guidelines as well as a Markov trace from a state-transition model.
 
 Applying discounting in health economic models involves several structural choices. This section summarizes common issues and provides guidance.
 
+### Timing of events 
+#### Discrete time intervals 
+The commonly used state-transition models for cost-effectiveness analyses make use of discrete time intervals. However, real processes occur in continuous time. In discrete time simulation models it is most commonly assumed that full cycle rewards are given at the beginning of the cycle, while transitions are assumed to happen at the end of each cycle. This could results in overestimation of the cycles rewards. There are several cycle correction methods [@Elbasha2016], that slightly adjust the timing of events to closer reflect the continuous time process. The most commonly used method, is half-cycle correction, as recommend by the TASK-FORCE paper from @SIEBERT2012812. Half-cycle correction can be applied by  subtracting half a reward that is assigned in the first cycle and in half a reward in the last cycle. The `darthtools` package comes with a function called `gen_wcc` that can generate a vector for within-cycle corrections. 
 
-## Timing of events 
-### Discret time intervals 
-The commonly used state-transition models for cost-effectiveness analyses make use of discrete time intervals. However, the real processes occur in continuous time. In these simulation models, it is most commonly assumed that full cycle rewards are given at the beginning of the cycle, while transitions are assumed to happen at the end of each cycle. This could results in overestimation of the cycles rewards. With cycle correction methods, assumptions can be made regarding the timing of events to closer reflect the continuous time process (Elbasha EH, Chhatwal J. Myths and Misconceptions of Within-Cycle Correction: A Guide for Modelers and Decision Makers. Pharmacoeconomics. 2016 Jan;34(1):13-22. doi: 10.1007/s40273-015-0337-0. PMID: 26643402). The most commonly used method, is half-cycle correction, as recommend by the TASK-FORCE paper (https://www.sciencedirect.com/science/article/pii/S1098301512016543). Half-cycle correction can be applied by  subtracting half a reward that is assigned in the first cycle and in half a reward in the last cycle. The `darthtools` package comes with a function called `gen_wcc` that can generate a vector for within-cycle corrections. 
 
-
-## Discounting in models with sub-annual cycle lengths
-The Dutch recommendation, to not discount the first year, is in line with the assumption that rewards occur at the beginning of the cycle. While the application of discounting is straightforward in models with annual cycles, it becomes more ambiguous in models that use sub-annual time steps (e.g., monthly or weekly cycles), since the Dutch guideline does not specify how to handle the timing of discounting in such cases, leaving room for interpretation within the modeling community.
+#### Discounting in models with sub-annual cycle lengths
+The Dutch recommendation, to not discount the first year, is in line with the assumption that rewards occur at the beginning of the cycle. While the application of discounting is straightforward in models with annual cycles, it becomes more ambiguous in models that use sub-annual time steps (e.g., monthly or weekly cycles). Since the Dutch guideline does not specify how to handle the timing of discounting in such cases, it leaves room for interpretation within the modeling community.
 
 Different approaches have emerged: some modelers apply discounting starting after the first sub-annual cycle (e.g., excluding only the first month from discounting), as they link this to the fact that discounting relate to the fundamental principle that costs and benefits should be discounted beyond the present, and interpret every time point after the first cycle (present) as future. Others assume that no discounting occurs during the first full year, after which discounting is applied at intervals corresponding to the model’s cycle length. This lack of explicit guidance can lead to variation in results and underlines the importance of transparently reporting how discounting is implemented in sub-annual models.
 
 ### Why does this matter? Why does timing affects the present value?
 Although yearly and monthly discounting approaches produce the same total undiscounted QALYs or costs, they differ in discounted values due to when outcomes are assumed to occur. 
 
-Intuitively, and in the situation where we start discounting from the beginning of the process, monthly simulated models give a higher net present value compared to annual models. This is due to the fact that events that occur earlier are discounted less and therefore have a higher present value. So if we switch from annual to monthly cycles, we simulate that instead of receiving one full QALY at the end of each year, we receive 1/12 of a QALY each month. And because the QALYs in a sub-annual model are assigned slightly earlier in time, they lose a little less by discounting.
+Intuitively, and in the (uncommon) situation where we start discounting from the beginning of the process, monthly simulated models give a higher net present value compared to annual models. This is due to the fact that events that occur earlier are discounted less and therefore have a higher present value. So if we switch from annual to monthly cycles, we simulate that instead of receiving one full QALY at the end of each year, we receive 1/12 of a QALY each month. And because the QALYs in a sub-annual model are assigned slightly earlier in time, they lose a little less by discounting.
 
-However, in the more common situation, where it is assumed that reward occur *at the start of each period*. The first QALYs are assigned immediately at time = 0, and we begin discounting only form the second year. This results in a shirt from the time horizon. With the annual model, the time ranges from year 0 to year 3, meaning the last reward is assigned at time 3. While in a monthly model, the time ranges from 0 to last month of year 3, meaning that the last event occurs at almost year 4 (3 years and 11 months). So although in the monthly model, rewards occur earlier in time, they also extend one year further into the future. And this extra year of later events, offsets the early advantages, and results in a slight lower present value compared to the annual model. 
+However, in the more common situation, where it is assumed that reward occur *at the start of each period*. The first QALYs are assigned immediately at time = 0, and we begin discounting only form the second year. This results in a shift from the time horizon. With the annual model, the time ranges from year 0 to year 3, meaning the last reward is assigned at time 3. While in a monthly model, the time ranges from 0 to last month of year 3, meaning that the last event occurs at almost year 4 (3 years and 11 months). So although in the monthly model, rewards occur earlier in time, they also extend one year further into the future. And this extra year of later events, offsets the early advantages, and results in a slight lower present value compared to the annual model. 
 
 Therefore, under the assumption that rewards occur at the *end of each period* (meaning discounting from the start), the monthly model gives slightly higher present values. While under the assumption that rewards occur at the *start each period* (meaning NO discounting the 1st year), the monthly model gives slightly lower present values. In general, the differences in results are small, and will not have a consequence for the final decision. And in most models, cycle-correction is applied, which gives a balanced approximation between both assumptions. 
 
-But it is therefore recommend to carefully: 
+Therefore it is recommend to carefully: 
 - Decide when rewards occur (start, mid, end)
 - Construct the corresponding times vector
 - Report your assumptions 
 - Apply discounting consistently in line with the guidelines 
+
+
+#### Continuous time models
+This vignette shows how to apply discounting on values that are assigned at a specific point in time using examples from the Dutch manual or the Sick-Sicker example.
+
+In continuous-time models, such as discrete event simulations, certain rewards are accumulated over time. To accurately estimate the cumulative net present value of these rewards, we recommend consulting Degeling et al. [@Degeling2025]. This topic is currently beyond the scope of this package.
 
 
 ## Error messages you might see 
@@ -198,3 +203,7 @@ But it is therefore recommend to carefully:
     The values argument needs to get a numeric value (scalar) or vector of numeric values (vector)
 -   **"`discount_rate` must be numeric"**\
 -   **"`discount_rate` must be between 0 and 1")**\
+
+
+
+

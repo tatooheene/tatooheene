@@ -2,8 +2,10 @@ Package: tatooheene
 Title: Technology Appraisal Toolbox for Health Economic Evaluations in the Netherlands
 Version: 0.19.0
 Authors@R: c(
-    person("Frederick", "Thielen", ,"thielen@eshpm.eur.nl", role = c("aut"), comment = c(ORCID = "0000-0002-0312-5891")),
-    person("Stijn", "Peeters", , "s.b.peeters@eshpm.eur.nl", role = c("aut", "cre"),comment = c(ORCID = "0009-0004-3684-3584")))
+    person("Stijn", "Peeters", , "s.b.peeters@eshpm.eur.nl", role = c("aut", "cre"),comment = c(ORCID = "0009-0004-3684-3584")),
+    person("Eline", "Krijkamp", , "krijkamp@eshpm.eur.nl", role = c("aut", "cre"),comment = c(ORCID = "0000-0003-3970-2205"))
+    person("Frederick", "Thielen", ,"thielen@eshpm.eur.nl", role = c("aut"), comment = c(ORCID = "0000-0002-0312-5891"))
+    )
 Description: Functions to support economic modelling in R based on the methods of the 
     Dutch guideline for economic evaluations in healthcare <https://www.zorginstituutnederland.nl/publicaties/publicatie/2024/01/16/richtlijn-voor-het-uitvoeren-van-economische-evaluaties-in-de-gezondheidszorg>, 
     CBS data <https://www.cbs.nl/>, and OECD data <https://www.oecd.org/en.html>.
