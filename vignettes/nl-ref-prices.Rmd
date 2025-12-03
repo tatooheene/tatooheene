@@ -33,7 +33,7 @@ library(lifecycle)
 
 -   How to use nl_ref_prices() to:
 
-    -   filter by **domain, category, unit,**
+    -   filter by **domain, category, unit, short_unit**
 
     -   select **one or multiple years** (e.g., 2022 or c (2022, 2023) ),
 

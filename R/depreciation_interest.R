@@ -4,17 +4,15 @@
 #' `r lifecycle::badge("experimental")`
 #' Compute the annuity factor and the annual depreciation-and-interest charge for medical equipment, following Section 7.3 of the Dutch costing manual; k = annual depreciation and interest expense jaarlijkse afschrijvings- en rentekosten
 #'
-#' Let V be replacement value, R the salvage value, N the amortisation period (years), and i the interest rate (per year). The annuity factor is:
-#' \deqn{a = \frac{1 - (1 + i)^{-N}}{i},}
-#' with the limiting case \eqn{a = N} when \eqn{i = 0}.
-#'
+#' Let V be replacement value, R the salvage value, n the amortisation period (years), and i the interest rate (per year). The annuity factor is:
+#' \deqn{a_{n,i} = \frac{1}{i}*\bigg(1-\frac{1}{(1 + i)^{n}}\bigg)}
+#' #'
 #' The annual charge k is:
-#' \deqn{k = \frac{V - R / (1 + i)^{N}}{a}.}
-#' When \eqn{i = 0}, this reduces to \eqn{k = (V - R) / N}.
+#' \deqn{k = \frac{V - \frac{R}{(1 + i)^n}}{a_{n,i}}}
 #'
 #' @param v_replace_val V: vervangingswaarde; replacement value (numeric scalar, > 0)
 #' @param r_salvage_val R: restwaarde; salvage (residual) value at end of period (numeric scalar, >= 0)
-#' @param n_amortisation_period N: afschrijvingstermijn; amortisation period in years (numeric scalar, > 0)
+#' @param n_amortisation_period n: afschrijvingstermijn; amortisation period in years (numeric scalar, > 0)
 #' @param i_interest_rt i: rentepercntage; annual interest rate as a decimal (numeric scalar, >= 0)
 #' @param output One of `dataframe` (default), `annuity_factor`, or `annual_cost`.
 #'
@@ -26,7 +24,7 @@
 #'
 #' @keywords Generic, costs equipment
 #' @examples
-#' # Both values as a data frame (defaults: N=10, i=2.5%)
+#' # Both values as a data frame (defaults: n=10, i=2.5%)
 #' depreciation_interest(v_replace_val = 50000, r_salvage_val = 5000)
 #'
 #' # Only the annuity factor
@@ -35,7 +33,7 @@
 #' # Only the annual charge (k)
 #' depreciation_interest(50000, 5000, output = "annual_cost")
 #'
-#' # Zero interest (uses the i -> 0 limit): a = N, k = (V - R)/N
+#' # Zero interest (uses the i -> 0 limit): a = n, k = (V - R)/n
 #' depreciation_interest(50000, 5000, n_amortisation_period = 8, i_interest_rt = 0, output = "dataframe")
 #'
 #' @export depreciation_interest
@@ -69,18 +67,18 @@ depreciation_interest <- function(
 
   V <- v_replace_val
   R <- r_salvage_val
-  N <- n_amortisation_period
+  n <- n_amortisation_period
   i <- i_interest_rt
 
   # ---- annuity factor with safe zero-interest branch ----
   if (i == 0) {
-    a_annuity_fct <- N
+    a_annuity_fct <- n
   } else {
-    a_annuity_fct <- (1 - (1 + i)^(-N)) / i
+    a_annuity_fct <- (1 - (1 + i)^(-n)) / i
   }
 
   # ---- annual depreciation + interest ----
-  k_annual_depr_int_exp <- (V - R / (1 + i)^N) / a_annuity_fct
+  k_annual_depr_int_exp <- (V - R / (1 + i)^n) / a_annuity_fct
 
   if (output == "annuity_factor") {
     return(unname(a_annuity_fct))
