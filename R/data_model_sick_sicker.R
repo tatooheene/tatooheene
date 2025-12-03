@@ -1,4 +1,4 @@
-#' Example dataset: data_model_output_sick_sicker
+#' Example dataset: # data_model_output_sick_sicker
 #'
 #'@description
 #' A dataset containing model output objects from the **Sick-Sicker** example model developed by the **DARTH (Decision Analysis in R for Technologies in Health)**
@@ -34,7 +34,7 @@
 #'
 #' @examples
 #' # Load the dataset
-#' data("data_model_output_sick_sicker")
+#' # data("data_model_output_sick_sicker")
 #'
 #' # Explore the available objects
 #' ls(pattern = "l_|v_")
