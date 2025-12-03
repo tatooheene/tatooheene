@@ -4,9 +4,10 @@
 #' This function downloads the  Reference prices of the Dutch Costing Manual for one or multiple years. The prices are available in Euro (EUR) or International Dollar (INT$).
 #'
 #' @param year The year of which the reference price should be downloaded, multiple years are possible, default is the whole dataset
-#' @param domain The domain of pricese that should be included (one or more categories), default is including all categories
+#' @param domain The domain of prices that should be included (one or more categories), default is including all categories
 #' @param category The category of prices that should be included (one or more categories), default is including all categories
 #' @param unit The reference price that should be included (one or multiple reference prices),  default is including the whole dataframe
+#' @param short_unit The short variable name that should be included (one or more short variables), default is including all
 #' @param currency The currency of the output of the prices. A decision can be made between EUR and INT$, the default is EUR.
 #' @return A dataframe or value with the Medical Reference price(s) of the Dutch Costing Manual for the specified years
 #' @examples
@@ -29,6 +30,7 @@ nl_ref_prices <- function(
     domain = "all",
     category = "all",
     unit = "all",
+    short_unit = "all",
     currency = c("EUR", "INT$")){
 
   # match.arg() for the output parameter to ensure it is one of the valid choices
@@ -101,6 +103,12 @@ nl_ref_prices <- function(
   if(unit != "all"){
     df <- df |>
       dplyr::filter(Unit %in% unit)
+  }
+
+  # If specified, filter based on unit
+  if(short_unit != "all"){
+    df <- df |>
+      dplyr::filter(short_var %in% short_unit)
   }
 
   # If specified select the specified years or all years if not specified

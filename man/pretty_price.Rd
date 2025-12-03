@@ -4,12 +4,12 @@
 \alias{pretty_price}
 \title{A function to write pretty prices in \code{bookdown} reports}
 \usage{
-pretty_price(x, digi = 2, currency = "EUR", ...)
+pretty_price(x, digits = 2, currency = "EUR", ...)
 }
 \arguments{
 \item{x}{A number to be printed}
 
-\item{digi}{Number of digits}
+\item{digits}{Number of digits}
 
 \item{currency}{The name of the currency}
 
