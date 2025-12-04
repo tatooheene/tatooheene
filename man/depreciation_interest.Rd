@@ -52,7 +52,9 @@ depreciation_interest(50000, 5000, output = "annuity_factor")
 depreciation_interest(50000, 5000, output = "annual_cost")
 
 # Zero interest (uses the i -> 0 limit): a = n, k = (V - R)/n
-depreciation_interest(50000, 5000, n_amortisation_period = 8, i_interest_rt = 0, output = "dataframe")
+depreciation_interest(50000, 5000, n_amortisation_period = 8,
+                      i_interest_rt = 0,
+                      output = "dataframe")
 
 }
 \keyword{Generic,}

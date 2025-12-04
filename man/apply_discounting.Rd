@@ -15,13 +15,8 @@ apply_discounting(
 \arguments{
 \item{values}{A numeric (vector of) costs or effects over time (one value per period).}
 
-\item{discount_rate}{Specifies the discount rate to be used. It can be "costs", "effects" or a custom numeric value
-Acceptable values are:
-\itemize{
-\item \code{"costs"} — applies a 3\\% (0.03) annual discount rate
-\item \code{"effects"} — applies a 1.5\\% (0.015) annual discount rate
-\item A numeric value (e.g., \code{0.04}) — applies a custom annual discount rate
-}}
+\item{discount_rate}{Specifies the discount rate to be used. Acceptable values are:
+"costs" (0.03), "effects" (0.015), or a custom numeric value such as 0.04.}
 
 \item{times}{A numeric (vector of) time points indicating the time used for the discounting. The length must match the length of the values vector. Since the default discounting is annual, the time points should be in years. The length of this vector should be the same as the length of the \code{values} vector. When the first year is not discounted, the time points should start at 0 (e.g., c(0, 1, 2) for three years with NO discounting in the first year). When the first year is discounted, the time points should start at 1 (e.g., c(1, 2, 3) for three years WITH discounting in the first year). In case costs or effects are accrued in time steps other they annual, the time points should be adjusted accordingly, see more details in the vignettes of this package about discounting.}
 
@@ -39,23 +34,30 @@ analyses, in line with Dutch guidelines. Custom rates can be specified when need
 }
 \examples{
 # NO Discounting in First Year (t starts at 0)
-constant cost of 100 for 3 years
+# constant cost of 100 for 3 years
 apply_discounting(values = rep(100, 3), discount_rate = "costs", times = c(0, 1, 2))
 
 # WITH discounting in first year (t starts at 1)
-example: Constant cost of 100 for 3 years,
- apply_discounting(values = rep(100, 3), discount_rate = "costs", times = c(1, 2, 3))
+# Constant cost of 100 for 3 years,
+apply_discounting(values = rep(100, 3),
+                   discount_rate = "costs",
+                   times = c(1, 2, 3))
 
 # Present value of 100 euro in 3 years
- apply_discounting(values = 100, discount_rate = "costs", times = 3)
+apply_discounting(values = 100, discount_rate = "costs", times = 3)
 
 # Custom Discount Rate
-# example: discount rate of 4\%, no discounting in first year
-apply_discounting(values = rep(100, 3), discount_rate = 0.04, times = c(0, 1, 2))
-#' This will give you a messages to inform you about the different discount rate
+# discount rate of 4\%, no discounting in first year
+apply_discounting(values = rep(100, 3),
+                  discount_rate = 0.04,
+                  times = c(0, 1, 2))
+# This will give you a messages to inform you about the different discount rate
 
-Same applies to utility values
-Utility values with aggregation - NO discounting in first year
-apply_discounting(values = c(0.98, 0.82, 0.79), discount_rate = "effect", times = c(0, 1, 2), aggregate = TRUE, digits = 3)
+# Same applies to utility values
+# Utility values with aggregation - NO discounting in first year
+apply_discounting(values = c(0.98, 0.82, 0.79),
+                  discount_rate = "effect",
+                  times = c(0, 1, 2),
+                  aggregate = TRUE, digits = 3)
 
 }

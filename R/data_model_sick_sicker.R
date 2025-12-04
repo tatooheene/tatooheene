@@ -1,11 +1,8 @@
 #' Example dataset: # data_model_output_sick_sicker
 #'
-#'@description
-#' A dataset containing model output objects from the **Sick-Sicker** example model developed by the **DARTH (Decision Analysis in R for Technologies in Health)**
-#' workgroup. This dataset includes the results from both annual and monthly
-#' Markov model runs, specifically the Markov trace files and related output
-#' objects produced during simulation.
-
+#' @description
+#' A dataset containing model output objects from the **Sick-Sicker** example model developed by the **DARTH (Decision Analysis in R for Technologies in Health)** workgroup. This dataset includes the results from both annual and monthly Markov model runs, specifically the Markov trace files and related output objects produced during simulation.
+#'
 #' These data can be used for demonstrating how to apply some of the package functionalities like discounting for the results of a model-based cost-effectiveness model.
 #'
 #' @format A collection of R objects saved as an `.RData` file containing:
@@ -29,8 +26,7 @@
 #' For the full reference read: Alarid-Escudero F, Krijkamp EM, Enns EA, Yang A, Hunink MGM, Pechlivanoglou P, Jalal H. An Introductory Tutorial on Cohort State-Transition Models in R Using a Cost-Effectiveness Analysis Example. Medical Decision Making, 2023;43(1):3-20. https://doi.org/10.1177/0272989X221103163
 #'
 #'
-#' @source Adapted from the DARTH workgroup's Sick-Sicker model materials
-#' (\url{https://darthworkgroup.com}).
+#' @source Adapted from the DARTH workgroup's Sick-Sicker model materials (\url{https://darthworkgroup.com}).
 #'
 #' @examples
 #' # Load the dataset
@@ -74,5 +70,4 @@
 #' }
 
 #'
-"data_model_output_sick_sicker"
 
