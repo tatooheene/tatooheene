@@ -18,11 +18,11 @@
 #'
 #' @examples
 #' # NO Discounting in First Year (t starts at 0)
-#' constant cost of 100 for 3 years
+#' # constant cost of 100 for 3 years
 #' apply_discounting(values = rep(100, 3), discount_rate = "costs", times = c(0, 1, 2))
 #'
 #' # WITH discounting in first year (t starts at 1)
-#' example: Constant cost of 100 for 3 years,
+#' # example: Constant cost of 100 for 3 years,
 #'  apply_discounting(values = rep(100, 3),
 #'                    discount_rate = "costs",
 #'                    times = c(1, 2, 3))
