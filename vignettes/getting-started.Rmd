@@ -15,6 +15,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+library(tatooheene)
+library(dplyr)
 ```
 
 # Overview
@@ -73,7 +75,7 @@ First, we need to know the actual friction period for the analysis year 2023. Th
 
 ```{r}
 # Get the friction period for 2023
-v_5yr_mean_friction <- friction_period(
+v_5yr_mean_friction <- tatooheene::friction_period(
   year = 2023, # Year of interest
   units = "days", # We are interested in the number of days
   avg = "5yr", # Use the 5-year average friction period as stated in the costing manual,
@@ -93,7 +95,9 @@ df_spells <- tibble::tibble(
 # These are in table df_rp_prod
 
 # Get reference price for paid work in 2023
-p_ref_prod_paid_2023 <- df_rp_prod[1, "2023"]
+p_ref_prod_paid_2023 <- df_ref_prices |> 
+  filter(short_var == "prodloss_paid_hour") %>% 
+  pull(`2023`)
 
 # Calculate productivity costs using the friction cost method
 df_spells %>% 

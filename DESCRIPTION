@@ -3,7 +3,7 @@ Title: Technology Appraisal Toolbox for Health Economic Evaluations in the Nethe
 Version: 0.19.0
 Authors@R: c(
     person("Stijn", "Peeters", , "s.b.peeters@eshpm.eur.nl", role = c("aut", "cre"),comment = c(ORCID = "0009-0004-3684-3584")),
-    person("Eline", "Krijkamp", , "krijkamp@eshpm.eur.nl", role = c("aut", "cre"),comment = c(ORCID = "0000-0003-3970-2205"))
+    person("Eline", "Krijkamp", , "krijkamp@eshpm.eur.nl", role = c("aut"),comment = c(ORCID = "0000-0003-3970-2205")),
     person("Frederick", "Thielen", ,"thielen@eshpm.eur.nl", role = c("aut"), comment = c(ORCID = "0000-0002-0312-5891"))
     )
 Description: Functions to support economic modelling in R based on the methods of the 

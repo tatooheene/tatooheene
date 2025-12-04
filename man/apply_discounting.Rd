@@ -4,7 +4,13 @@
 \alias{apply_discounting}
 \title{Calculate the discounted (net present value) of costs or effects}
 \usage{
-apply_discounting(v, ... )
+apply_discounting(
+  values,
+  discount_rate = c("costs", "effects"),
+  times,
+  aggregate = FALSE,
+  digits = NULL
+)
 }
 \arguments{
 \item{values}{A numeric (vector of) costs or effects over time (one value per period).}
@@ -33,7 +39,7 @@ analyses, in line with Dutch guidelines. Custom rates can be specified when need
 }
 \examples{
 # NO Discounting in First Year (t starts at 0)
-example: constant cost of 100 for 3 years,
+constant cost of 100 for 3 years
 apply_discounting(values = rep(100, 3), discount_rate = "costs", times = c(0, 1, 2))
 
 # WITH discounting in first year (t starts at 1)

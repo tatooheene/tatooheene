@@ -52,25 +52,25 @@ df_fp %>%
 ### 1) Default: all years, **weeks**, **5‑year average**
 
 ```{r default}
-friction_period()
+tatooheene::friction_period()
 ```
 
 ### 2) Specific year, **weeks**, **5‑year average** → single value
 
 ```{r single-value}
-friction_period(year = 2019, units = "weeks", avg = "5yr", output = "value")
+tatooheene::friction_period(year = 2019, units = "weeks", avg = "5yr", output = "value")
 ```
 
 ### 3) **Days**, **1‑year** values for a range of years
 
 ```{r days-1yr}
-friction_period(year = 2018:2020, units = "days", avg = "1yr")
+tatooheene::friction_period(year = 2018:2020, units = "days", avg = "1yr")
 ```
 
 ### 4) Multiple selections return multiple columns
 
 ```{r multi-cols}
-friction_period(
+tatooheene::friction_period(
   year  = 2015:2019,
   units = c("days", "weeks"),
   avg   = "1yr"       # try c("1yr","5yr") to get four columns

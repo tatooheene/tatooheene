@@ -7,7 +7,7 @@ output:
     toc: true
     number_sections: false
 vignette: >
-  %\VignetteIndexEntry{Depreciation & interest for medical equipment (Dutch manual §7.3)}
+  %\VignetteIndexEntry{Depreciation & interest for medical equipment}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 

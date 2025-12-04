@@ -67,18 +67,18 @@ nl_ref_prices(year = 2022, unit = "Emergency care")
 ### 3) Years values for a range of years
 
 ```{r range}
-nl_ref_prices(year = 2018:2020, category = "Nursing")
+nl_ref_prices(year = 2022:2024, category = "Nursing")
 ```
 
 ### 4) Multiple selections return multiple columns
 
 ```{r multiple}
-nl_ref_prices(
-  year     = 2022:2024,
-  category = "Nursing",
-  unit     = c("Nursing day excluding personnel costs, hospital",
-               "Nursing day including personnel costs, hospital")
-)
+# nl_ref_prices(
+#   year     = 2024,
+#   category = "Nursing",
+#   unit     = c("Nursing day excluding personnel costs, hospital",
+#                "Nursing day including personnel costs, hospital")
+# )
 ```
 
 ## Error messages you might see
