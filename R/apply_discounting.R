@@ -16,26 +16,33 @@
 #'@param digits A numeric value to indicate the number of digits to round the value. Default is 3 digits
 #'
 #'
-#'@examples
+#' @examples
 #' # NO Discounting in First Year (t starts at 0)
 #' constant cost of 100 for 3 years
 #' apply_discounting(values = rep(100, 3), discount_rate = "costs", times = c(0, 1, 2))
 #'
 #' # WITH discounting in first year (t starts at 1)
 #' example: Constant cost of 100 for 3 years,
-#'  apply_discounting(values = rep(100, 3), discount_rate = "costs", times = c(1, 2, 3))
+#'  apply_discounting(values = rep(100, 3),
+#'                    discount_rate = "costs",
+#'                    times = c(1, 2, 3))
 #'
 #' # Present value of 100 euro in 3 years
 #'  apply_discounting(values = 100, discount_rate = "costs", times = 3)
 #'
 #' # Custom Discount Rate
 #' # example: discount rate of 4%, no discounting in first year
-#' apply_discounting(values = rep(100, 3), discount_rate = 0.04, times = c(0, 1, 2))
+#' apply_discounting(values = rep(100, 3),
+#'                   discount_rate = 0.04,
+#'                   times = c(0, 1, 2))
 #'#' This will give you a messages to inform you about the different discount rate
 #'
 #' Same applies to utility values
 #' Utility values with aggregation - NO discounting in first year
-#' apply_discounting(values = c(0.98, 0.82, 0.79), discount_rate = "effect", times = c(0, 1, 2), aggregate = TRUE, digits = 3)
+#' apply_discounting(values = c(0.98, 0.82, 0.79),
+#'                   discount_rate = "effect",
+#'                   times = c(0, 1, 2),
+#'                   aggregate = TRUE, digits = 3)
 #'
 #'@export apply_discounting
 #'@details
