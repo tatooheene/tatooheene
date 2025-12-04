@@ -26,7 +26,7 @@
 #' # Single numeric value (requires one year + one combo)
 #' friction_period(year = 2019, units = "weeks", avg = "5yr", output = "value")
 #'
-#' @export
+#' @export friction_period
 #' @importFrom dplyr filter select all_of pull
 #' @importFrom rlang .data
 friction_period <- function(
