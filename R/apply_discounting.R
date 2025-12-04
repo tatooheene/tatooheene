@@ -5,8 +5,8 @@
 #' The apply_discounting function is designed to calculate the net present value of future costs or effects using a constant  discount rate, following the Dutch guidelines for economic evaluations in health care.  (section 2.6.1.2 version 2024). Here's a breakdown of how the function works:
 #'@param values A numeric (vector of) costs or effects over time (one value per period).
 #'@param discount_rate Specifies the discount rate to be used. It can be "costs", "effects" or a custom numeric value
-#'   Acceptable values are:
-#'   \itemize{
+#' #  Acceptable values are:
+#' \itemize{
 #'     \item \code{"costs"} — applies a 3\% (0.03) annual discount rate
 #'     \item \code{"effects"} — applies a 1.5\% (0.015) annual discount rate
 #'     \item A numeric value (e.g., \code{0.04}) — applies a custom annual discount rate
@@ -17,8 +17,8 @@
 #'
 #'
 #' @examples
-#' # NO Discounting in First Year (t starts at 0)
-#' # constant cost of 100 for 3 years
+#'  # NO Discounting in First Year (t starts at 0)
+#'  # constant cost of 100 for 3 years
 #' apply_discounting(values = rep(100, 3), discount_rate = "costs", times = c(0, 1, 2))
 #'
 #' # WITH discounting in first year (t starts at 1)
@@ -31,14 +31,14 @@
 #'  apply_discounting(values = 100, discount_rate = "costs", times = 3)
 #'
 #' # Custom Discount Rate
-#' # example: discount rate of 4%, no discounting in first year
+#'  example: discount rate of 4%, no discounting in first year
 #' apply_discounting(values = rep(100, 3),
 #'                   discount_rate = 0.04,
 #'                   times = c(0, 1, 2))
-#'#' This will give you a messages to inform you about the different discount rate
+#' # This will give you a messages to inform you about the different discount rate
 #'
-#' Same applies to utility values
-#' Utility values with aggregation - NO discounting in first year
+#' # Same applies to utility values
+#'  Utility values with aggregation - NO discounting in first year
 #' apply_discounting(values = c(0.98, 0.82, 0.79),
 #'                   discount_rate = "effect",
 #'                   times = c(0, 1, 2),
