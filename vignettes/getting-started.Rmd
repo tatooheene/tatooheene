@@ -106,19 +106,3 @@ df_spells %>%
 ```
 
 More examples of productivity costs can be found in the [`friction_period` vignette](vignette("friction-period")).
-
-# Stijn
-- Depreciation
-- Nl_med_price
-- Nl_pat_fam_price
-- Nl_prod_oth_price
-
-# Eline
-- Discount (2 functie)
-- PPP
-- Price index
-
-# Fred
-- Friction cost
-- pretty_price
-
