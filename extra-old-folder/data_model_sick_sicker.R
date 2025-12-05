@@ -68,5 +68,5 @@
 #'   v_tot_cost[i] <- t(v_cost_str) %*% v_wcc_monthly
 #' }
 
-#'
+"data_model_output_sick_sicker"
 
