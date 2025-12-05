@@ -10,4 +10,10 @@ utils::globalVariables(c("Year",
                          "Year to",
                          "Percentage",
                          "cumulative",
-                         "Friction period days average over 5 years"))
+                         "Friction period days average over 5 years",
+                         'Year from',
+                         'Year to',
+                         'Factor',
+                         'na.omit',
+                         'Domain',
+                         'short_var'))
