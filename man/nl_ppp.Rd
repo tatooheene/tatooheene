@@ -22,8 +22,8 @@ nl_ppp(year = 2019)
 }
 \keyword{(PPP)}
 \keyword{Costing}
-\keyword{Generic,}
-\keyword{Manual,}
+\keyword{Generic}
+\keyword{Manual}
 \keyword{Parity}
 \keyword{Power}
 \keyword{Purchasing}

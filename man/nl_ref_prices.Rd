@@ -47,9 +47,9 @@ nl_ref_prices(year = "2022", category = "Nursing" , currency = "INT$")
 }
 \keyword{Costing}
 \keyword{Dutch}
-\keyword{Generic,}
-\keyword{Manual,}
+\keyword{Generic}
+\keyword{Manual}
 \keyword{Medical}
 \keyword{Prices}
-\keyword{Prices,}
+\keyword{Prices}
 \keyword{Reference}

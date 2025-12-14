@@ -21,7 +21,7 @@ A data frame with 11 rows and 8 columns:
 }
 }
 \source{
-\url{https://www.cbs.nl/nl-nl/cijfers}
+\url{https://cbs.nl/nl-nl/cijfers}
 }
 \usage{
 df_cpi_combined

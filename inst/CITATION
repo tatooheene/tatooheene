@@ -3,7 +3,7 @@ citHeader("To cite the tatooheene package in publications, please use:")
 citEntry(
   entry = "manual",
   title = "tatooheene: Technology Appraisal Toolbox for Health Economic Evaluations in the Netherlands",
-  author = personList(
+  author = c(
     person(
       given = "Stijn",
       family = "Peeters",

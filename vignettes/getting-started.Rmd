@@ -109,4 +109,5 @@ df_spells %>%
     prod_cost = sick_days_friction * p_ref_prod_paid_2023)
 ```
 
-More examples of productivity costs can be found in the [`friction_period` vignette](vignette("friction-period")).
+More examples of productivity costs can be found in the
+[`friction_period` vignette](friction-period.html).

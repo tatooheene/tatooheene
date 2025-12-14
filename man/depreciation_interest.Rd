@@ -57,6 +57,6 @@ depreciation_interest(50000, 5000, n_amortisation_period = 8,
                       output = "dataframe")
 
 }
-\keyword{Generic,}
+\keyword{Generic}
 \keyword{costs}
 \keyword{equipment}
