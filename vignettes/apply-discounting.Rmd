@@ -138,6 +138,11 @@ To demonstrate how to use the `tatooheene::apply_discounting()` formula to an st
 In the code example below we show how to discount the outcomes for the monthly simulated model without discounting in the first year, followed by applying a step-wise discounting after this first year. In order to NOT discount the first year we replace the first 12 elements of the discount factor values with a zero.
 ```{r exmple-sick-sicker-monthly}
 # Use the annual model
+data("data_model_output_sick_sicker", package = "tatooheene")
+
+l_m_M_monthly <- data_model_output_sick_sicker$l_m_M_monthly
+l_u_monthly   <- data_model_output_sick_sicker$l_u_monthly
+
 head(l_m_M_monthly[["Standard of care"]])
 tail(l_m_M_monthly[["Standard of care"]]) 
 # here you see this file has more cycles compared to the annual model
