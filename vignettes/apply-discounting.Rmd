@@ -97,7 +97,7 @@ The function gives a vector of discounted values. As the default discount rate f
 The same applies to health effects, in this example QALYs. Here, an individual is expected to life a perfect life over a four year period and each year 1 QALY is accrued. We do not apply discounting in the first year.
 
 ```{r example-discount-stream-QALY}
-apply_discounting(value = c(1, 1, 1, 1), discount_rate = "effects", times = c(0, 1, 2, 3))
+apply_discounting(values = c(1, 1, 1, 1), discount_rate = "effects", times = c(0, 1, 2, 3))
 ```
 
 
