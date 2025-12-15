@@ -1,6 +1,6 @@
 citHeader("To cite the tatooheene package in publications, please use:")
 
-citEntry(
+bibentry(
   entry = "manual",
   title = "tatooheene: Technology Appraisal Toolbox for Health Economic Evaluations in the Netherlands",
   author = c(

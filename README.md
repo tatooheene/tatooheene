@@ -26,5 +26,5 @@ remotes::install_github("tatooheene/tatooheene")
 
 The package contains several datasets that are used in the Dutch
 Guideline for Health Economic Evaluations in The Netherlands. Data were
-taken from [CBS](https://cbs.nl/),
+taken from [CBS](https://www.cbs.nl/),
 [ZIN](https://www.zorginstituutnederland.nl/) & [OECD](https://www.oecd.org/en.html)

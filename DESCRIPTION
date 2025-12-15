@@ -8,7 +8,7 @@ Authors@R: c(
     )
 Description: Functions to support economic modelling in R based on the methods of the 
     Dutch guideline for economic evaluations in healthcare <https://www.zorginstituutnederland.nl/documenten/2024/01/16/richtlijn-voor-het-uitvoeren-van-economische-evaluaties-in-de-gezondheidszorg>, 
-    CBS data <https://cbs.nl/>, and OECD data <https://www.oecd.org/en.html>.
+    CBS data <https://www.cbs.nl/>, and OECD data <https://www.oecd.org/en.html>.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
