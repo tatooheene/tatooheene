@@ -75,7 +75,7 @@ apply_discounting <- function(values,
     values <- as.vector(values)
   }
   if (is.matrix(times)) {
-    time <- as.vector(times)
+    times <- as.vector(times)
   }
 
   # Check both are vectors
