@@ -17,7 +17,7 @@ nl_ppp <- function(year = "all"){
   df <- tatooheene::df_ppp   # Read in the dataset
 
   # Select the specified years, or all years if not specified
-  if(year != "all"){
+  if(!identical(year, "all")){
     ppp <- df |>
       dplyr::filter(Year %in% year) |>
       dplyr::pull(PPP)
