@@ -14,6 +14,7 @@
 #' # Get the CPI factor from 2013 to 2023
 #' nl_price_index(start_year = 2013, end_year = 2023, output = "factor")
 #'
+#' prod(nl_price_index(start_year = 2013, end_year = 2023, output = "table")$Factor)
 #' # Get the CPI table from 2013 to 2023
 #' nl_price_index(start_year = 2013, end_year = 2023, output = "table")
 #'
@@ -70,12 +71,15 @@ nl_price_index <- function(start_year = 2013,
 
   # If the output is a factor:
   if(output == "factor"){
-    factor <- df |>
-      dplyr::filter(`Year from'` == start_year,
-                    `Year to'`   == end_year) |>
-      dplyr::pull(`Factor'`)
+    # Compound the year-on-year Factor across every consecutive pair between
+    # start_year and end_year (same row selection as the "table" branch, so
+    # the two outputs always stay consistent with each other).
+    factor_tbl <- df |>
+      dplyr::filter(`Year to` >= (start_year + 1) & `Year to` <= end_year)
 
-      return(factor)
+      factor <- prod(factor_tbl$Factor)
+
+      return(unname(factor))
 
     # If the output is a table:
   } else if(output == "table"){
@@ -87,3 +91,9 @@ nl_price_index <- function(start_year = 2013,
 
 }
 
+test_that("factor output compounds correctly and matches the table", {
+  f   <- nl_price_index(start_year = 2013, end_year = 2023, output = "factor")
+  tbl <- nl_price_index(start_year = 2013, end_year = 2023, output = "table")
+  expect_equal(f, prod(tbl$Factor))
+  expect_gt(length(f), 0)  # i.e. not the old numeric(0) bug
+})
